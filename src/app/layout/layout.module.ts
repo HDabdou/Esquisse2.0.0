@@ -41,6 +41,7 @@ import { OrangeMoneyComponent } from './mobileMoney/orange-money/orange-money.co
 import { TigocashComponent } from './mobileMoney/tigocash/tigocash.component';
 import { EMoneyComponent } from './mobileMoney/e-money/e-money.component';
 import { WizallComponent } from './mobileMoney/wizall/wizall.component';
+import { PosteCashComponent } from './mobileMoney/poste-cash/poste-cash.component';
 
 
 @NgModule({
@@ -81,7 +82,7 @@ import { WizallComponent } from './mobileMoney/wizall/wizall.component';
     ],
     exports: [
         MatSortModule,],
-    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, ]
+    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, PosteCashComponent, ]
 
 })
 export class LayoutModule { }
