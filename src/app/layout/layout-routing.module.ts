@@ -7,6 +7,10 @@ import { Screen2Component } from './screen2/screen2.component';
 import { CreateCompteComponent } from './create-compte/create-compte.component';
 import { VirementBancaireComponent } from './virement-bancaire/virement-bancaire.component';
 import { AssuranceComponent } from './assurance/assurance.component';
+import { OrangeMoneyComponent } from './mobileMoney/orange-money/orange-money.component';
+import { TigocashComponent } from './mobileMoney/tigocash/tigocash.component';
+import { EMoneyComponent } from './mobileMoney/e-money/e-money.component';
+import { WizallComponent } from './mobileMoney/wizall/wizall.component';
 
 const routes: Routes = [
     { path: '', component: LayoutComponent,
@@ -38,6 +42,22 @@ const routes: Routes = [
             {
                 path: 'assurance',
                 component:AssuranceComponent
+            },
+            {
+                path: 'orangemoney',
+                component:OrangeMoneyComponent
+            },
+            {
+                path: 'freemoney',
+                component:TigocashComponent
+            },
+            {
+                path: 'emoney',
+                component:EMoneyComponent
+            },
+            {
+                path: 'wizall',
+                component:WizallComponent
             }
         ]
     }

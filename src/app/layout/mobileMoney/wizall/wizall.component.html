@@ -1,0 +1,208 @@
+<div class="container">
+    <div class="panel panel-heading"> <h1 style="font-family: monospace; text-align: center;">
+      <img mat-card-image src="assets/images/wizall.jpg" style="max-width: 10rem;"></h1> 
+      <div class="row" style="margin-left: 16rem;">
+          <div >
+             <a class="mat-raised-button myButton" (click)="loadOperation('depot')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Depot</a> 
+          </div>
+          <div >
+             <a class="mat-raised-button myButton" (click)="loadOperation('retrait')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Retrait</a> 
+          </div>
+          <div >
+             <a class="mat-raised-button myButton" (click)="loadOperation('retraitbon')" style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Retrait de Bon</a> 
+          </div>
+          <div >
+             <a class="mat-raised-button myButton" (click)="loadOperation('envoiebon')" style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Envoie de bon</a> 
+          </div>
+       </div>
+    </div>
+    <div class="panel panel-bady">
+        
+        <form *ngIf="operation == 'depot'" class="login-form" fxFlex style="margin-top: 1rem;" >
+          <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+                <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+             </div>
+             <div fxFlex style="text-align: center;"><h1>Dépot</h1></div>
+
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div fxFlex style="text-align: center;">
+                    <mat-form-field class=" w-50 md-form"> 
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Numéro">
+                    </mat-form-field>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div fxFlex style="text-align: center;">
+                    <mat-form-field class=" w-50 md-form"> 
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom" class="w-50"  matInput placeholder="Montant">
+                    </mat-form-field>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                  <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                      <div fxFlex style="text-align: center;">
+                          <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
+                          <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                      </div>
+                  </div>
+              </div>
+             
+          </div>
+        </form>
+        <form *ngIf="operation == 'retrait'" class="login-form" fxFlex style="margin-top: 1rem;" >
+            <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+                  <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+               </div>
+               <div fxFlex style="text-align: center;"><h1>Retrait de bon</h1></div>
+  
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div fxFlex style="text-align: center;">
+                      <mat-form-field class=" w-50 md-form"> 
+                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Numéro">
+                      </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div fxFlex style="text-align: center;">
+                      <mat-form-field class=" w-50 md-form"> 
+                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom" class="w-50"  matInput placeholder="Montant">
+                      </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                    <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                        <div fxFlex style="text-align: center;">
+                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
+                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </form>
+        <form *ngIf="operation == 'envoiebon'" class="login-form" fxFlex style="margin-top: 1rem;" >
+            <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+                  <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+               </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" fxFlex style="text-align: center;"><h1>Envoie de bon</h1></div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div fxFlexFill>
+                                <mat-form-field class=" w-100 md-form"> 
+                                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Prénom">
+                                </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div fxFlexFill>
+                                <mat-form-field class=" w-100 md-form"> 
+                                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="nom">
+                                </mat-form-field>
+                            </div>
+                          </div>
+                    </div>
+                  </div>
+             
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Téléphone">
+                        </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Nationalité">
+                        </mat-form-field>
+                    </div>
+                  </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Type de piéce">
+                        </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Numéro carte">
+                        </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                      <div fxFlexFill>
+                          <mat-form-field class=" w-100 md-form"> 
+                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Montant">
+                          </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                      <div fxFlexFill>
+                          <mat-form-field class=" w-100 md-form"> 
+                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Prenom bénéficiaire">
+                          </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div fxFlexFill>
+                            <mat-form-field class=" w-100 md-form"> 
+                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Nom bénéficiaire">
+                            </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div fxFlexFill>
+                            <mat-form-field class=" w-100 md-form"> 
+                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Téléphone bénéficiaire">
+                            </mat-form-field>
+                        </div>
+                      </div>
+                         
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                    <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                        <div fxFlex style="text-align: center;">
+                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
+                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+         </form>
+         <form *ngIf="operation == 'retraitbon'" class="login-form" fxFlex style="margin-top: 1rem;" >
+            <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+                  <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+               </div>
+               <div fxFlex style="text-align: center;"><h1>Retrait</h1></div>
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div fxFlexFill>
+                      <mat-form-field class=" w-100 md-form"> 
+                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="codeCreation"  matInput placeholder="Code retrait">
+                      </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                    <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                        <div fxFlex style="text-align: center;">
+                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
+                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+         </form>
+    </div>
+  </div>

@@ -13,7 +13,9 @@ import {
     MAT_SNACK_BAR_DEFAULT_OPTIONS,
     MatSnackBar,
     MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY,
-    MatCardModule
+    MatCardModule,
+    MatSelect,
+    MatSelectModule
 } from '@angular/material';
 import { TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -35,6 +37,10 @@ import { MasterServiceService } from '../service/master-service.service';
 import { HttpModule } from '@angular/http';
 import { VirementBancaireComponent } from './virement-bancaire/virement-bancaire.component';
 import { AssuranceComponent } from './assurance/assurance.component';
+import { OrangeMoneyComponent } from './mobileMoney/orange-money/orange-money.component';
+import { TigocashComponent } from './mobileMoney/tigocash/tigocash.component';
+import { EMoneyComponent } from './mobileMoney/e-money/e-money.component';
+import { WizallComponent } from './mobileMoney/wizall/wizall.component';
 
 
 @NgModule({
@@ -55,6 +61,7 @@ import { AssuranceComponent } from './assurance/assurance.component';
         FormsModule,
         HttpClientModule,
         HttpModule,
+        MatSelectModule,
           
     MatCardModule,
     MatTableModule,
@@ -74,7 +81,7 @@ import { AssuranceComponent } from './assurance/assurance.component';
     ],
     exports: [
         MatSortModule,],
-    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, ]
+    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, ]
 
 })
 export class LayoutModule { }

@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
         
         this._authService.login(this.data).then(res => {
             
-           // console.log(res);
+            console.log(res);
             if(res.includes("ok")){
                 this.phases = true;
                 this.loading = false;

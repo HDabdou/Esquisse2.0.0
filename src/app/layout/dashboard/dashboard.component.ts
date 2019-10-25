@@ -3,6 +3,7 @@ import { MatTableDataSource, MatDialog } from '@angular/material';
 import { MasterServiceService } from 'src/app/service/master-service.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { template } from '@angular/core/src/render3';
+import { Router } from '@angular/router';
 
 export interface PeriodicElement {
     name: string;
@@ -52,7 +53,7 @@ export class DashboardComponent implements OnInit {
         this.dataSource.filter = filterValue;
     }
    
-    constructor(private _masterService:MasterServiceService,private modalService: BsModalService) {
+    constructor(private router:Router, private _masterService:MasterServiceService,private modalService: BsModalService) {
 
     }
     modalRef: BsModalRef;
@@ -189,6 +190,20 @@ export class DashboardComponent implements OnInit {
         this.nombreDetail = this.listeDetail.length;
         console.log(this.listeDetail);
         
+    }
+    loadMobileMoney(service){
+        if(service == "OrangeMoney"){
+            this.router.navigate(['/orangemoney']);
+        }
+        if(service == "FreeMoney"){
+            this.router.navigate(['/freemoney']);
+        }
+        if(service == 'E-Money'){
+            this.router.navigate(['/emoney']);
+        }
+        if(service == "Wizall"){
+            this.router.navigate(['/wizall']);
+        }
     }
     ngOnInit() {
         this.loading = true;
