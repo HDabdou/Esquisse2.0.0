@@ -1,0 +1,101 @@
+<!--<div class="container">
+  <div class="panel panel-heading"> <h1 style="font-family: monospace; text-align: center;">Création de compte</h1> </div>
+  <div class="panel panel-bady">
+     
+      <form class="login-form" fxFlex  >
+        <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+              <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+           </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div fxFlexFill>
+                  <mat-form-field class=" w-100 md-form"> 
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="codeCreation"  matInput placeholder="Code Agent Commercial">
+                  </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div fxFlexFill>
+                  <mat-form-field class=" w-100 md-form"> 
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Prénom">
+                  </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div fxFlexFill>
+                  <mat-form-field class=" w-100 md-form"> 
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="nom">
+                  </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div fxFlexFill>
+                  <mat-form-field class=" w-100 md-form"> 
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="email"  matInput placeholder="Email">
+                  </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div fxFlexFill>
+                  <mat-form-field class=" w-100 md-form"> 
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="tel"  matInput placeholder="Téléphone (sans indicatif)">
+                  </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div fxFlexFill>
+                  <mat-form-field class=" w-100 md-form"> 
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="region"  matInput placeholder="Région point">
+                  </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div fxFlexFill>
+                  <mat-form-field class=" w-100 md-form"> 
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="adresse"  matInput placeholder="Adresse point">
+                  </mat-form-field>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                    <div fxFlexFill>
+                        <button mat-raised-button color="primary" [disabled]="!this.codeCreation || !this.prenom || !this.nom || !this.email || !this.tel || !this.adresse" style="background-color: #43a047;" class="w-100" (click)="creerpoint()">Valider</button>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+      </form>
+  </div>
+</div>-->
+<div fxFlex *ngFor="let item of places;let i=index"  fxLayout="col-md-3 col-sm-4 col-xs-12" class="myCard">
+    <mat-card style="
+    text-align:  left !important;
+    min-width: 9rem;
+    max-width: 9rem;
+">
+        
+        <img mat-card-image [src]="item.imgSrc" style="max-width: 9rem;">
+        <mat-card-content>
+            
+            <p class="badge" style="font-size: 18px;"> 
+                 <i>{{item.service}}</i> 
+            </p>
+        </mat-card-content>
+
+       
+    </mat-card>
+</div>
+
+<div *ngIf="loading">
+    <div style="position: absolute ; left: 15%; top:25%; min-width: 100rem ; min-height: 40rem ;text-align: -webkit-center; padding-top: 10%; z-index:1000; background-color: white; opacity: 0.4;">
+        <div class="loader">
+            <div class="ball-pulse">
+            <div></div>
+            <div></div>
+            <div></div>
+            </div>
+        </div>  
+    </div>
+</div>

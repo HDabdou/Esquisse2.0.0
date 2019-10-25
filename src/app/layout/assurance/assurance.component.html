@@ -1,0 +1,18 @@
+<div fxFlex *ngFor="let item of places;let i=index"  fxLayout="col-md-3 col-sm-4 col-xs-12" class="myCard">
+  <mat-card style="
+  text-align:  left !important;
+  min-width: 9rem;
+  max-width: 9rem;
+">
+      
+      <img mat-card-image [src]="item.imgSrc" style="max-width: 9rem;">
+      <mat-card-content>
+          
+          <p class="badge" style="font-size: 18px;margin-right: -1rem;"> 
+               <i>{{item.service}}</i> 
+          </p>
+      </mat-card-content>
+
+     
+  </mat-card>
+</div>

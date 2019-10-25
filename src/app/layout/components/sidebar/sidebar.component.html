@@ -1,0 +1,25 @@
+<div id="sidebar">
+    <mat-nav-list>
+        <a mat-list-item (click)="getSolde()" style="cursor: pointer">
+            Solde : {{currencyFormat(solde)}} FCFA
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
+            <mat-icon class="sidenav-icon">mobile_screen_share</mat-icon> {{ 'Mobile Money' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/facturier']">
+            <mat-icon class="sidenav-icon">list_alt</mat-icon> {{ 'Facturier' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/transfertinternationnal']">
+            <mat-icon class="sidenav-icon">language</mat-icon> {{ 'Tranfert internationnal' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/abonnement']">
+            <mat-icon class="sidenav-icon">tv</mat-icon> {{ 'Abonnement' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/viremetbancaire']">
+            <mat-icon class="sidenav-icon">account_balance</mat-icon> {{ 'Banking' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/assurance']">
+            <mat-icon class="sidenav-icon">nature_people</mat-icon> {{ 'Assurance' | translate }}
+        </a>
+    </mat-nav-list>
+</div>

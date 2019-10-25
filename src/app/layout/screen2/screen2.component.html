@@ -1,0 +1,157 @@
+<!--<div class="mb-20" flFlex flexLayout="row" flexLayout.lt-md="column">
+    <div fxFlex>
+        <div class="md-form "  > 
+            <input type="text"(keyup)="doFilter($event.target.value)" placeholder="Filter" id="form1" [(ngModel)]="dateDebut"  class="form-control" aria-describedby="material-addon2"> 
+        </div>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort >
+            <ng-container matColumnDef="telephone">
+                <th mat-header-cell *matHeaderCellDef> Telephone </th>
+                <td mat-cell *matCellDef="let element"> {{element.telephone}} </td>
+            </ng-container>
+            <ng-container matColumnDef="prenom">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> prenom</th>
+                <td mat-cell *matCellDef="let element"> {{element.prenom}} </td>
+            </ng-container>
+            <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> nom </th>
+                <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+            </ng-container>
+            <ng-container matColumnDef="caution">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> caution </th>
+                <td mat-cell *matCellDef="let element"> {{element.caution}} </td>
+            </ng-container>
+            <ng-container matColumnDef="option">
+                <th mat-header-cell *matHeaderCellDef> Voir liste deposite </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-button class="btn btn-info" (click)="suivi(element.id_user);openModal(template)" style="font-size: 14px">Voir </button>
+                </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="option1">
+                <th mat-header-cell *matHeaderCellDef> Faire deposit</th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-button class="btn btn-info" (click)="deposer(element.id_user);openModal1(template1)" style="font-size: 14px"> deposit </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+</div>-->
+<div fxFlex *ngFor="let item of places;let i=index"  fxLayout="col-md-3 col-sm-4 col-xs-12" class="myCard">
+    <mat-card style="
+    text-align:  left !important;
+    min-width: 9rem;
+    max-width: 9rem;
+">
+        
+        <img mat-card-image [src]="item.imgSrc" style="max-width: 9rem;">
+        <mat-card-content>
+            
+            <p class="badge" style="font-size: 18px;margin-left: -1rem;"> 
+                 <i>{{item.service}}</i> 
+            </p>
+        </mat-card-content>
+
+       
+    </mat-card>
+</div>
+<ng-template #template>
+        <div class="modal-header" >
+          <h4 class="modal-title pull-left">Liste des deposits : {{nombreDetail}}</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="row" style="margin: 0.5rem">
+                    <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+                            <div class="md-form"> 
+                                <label for="form1" class="">Date Debut: </label> 
+                                <input type="date" id="form1" [(ngModel)]="dateDebut"  class="form-control" aria-describedby="material-addon2"> 
+                            </div>
+                            <div class="md-form"> 
+                                <label for="form1" class="">Date Fin: </label> 
+                                <input type="date" id="form2" [(ngModel)]="dateFin"  class="form-control" aria-describedby="material-addon2"> 
+                            </div>
+                        
+                            <div class="md-form"> 
+                                <a class="mat-raised-button"  style="margin-top: 2rem;background-color: #43a047;color: white;" (click)="rechercher()" mat-raised-button> Rechecher</a> 
+                            </div>
+                        </div>
+                    <div *ngIf="nombreDetail == 0 " class="btn btn-danger">
+                        <h2>Pas de deposit pour se point à cette période</h2>
+                    </div>
+                    <table *ngIf="nombreDetail != 0 " class="table  table-striped " style="box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Date deposite</th>
+                                <th scope="col">prenom</th>
+                                <th scope="col">nom</th>
+                                <th scope="col">Montant</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let op of listeDetail;let i=index">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{op.daterenflu}}</td>
+                                <td>{{getInfo1(op.updater,'prenom')}}</td>
+                                <td>{{getInfo1(op.updater,'nom')}}</td>
+                                <td>{{getInfo1(op.infosup,'montant')}}</td>
+                              </tr>
+                             
+                            </tbody>
+                    </table>
+            </div>
+
+        </div>
+ </ng-template>
+ <ng-template #template1>
+    <div class="modal-header" >
+        <h4 class="modal-title pull-left">Effectuer un deposit pour ce point</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef1.hide()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row" style="margin: 0.5rem">
+            <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+                <div class="md-form"> 
+                    <label for="form1" class="">Montant: </label> 
+                    <input type="text" id="form1" [(ngModel)]="montant"  class="form-control" aria-describedby="material-addon2"> 
+                </div>
+                <div class="md-form"> 
+                    <input type="text" readonly style="margin-top: 2rem;" id="form2" value="{{currencyFormat(montant)}} FCFA"  class="form-control" aria-describedby="material-addon2"> 
+                </div>
+            
+                <div class="md-form"> 
+                    <a class="mat-raised-button"  style="margin-top: 2rem;background-color: #43a047;color: white;" (click)="valider()" mat-raised-button> Valider</a> 
+                </div>
+            </div>
+          
+        </div>
+        <div class="row">
+                <div class="col-12">
+                   <div  *ngIf="depositeError == 1 " class="btn btn-success ">
+                       <h2>{{message}} </h2>
+                   </div>
+                   <div *ngIf="depositeError == -1 " class="btn btn-danger">
+                       <h2>{{message}} </h2>
+                   </div>
+             </div>
+           </div>
+    </div>
+    </ng-template>
+
+    <div *ngIf="loading">
+            <div style="position: absolute ; left: 15%; top:25%; min-width: 100rem ; min-height: 40rem ;text-align: -webkit-center; padding-top: 10%; z-index:1000; background-color: white; opacity: 0.4;">
+            <div class="loader">
+                <div class="ball-pulse">
+                <div></div>
+                <div></div>
+                <div></div>
+                </div>
+            </div>  
+            </div>
+        </div>
