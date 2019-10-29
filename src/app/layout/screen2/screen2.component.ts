@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { MatTableDataSource, MatSort } from '@angular/material';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { MasterServiceService } from 'src/app/service/master-service.service';
+import { Router } from '@angular/router';
 
 
 
@@ -22,7 +23,7 @@ export class Screen2Component implements OnInit {
     nombreDetail:number = 0;
     id_userSave:String;
     loading:boolean=false;
-	constructor(private _masterService:MasterServiceService,private modalService: BsModalService) { 
+	constructor(private router:Router,private _masterService:MasterServiceService,private modalService: BsModalService) { 
     }
     modalRef: BsModalRef;
     openModal(template: TemplateRef<any>) {
@@ -131,7 +132,19 @@ export class Screen2Component implements OnInit {
     doFilter = (value: string) => {
         this.dataSource.filter = value.trim().toLocaleLowerCase();
     }
-    
+    loadTransfertInternationnal(service){
+        if(service == "Ria"){
+            this.router.navigate(['/ria']);
+        }
+        if(service == "worldRemit"){
+            this.router.navigate(['/worldremit']);
+        }
+        if(service == 'MoneyExchange'){
+            this.router.navigate(['/moneyexchange']);
+        }
+       
+      
+    }
   
 	ngOnInit() {
         this.loading = true;

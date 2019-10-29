@@ -3,6 +3,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { MasterServiceService } from 'src/app/service/master-service.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-screen1',
@@ -23,7 +24,7 @@ export class Screen1Component implements OnInit {
     nombreDetail:number = 0;
     id_userSave:String;
     loading:boolean=false;
-	constructor(private _masterService:MasterServiceService,private modalService: BsModalService) { 
+	constructor(private router:Router, private _masterService:MasterServiceService,private modalService: BsModalService) { 
         this.sortedData = this.listeDetail.slice();
     }
     modalRef: BsModalRef;
@@ -83,6 +84,21 @@ export class Screen1Component implements OnInit {
      compare(a: number | string, b: number | string, isAsc: boolean) {
       return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
     }
+    loadFacturier(service){
+      if(service == "facture senelec"){
+          this.router.navigate(['/senelec']);
+      }
+      if(service == "facture sde"){
+          this.router.navigate(['/sde']);
+      }
+      if(service == 'woyofal'){
+          this.router.navigate(['/woyofal']);
+      }
+      if(service == "rapido"){
+          this.router.navigate(['/rapido']);
+      }
+    
+  }
 	ngOnInit() {
     this.loading = true;
     this._masterService.listeUser().then(res =>{

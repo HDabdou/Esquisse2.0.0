@@ -1,0 +1,230 @@
+<!--#907ab4!important-->
+<div class="container" style="background-color: #735996!important;width: 100%;height: 1000px;position: absolute ;">
+    <div class="panel panel-heading"> <h1 style="font-family: monospace; text-align: center;">
+      <img mat-card-image src="assets/images/worldremit.jpg" style="max-width: 10rem;margin-top: 1rem;"></h1> 
+      <div class="row" style="margin-left: 28rem;">
+          <div >
+             <a class="mat-raised-button myButton" (click)="loadOperation('envoie')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Envoi</a> 
+          </div>
+          <div >
+             <a class="mat-raised-button myButton" (click)="loadOperation('retrait')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Retrait</a> 
+          </div>
+         
+       </div>
+    </div>
+    <div class="panel panel-bady">
+        <div class="row" *ngIf="operation == 'envoie' && typeEnvoie == ''" style="margin-left: 15rem;">
+            <div >
+               <a class="mat-raised-button myButton" (click)="typeEnvoie = 'cash'"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Envoie Cash to Cash</a> 
+            </div>
+            <div >
+               <a class="mat-raised-button myButton" (click)="typeEnvoie = 'compteB'"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Envoie Cash to Compte</a> 
+            </div>
+            <div >
+                <a class="mat-raised-button myButton" (click)="typeEnvoie = 'wallet'"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Envoie Cash to Wallet</a> 
+             </div>
+           
+         </div>
+        <form *ngIf="operation == 'envoie' && typeEnvoie != ''" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;" >
+            <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+                  <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+               </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" fxFlex style="text-align: center;"><h1>Envoie Ria</h1></div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                   <div class="row" style="margin: 10px;">
+                      <h2 *ngIf="etapeEnvoie == 1">Emetteur</h2>
+                      <h2 *ngIf="etapeEnvoie == 2">Bénéficiaire</h2>
+                      <h2 *ngIf="etapeEnvoie == 3">Info-transaction</h2>
+                   </div>
+                  <div class="row">
+
+                  <div *ngIf="etapeEnvoie == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                      <div fxFlexFill>
+                          <mat-form-field class=" w-100 md-form"> 
+                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Prénom">
+                          </mat-form-field>
+                      </div>
+                    </div>
+                    <div *ngIf="etapeEnvoie == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                      <div fxFlexFill>
+                          <mat-form-field class=" w-100 md-form"> 
+                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="nom">
+                          </mat-form-field>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+             
+                <div *ngIf="etapeEnvoie == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Téléphone">
+                        </mat-form-field>
+                    </div>
+                  </div>
+                  <div *ngIf="etapeEnvoie == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Adresse">
+                        </mat-form-field>
+                    </div>
+                  </div>
+                  <div *ngIf="etapeEnvoie == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Ville">
+                        </mat-form-field>
+                    </div>
+                  </div>
+                  <div *ngIf="etapeEnvoie == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                            <mat-label>Pays</mat-label>
+                            <mat-select>
+                              <mat-option *ngFor="let food of typePiece" [value]="food.name">
+                                {{food.name}}
+                              </mat-option>
+                            </mat-select>                        
+                            </mat-form-field>
+                    </div>
+                  </div>
+                  <!--Recepteur-->
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      
+                     <div class="row">
+                          <div *ngIf="etapeEnvoie == 2" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div fxFlexFill>
+                              <mat-form-field class=" w-100 md-form"> 
+                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Prénom">
+                              </mat-form-field>
+                          </div>
+                        </div>
+                        <div *ngIf="etapeEnvoie == 2" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div fxFlexFill>
+                              <mat-form-field class=" w-100 md-form"> 
+                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="nom">
+                              </mat-form-field>
+                          </div>
+                        </div>
+                       </div>
+                     </div>
+                
+                   <div *ngIf="etapeEnvoie == 2" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                       <div fxFlexFill>
+                           <mat-form-field class=" w-100 md-form"> 
+                               <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Téléphone">
+                           </mat-form-field>
+                       </div>
+                     </div>
+                     <div *ngIf="etapeEnvoie == 2" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                       <div fxFlexFill>
+                           <mat-form-field class=" w-100 md-form"> 
+                               <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Adresse">
+                           </mat-form-field>
+                       </div>
+                     </div>
+                     <div *ngIf="etapeEnvoie == 2" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                       <div fxFlexFill>
+                           <mat-form-field class=" w-100 md-form"> 
+                               <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Ville">
+                           </mat-form-field>
+                       </div>
+                     </div>
+                     <div *ngIf="etapeEnvoie == 2" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                       <div fxFlexFill>
+                           <mat-form-field class=" w-100 md-form"> 
+                               <mat-label>Pays</mat-label>
+                               <mat-select>
+                                 <mat-option *ngFor="let food of typePiece" [value]="food.name">
+                                   {{food.name}}
+                                 </mat-option>
+                               </mat-select>                        
+                               </mat-form-field>
+                       </div>
+                     </div>
+                  <!---->
+                  
+   
+                      <div *ngIf="etapeEnvoie == 3" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div fxFlexFill>
+                              <mat-form-field class=" w-100 md-form"> 
+                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Montant">
+                              </mat-form-field>
+                          </div>
+                        </div>
+                        <div *ngIf="etapeEnvoie == 3 && typeEnvoie == 'compteB'" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div fxFlexFill>
+                              <mat-form-field class=" w-100 md-form"> 
+                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Numero Compte Bancaire">
+                              </mat-form-field>
+                          </div>
+                        </div>
+                        <div *ngIf="etapeEnvoie == 3 && typeEnvoie == 'compteB'" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div fxFlexFill>
+                              <mat-form-field class=" w-100 md-form"> 
+                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Nom De La Banque">
+                              </mat-form-field>
+                          </div>
+                        </div>
+                        <div *ngIf="etapeEnvoie == 3 && typeEnvoie == 'wallet'" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div fxFlexFill>
+                              <mat-form-field class=" w-100 md-form"> 
+                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Numero Compte Wallet">
+                              </mat-form-field>
+                          </div>
+                        </div>
+                        <div *ngIf="etapeEnvoie == 3 && typeEnvoie == 'wallet'" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div fxFlexFill>
+                              <mat-form-field class=" w-100 md-form"> 
+                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Nom De La Wallet">
+                              </mat-form-field>
+                          </div>
+                        </div>
+                        
+                    
+
+                         
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                    <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                        <div fxFlex style="text-align: center;">
+                            <button *ngIf="etapeEnvoie == 3" mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
+                            <button *ngIf="etapeEnvoie == 3" mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                            <button *ngIf="etapeEnvoie == 2 || etapeEnvoie == 3" (click)="back()" mat-raised-button color="primary" style="background-color: #337ab7;margin-left: 1rem;"  class="w-45" ><mat-icon class="sidenav-icon">keyboard_arrow_left</mat-icon>precedant</button>
+                            <button *ngIf="etapeEnvoie == 1 || etapeEnvoie == 2" (click)="next()" mat-raised-button color="primary" style="background-color: #337ab7;margin-left: 1rem;"  class="w-45" >suivant <mat-icon class="sidenav-icon">keyboard_arrow_right</mat-icon></button>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+         </form>
+        <form *ngIf="operation == 'retrait'" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;"  >
+            <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+                  <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+               </div>
+               <div fxFlex style="text-align: center;"><h1>Retrait</h1></div>
+  
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div fxFlex style="text-align: center;">
+                      <mat-form-field class=" w-50 md-form"> 
+                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="code Retrait">
+                      </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                    <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                        <div fxFlex style="text-align: center;">
+                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
+                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </form> 
+    </div>
+  </div>

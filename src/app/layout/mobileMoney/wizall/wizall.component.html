@@ -1,6 +1,7 @@
-<div class="container">
+<!--#17a2b8;-->
+<div class="container" style="background-color: #17a2b8;width: 100%;height: 1000px;position: absolute ;">
     <div class="panel panel-heading"> <h1 style="font-family: monospace; text-align: center;">
-      <img mat-card-image src="assets/images/wizall.jpg" style="max-width: 10rem;"></h1> 
+      <img mat-card-image src="assets/images/wizall.jpg" style="max-width: 10rem;margin-top: 1rem;"></h1> 
       <div class="row" style="margin-left: 16rem;">
           <div >
              <a class="mat-raised-button myButton" (click)="loadOperation('depot')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Depot</a> 
@@ -16,9 +17,9 @@
           </div>
        </div>
     </div>
-    <div class="panel panel-bady">
+    <div class="panel panel-bady" style="margin-top: 1rem;margin: 10px;background: white;">
         
-        <form *ngIf="operation == 'depot'" class="login-form" fxFlex style="margin-top: 1rem;" >
+        <form *ngIf="operation == 'depot'" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;" >
           <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
@@ -51,7 +52,7 @@
              
           </div>
         </form>
-        <form *ngIf="operation == 'retrait'" class="login-form" fxFlex style="margin-top: 1rem;" >
+        <form *ngIf="operation == 'retrait'" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;" >
             <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
@@ -84,7 +85,7 @@
                
             </div>
         </form>
-        <form *ngIf="operation == 'envoiebon'" class="login-form" fxFlex style="margin-top: 1rem;" >
+        <form *ngIf="operation == 'envoiebon'" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;" >
             <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
@@ -121,15 +122,25 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div fxFlexFill>
                         <mat-form-field class=" w-100 md-form"> 
-                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Nationalité">
-                        </mat-form-field>
+                            <mat-label>Nationnalité</mat-label>
+                            <mat-select>
+                              <mat-option *ngFor="let food of nationnalite" [value]="food.name">
+                                {{food.name}}
+                              </mat-option>
+                            </mat-select>                        
+                            </mat-form-field>
                     </div>
                   </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div fxFlexFill>
                         <mat-form-field class=" w-100 md-form"> 
-                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Type de piéce">
-                        </mat-form-field>
+                            <mat-label>Type de piéce</mat-label>
+                            <mat-select>
+                              <mat-option *ngFor="let food of typePiece" [value]="food.name">
+                                {{food.name}}
+                              </mat-option>
+                            </mat-select>                        
+                            </mat-form-field>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -179,7 +190,7 @@
                
             </div>
          </form>
-         <form *ngIf="operation == 'retraitbon'" class="login-form" fxFlex style="margin-top: 1rem;" >
+         <form *ngIf="operation == 'retraitbon'" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;" >
             <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>

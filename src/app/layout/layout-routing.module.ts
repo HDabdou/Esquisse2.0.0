@@ -11,6 +11,16 @@ import { OrangeMoneyComponent } from './mobileMoney/orange-money/orange-money.co
 import { TigocashComponent } from './mobileMoney/tigocash/tigocash.component';
 import { EMoneyComponent } from './mobileMoney/e-money/e-money.component';
 import { WizallComponent } from './mobileMoney/wizall/wizall.component';
+import { PosteCashComponent } from './mobileMoney/poste-cash/poste-cash.component';
+import { SenelecComponent } from './facturier/senelec/senelec.component';
+import { SdeComponent } from './facturier/sde/sde.component';
+import { WoyofalComponent } from './facturier/woyofal/woyofal.component';
+import { RapidoComponent } from './facturier/rapido/rapido.component';
+import { RiaComponent } from './transfertInternationnal/ria/ria.component';
+import { WorldRemitComponent } from './transfertInternationnal/world-remit/world-remit.component';
+import { MoneyExchangeComponent } from './transfertInternationnal/money-exchange/money-exchange.component';
+import { TntComponent } from './abonnementTv/tnt/tnt.component';
+import { CanalComponent } from './abonnementTv/canal/canal.component';
 
 const routes: Routes = [
     { path: '', component: LayoutComponent,
@@ -58,6 +68,46 @@ const routes: Routes = [
             {
                 path: 'wizall',
                 component:WizallComponent
+            },
+            {
+                path: 'postecash',
+                component:PosteCashComponent
+            },
+            {
+                path: 'senelec',
+                component:SenelecComponent
+            },
+            {
+                path: 'sde',
+                component:SdeComponent
+            },
+            {
+                path: 'woyofal',
+                component:WoyofalComponent
+            },
+            {
+                path: 'rapido',
+                component:RapidoComponent
+            },
+            {
+                path: 'ria',
+                component:RiaComponent
+            },
+            {
+                path: 'worldremit',
+                component:WorldRemitComponent
+            },
+            {
+                path: 'moneyexchange',
+                component:MoneyExchangeComponent
+            },
+            {
+                path: 'tnt',
+                component:TntComponent
+            },
+            {
+                path: 'canal',
+                component:CanalComponent
             }
         ]
     }

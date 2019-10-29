@@ -7,6 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PosteCashComponent implements OnInit {
 
+  operation:string;
+  monatntJula =[{name:2000},
+  {name:5000},
+  {name:10000},
+  {name:25000},
+]
+  loadOperation(op){
+    this.operation=op;
+  }
   constructor() { }
 
   ngOnInit() {

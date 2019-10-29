@@ -9,6 +9,12 @@ export class WizallComponent implements OnInit {
 
   operation:string;
 
+  typePiece =[{name:"carte d'identité nationnal"},
+  {name:"passport"},
+  ]
+  nationnalite =[{name:"senegalaise"},
+ 
+  ]
   loadOperation(op){
     this.operation=op;
   }
