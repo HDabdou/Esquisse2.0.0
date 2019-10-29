@@ -15,7 +15,10 @@ import {
     MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY,
     MatCardModule,
     MatSelect,
-    MatSelectModule
+    MatSelectModule,
+    MAT_LABEL_GLOBAL_OPTIONS,
+    MatFormFieldModule,
+    MatRippleModule
 } from '@angular/material';
 import { TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -80,6 +83,8 @@ import { CanalComponent } from './abonnementTv/canal/canal.component';
     FormsModule,
         ModalModule.forRoot(),
         TranslateModule,
+
+      
         
     ],
     providers: [
@@ -87,7 +92,7 @@ import { CanalComponent } from './abonnementTv/canal/canal.component';
         AuthService,
         AuthenticationServiceService,
         MatSnackBar,
-        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY, useValue: {duration: 2500}}
+        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY, useValue: {duration: 2500}},
     ],
     exports: [
         MatSortModule,],

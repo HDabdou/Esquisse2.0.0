@@ -69,7 +69,7 @@
       </form>
   </div>
 </div>-->
-<div fxFlex *ngFor="let item of places;let i=index"  fxLayout="col-md-3 col-sm-4 col-xs-12" class="myCard">
+<div fxFlex *ngFor="let item of places;let i=index" (click)="loadAbonnementTV(item.service)" fxLayout="col-md-3 col-sm-4 col-xs-12" class="myCard">
     <mat-card style="
     text-align:  left !important;
     min-width: 9rem;

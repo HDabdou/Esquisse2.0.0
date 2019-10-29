@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationServiceService } from 'src/app/service/authentication-service.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { MasterServiceService } from 'src/app/service/master-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-compte',
@@ -20,7 +21,7 @@ export class CreateCompteComponent implements OnInit {
   region:any;
   response:number = 0;
   loading:boolean;
-  constructor(private _authService:AuthenticationServiceService,private _serviceMaster: MasterServiceService) { }
+  constructor(private router:Router,private _authService:AuthenticationServiceService,private _serviceMaster: MasterServiceService) { }
   
   creerpoint(){
     this.loading =  true;
@@ -50,6 +51,15 @@ export class CreateCompteComponent implements OnInit {
     })
     
   }
+  loadAbonnementTV(service){
+    if(service == "TNT"){
+        this.router.navigate(['/tnt']);
+    }
+    if(service == "Canal"){
+        this.router.navigate(['/canal']);
+    }
+  
+}
  
   ngOnInit() {
     this.response = 0;
