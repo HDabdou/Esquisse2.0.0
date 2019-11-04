@@ -21,6 +21,8 @@ import { WorldRemitComponent } from './transfertInternationnal/world-remit/world
 import { MoneyExchangeComponent } from './transfertInternationnal/money-exchange/money-exchange.component';
 import { TntComponent } from './abonnementTv/tnt/tnt.component';
 import { CanalComponent } from './abonnementTv/canal/canal.component';
+import { ZuuluComponent } from './mobileMoney/zuulu/zuulu.component';
+import { KashKashComponent } from './mobileMoney/kash-kash/kash-kash.component';
 
 const routes: Routes = [
     { path: '', component: LayoutComponent,
@@ -108,6 +110,14 @@ const routes: Routes = [
             {
                 path: 'canal',
                 component:CanalComponent
+            },
+            {
+                path: 'zuulu',
+                component:ZuuluComponent
+            },
+            {
+                path: 'kashkash',
+                component:KashKashComponent
             }
         ]
     }

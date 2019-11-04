@@ -205,8 +205,14 @@ export class DashboardComponent implements OnInit {
             this.router.navigate(['/wizall']);
         }
         if(service == "POSTE CASH"){
-                this.router.navigate(['/postecash'])
+             this.router.navigate(['/postecash'])
         }
+        if(service == "kash-kash"){
+            this.router.navigate(['/kashkash'])
+       }
+       if(service == "Zuulu"){
+        this.router.navigate(['/zuulu'])
+   }
     }
     ngOnInit() {
        // this.loading = true;

@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
            
             //console.log(res.reponse==true);
             if(res.reponse==true){
-                this.loading = false;
+               // this.loading = false;
                 if (JSON.parse(sessionStorage.getItem('currentUser')).firstuse==1){
                     this.router.navigate(['/soppipwdbifi']);
                  } else {

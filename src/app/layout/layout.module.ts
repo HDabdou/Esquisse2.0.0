@@ -54,7 +54,8 @@ import { WorldRemitComponent } from './transfertInternationnal/world-remit/world
 import { MoneyExchangeComponent } from './transfertInternationnal/money-exchange/money-exchange.component';
 import { TntComponent } from './abonnementTv/tnt/tnt.component';
 import { CanalComponent } from './abonnementTv/canal/canal.component';
-
+import { KashKashComponent } from './mobileMoney/kash-kash/kash-kash.component';
+import { ZuuluComponent } from './mobileMoney/zuulu/zuulu.component';
 
 @NgModule({
     imports: [
@@ -76,13 +77,14 @@ import { CanalComponent } from './abonnementTv/canal/canal.component';
         HttpModule,
         MatSelectModule,
           
-    MatCardModule,
-    MatTableModule,
-    MatButtonModule,
-    MatIconModule,
-    FormsModule,
+        MatCardModule,
+        MatTableModule,
+        MatButtonModule,
+        MatIconModule,
+        FormsModule,
         ModalModule.forRoot(),
         TranslateModule,
+        
 
       
         
@@ -96,7 +98,7 @@ import { CanalComponent } from './abonnementTv/canal/canal.component';
     ],
     exports: [
         MatSortModule,],
-    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, PosteCashComponent, SenelecComponent, SdeComponent, WoyofalComponent, RapidoComponent, RiaComponent, WorldRemitComponent, MoneyExchangeComponent, TntComponent, CanalComponent, ]
+    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, PosteCashComponent, SenelecComponent, SdeComponent, WoyofalComponent, RapidoComponent, RiaComponent, WorldRemitComponent, MoneyExchangeComponent, TntComponent, CanalComponent, ZuuluComponent, KashKashComponent, ]
 
 })
 export class LayoutModule { }
