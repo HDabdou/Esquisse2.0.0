@@ -209,7 +209,7 @@ export class DashboardComponent implements OnInit {
         }
     }
     ngOnInit() {
-        this.loading = true;
+       // this.loading = true;
         this.dateDebut = ((new Date()).toJSON()).split("T",2)[0];
         this.dateFin = ((new Date()).toJSON()).split("T",2)[0];
         this.places = [
@@ -250,28 +250,7 @@ export class DashboardComponent implements OnInit {
             service:"Zuulu"},
 
         ]
-        this._masterService.listeOperation(this.dateDebut,this.dateFin).then(res =>{
-           
-            this.operation = res['operations'];
-            //console.log(operation);
-            this.nombreTransaction = this.operation.length;
-            
-            for(let i of this.operation){
-                this.commission = this.commission+ parseInt(i.commissionpdv);
-               // console.log(i.libelleoperation.indexOf("retrait"));
-                
-                if(i.libelleoperation.startsWith("retrait") == true || i.libelleoperation.startsWith("transfert") == true){
-                    this.cashout = this.cashout +1;  
-                }else{
-                    this.cashin = this.cashin + 1;
-                }
-                this.getInfo(i.nomservice,i);
-               
-                
-            }
-            this.loading = false;     
-                 
-        });
+       
       
     }
 }
