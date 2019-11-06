@@ -5,11 +5,11 @@
     <router-outlet></router-outlet>
     
 </div>
-<div class="panel"  style="background-color: white;margin-bottom: 0%;position: fixed;width: 100%;margin-top: 38rem;height: 52px;margin-left:15rem;">
+<div *ngIf="process.length > 0" class="panel"  style="background-color: white;margin-bottom: 0%;position: fixed;width: 100%;margin-top: 38rem;height: 52px;margin-left:15rem;">
     <div class="row">
-        <div class="col-md-2 col-lg-2 col-xs-3 col-sm-3" style="margin-left: 1.5rem;" *ngFor="let item of process">
+        <div class="col-md-2 col-lg-2 col-xs-3 col-sm-3"  style="margin-left: 1.5rem;" *ngFor="let item of process">
             <div  (click)="finprocess(item,item.dataI)" [ngStyle]="{'background-color':item.data.operateur==5?'orange':item.etats.color}"
-                  class="row pendingTask" >
+                  class="row pendingTask" [popover]="popTemplate" popoverTitle="{{item.data.nom}}" triggers="mouseenter:mouseleave" >
               <div  class="{{item.etats.load}}" style="text-align: end ;">
                 <i *ngIf="item.etats.etat&&item.etats.color=='green'" class="fa fa-check fa-2x" aria-hidden="true"></i>
                 <i *ngIf="item.etats.etat&&item.etats.color=='red'" class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i>
@@ -33,7 +33,7 @@
                   </div>
                   <div *ngIf="item.data.operation==2">
                     <div>Montant : {{item.data.montant}}</div><br>
-                    <div>Numéro Client :{{item.data.numclient}}</div><br>
+                    <div>Numéro Client :{{item.data.num}}</div><br>
                   </div>
                   <div *ngIf="item.data.operation==3">
                     <div>Code Retrait: {{item.data.coderetrait}}</div><br>

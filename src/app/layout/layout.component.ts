@@ -5,6 +5,7 @@ import { SendDataService } from '../service/send-data.service';
 import { Subscription } from 'rxjs';
 import { OrangeMoneyService } from '../service/orange-money.service';
 import { BsModalService, BsModalRef, ModalDirective } from 'ngx-bootstrap/modal';
+import { FreeMoneyService } from '../service/free-money.service';
 
 @Component({
     selector: 'app-layout',
@@ -82,6 +83,9 @@ export class LayoutComponent implements OnInit {
       return omOps.length-1 ;
     }
   }
+  /*======================================================
+  *******Orange Money***************
+  ========================================================= */
   deposerOM(objet:any){
 
     // console.log("Debut 1- "+JSON.stringify(objet))
@@ -128,8 +132,7 @@ export class LayoutComponent implements OnInit {
                  objet.etats.color='green';
                 // this.addOpInLastedFifteen('om-depot',requete);
                  this.updateCaution();
- 
-               }
+                }
                else{
                  if(donnee!='-1'){
                    objet.etats.etat=true;
@@ -213,6 +216,224 @@ export class LayoutComponent implements OnInit {
      });
  
    }
+
+
+
+   retraitAvecCode(objet:any){
+    let requete = "3/"+objet.data.coderetrait+"/"+objet.data.prenom+"/"+objet.data.nomclient+"/"+objet.data.date+"/"+objet.data.cni+"/"+objet.data.num+"/"+objet.data.montant;
+    console.log(requete);
+    
+    let id=this.repeatedInLastFifteen('om-retraitcode', requete);
+    if (id==-1){
+      requete = requete+'R';
+    }
+
+    this._omService.requerirControllerOM(requete).then( resp => {
+      if (resp.status==200){
+          console.log("For this 'retrait-code', we just say : "+resp._body) ;
+
+        if(resp._body.trim()=='0'){
+           objet.etats.etat=true;
+           objet.etats.load='terminated';
+           objet.etats.color='red';
+           objet.etats.errorCode='0';
+           this.updateOpInLastedFifteen('om-retraitcode',id);
+        }
+        else if(resp._body.match('-12')){
+               objet.etats.etat=true;
+               objet.etats.load='terminated';
+               objet.etats.color='red';
+               objet.etats.errorCode='-12';
+               this.updateOpInLastedFifteen('om-retraitcode',id);
+            }
+        else{
+          setTimeout(()=>{
+            this._omService.verifierReponseOM(resp._body.trim().toString()).then(rep =>{
+            let donnee=rep._body.trim().toString();
+           // console.log("Inside verifier retrait: "+donnee) ;
+            if(donnee=='1'){
+                   objet.etats.etat=true;
+                   objet.etats.load='terminated';
+                   objet.etats.color='green';
+                   this.updateCaution();
+                }
+            else {
+              if (donnee != '-1') {
+                    objet.etats.etat = true;
+                    objet.etats.load = 'terminated';
+                    objet.etats.color = 'red';
+                    objet.etats.errorCode = donnee;
+                    this.updateOpInLastedFifteen('om-retraitcode',id);
+              }
+              else {
+                let periodicVerifierOMRetraitCode = setInterval(()=>{
+                  objet.etats.nbtour = objet.etats.nbtour + 1 ;
+                  this._omService.verifierReponseOM(resp._body.trim().toString()).then(rep =>{
+                    var donnee=rep._body.trim().toString();
+                   // console.log("Inside verifier retrait: "+donnee) ;
+                    if(donnee=='1'){
+                      objet.etats.etat=true;
+                      objet.etats.load='terminated';
+                      objet.etats.color='green';
+                      this.updateCaution();
+                      clearInterval(periodicVerifierOMRetraitCode) ;
+                    }else
+                    if(donnee!='-1'){
+                      objet.etats.etat=true;
+                      objet.etats.load='terminated';
+                      objet.etats.color='red';
+                      objet.etats.errorCode=donnee;
+                      clearInterval(periodicVerifierOMRetraitCode) ;
+                      this.updateOpInLastedFifteen('om-retraitcode',id);
+                    }
+                    if(donnee=='-1' && objet.etats.nbtour>=5){
+                      this._omService.demanderAnnulationOM(resp._body.trim().toString()).then(rep =>{
+                        let donnee=rep._body.trim().toString();
+                        if(donnee!='w'){
+                          objet.etats.etat=true;
+                          objet.etats.load='wait';
+                          objet.etats.color='yellow';
+                          objet.etats.errorCode=donnee;
+                          this.updateOpInLastedFifteen('om-retraitcode',id);
+                        }
+                        else{
+                          objet.etats.etat=true;
+                          objet.etats.load='terminated';
+                          objet.etats.color='red';
+                          objet.etats.errorCode="c";
+                          clearInterval(periodicVerifierOMRetraitCode) ;
+                          this.updateOpInLastedFifteen('om-retraitcode',id);
+                        }
+                      }) ;
+                    }
+                  });
+                },10000);
+              }
+
+            }
+          });
+        },30000);
+       }
+      }
+      else{
+        console.log("error") ;
+      }
+    });
+
+  }
+
+
+
+  acheterCredit(objet:any){
+
+    let requete = "5/"+objet.data.num+"/"+objet.data.montant;
+   // console.log("Achat de crédit avec : "+requete) ;
+    let id=this.repeatedInLastFifteen('om-vente-credit', requete);
+    if (id==-1)
+           requete = requete+'R' ;
+
+    this._omService.requerirControllerOM(requete).then( resp => {
+      if (resp.status==200){
+
+            if(resp._body.trim()=='0'){
+               objet.etats.etat=true;
+               objet.etats.load='terminated';
+               objet.etats.color='red';
+               objet.etats.errorCode='0';
+               this.updateOpInLastedFifteen('om-vente-credit',id);
+            }else
+            if(resp._body.trim()=='-12'){
+               objet.etats.etat=true;
+               objet.etats.load='terminated';
+               objet.etats.color='red';
+               objet.etats.errorCode='-12';
+               this.updateOpInLastedFifteen('om-vente-credit',id);
+            }
+            else{
+              setTimeout(()=>{
+              this._omService.verifierReponseOM(resp._body.trim().toString()).then(rep =>{
+                let donnee=rep._body.trim().toString();
+                console.log("Inside verifier depot : "+donnee) ;
+                if(donnee=='1'){
+                   objet.etats.etat=true;
+                   objet.etats.load='terminated';
+                   objet.etats.color='green';
+                   this.updateCaution();
+                }
+                else{
+                  if(donnee!='-1'){
+                     objet.etats.etat=true;
+                     objet.etats.load='terminated';
+                     objet.etats.color='red';
+                     objet.etats.errorCode=donnee;
+                     this.updateOpInLastedFifteen('om-vente-credit',id);
+
+                  }
+                  else{
+                        let periodicVerifierOMAcheterCredit = setInterval(()=>{
+                        objet.etats.nbtour = objet.etats.nbtour + 1 ;
+                        this._omService.verifierReponseOM(resp._body.trim().toString()).then(rep =>{
+                          let donnee=rep._body.trim().toString();
+                          console.log("Inside verifier depot : "+donnee) ;
+                          if(donnee=='1'){
+                             objet.etats.etat=true;
+                             objet.etats.load='terminated';
+                             objet.etats.color='green';
+                             this.updateCaution();
+                             clearInterval(periodicVerifierOMAcheterCredit) ;
+                          }
+                          else{
+                            if(donnee!='-1'){
+                             objet.etats.etat=true;
+                             objet.etats.load='terminated';
+                             objet.etats.color='red';
+                             objet.etats.errorCode=donnee;
+                             clearInterval(periodicVerifierOMAcheterCredit) ;
+                             this.updateOpInLastedFifteen('om-vente-credit',id);
+                            }
+                            if(donnee=='-1' && objet.etats.nbtour>=5){
+                              console.log('avant anulation')
+                              this._omService.demanderAnnulationOM(resp._body.trim().toString()).then(rep =>{
+                                let donnee=rep._body.trim().toString();
+                                 console.log('si bir annulation bi');
+
+                                if(donnee!='w'){
+                                  objet.etats.etat=true;
+                                  objet.etats.load='wait';
+                                  objet.etats.color='yellow';
+                                  objet.etats.errorCode=donnee;
+                                  this.updateOpInLastedFifteen('om-vente-credit',id);
+                                }
+                                else {
+                                   objet.etats.etat=true;
+                                   objet.etats.load='terminated';
+                                   objet.etats.color='red';
+                                   objet.etats.errorCode="c";
+                                   clearInterval(periodicVerifierOMAcheterCredit) ;
+                                   this.updateOpInLastedFifteen('om-vente-credit',id);
+                                   //929992
+                                }
+                              }) ;
+                            }
+                          }
+                        });
+                        },10000);
+                   }
+                }
+              });
+            },30000);
+          }
+      }
+      else{
+        console.log("error") ;
+
+        }
+    });
+
+  }
+
+
+
    retirerOM(objet:any){
       // console.log("Debut 1- "+JSON.stringify(objet))
       let requete = "2/"+objet.data.num+"/"+objet.data.montant ;
@@ -338,12 +559,324 @@ export class LayoutComponent implements OnInit {
         }
     });
    }
+   /*============================================================
+   *************free money***************************************
+   ============================================================== */
+   deposertc(objet:any){
+
+    console.log("Debut 1- "+JSON.stringify(objet))
+    let requete = "1/"+objet.data.num+"/"+objet.data.montant ;
+    let id=this.repeatedInLastFifteen('tc-depot', requete);
+    if (id==-1){
+      objet.etats.etat=true;
+      objet.etats.load='terminated';
+      objet.etats.color='red';
+      objet.etats.errorCode='r';
+      return 0 ;
+    }
+    this._tcService.requerirControllerTC(requete).then( resp => {
+      if (resp.status==200){
+        console.log("requerirControllerTC : "+resp._body) ;
+        if(resp._body.trim()=='0'){
+          objet.etats.etat=true;
+          objet.etats.load='terminated';
+          objet.etats.color='red';
+          objet.etats.errorCode='0';
+          this.updateOpInLastedFifteen('tc-depot',id);
+        }else
+        if(resp._body.match('-12')){
+          objet.etats.etat=true;
+          objet.etats.load='terminated';
+          objet.etats.color='red';
+          objet.etats.errorCode='-12';
+          this.updateOpInLastedFifteen('tc-depot',id);
+        }
+        else{
+          setTimeout(()=>{
+            this._tcService.verifierReponseTC(resp._body.trim().toString()).then(rep =>{
+              let donnee=rep._body.trim().toString();
+              console.log("verifierReponseTC : "+donnee) ;
+              if(donnee=='1'){
+                objet.etats.etat=true;
+                objet.etats.load='terminated';
+                objet.etats.color='green';
+                this.updateCaution();
+              }
+              else{
+                if(donnee!='-1'){
+                  objet.etats.etat=true;
+                  objet.etats.load='terminated';
+                  objet.etats.color='red';
+                  objet.etats.errorCode=donnee;
+                  this.updateOpInLastedFifteen('tc-depot',id);
+                } else{
+                  let periodicVerifierTCDepot = setInterval(()=>{
+                    console.log("periodicVerifierTCDepot : "+objet.etats.nbtour) ;
+                    objet.etats.nbtour = objet.etats.nbtour + 1 ;
+                    this._tcService.verifierReponseTC(resp._body.trim().toString()).then(rep =>{
+                      let donnee=rep._body.trim().toString();
+                      console.log("verifierReponseTC 1 : "+donnee) ;
+                      if(donnee=='1'){
+                        objet.etats.etat=true;
+                        objet.etats.load='terminated';
+                        objet.etats.color='green';
+                        this.updateCaution();
+                        clearInterval(periodicVerifierTCDepot) ;
+                      }
+                      else{
+                        if(donnee!='-1'){
+                          objet.etats.etat=true;
+                          objet.etats.load='terminated';
+                          objet.etats.color='red';
+                          objet.etats.errorCode=donnee;
+                          clearInterval(periodicVerifierTCDepot) ;
+                          this.updateOpInLastedFifteen('tc-depot',id);
+                        }
+                        if(donnee=='-1' && objet.etats.nbtour>=9){
+                          this._tcService.demanderAnnulationTC(resp._body.trim().toString()).then(rep =>{
+                            console.log("demanderAnnulationTC : "+rep._body.trim().toString()) ;
+                            let donnee=rep._body.trim().toString();
+                            if(donnee=="c"){
+                              objet.etats.etat=true;
+                              objet.etats.load='terminated';
+                              objet.etats.color='red';
+                              objet.etats.errorCode="c";
+                              clearInterval(periodicVerifierTCDepot) ;
+                              this.updateOpInLastedFifteen('tc-depot',id);
+                            }
+                          }) ;
+                        }
+                      }
+                    });
+                  },10000);
+                }
+              }
+            });
+          },30000);
+        }
+      }
+      else{
+        console.log("error") ;
+
+      }
+    });
+
+  }
+
+
+  retirertc(objet:any){
+    let requete = "2/"+objet.data.num+"/"+objet.data.montant ;
+    let id=this.repeatedInLastFifteen('tc-retrait', requete);
+    if (id==-1){
+      objet.etats.etat=true;
+      objet.etats.load='terminated';
+      objet.etats.color='red';
+      objet.etats.errorCode='r';
+      return 0 ;
+    }
+
+    this._tcService.requerirControllerTC(requete).then( resp => {
+      if (resp.status==200){
+
+        console.log("For this 'retrait', we just say : "+resp._body) ;
+
+        if(resp._body.trim()=='0'){
+           objet.etats.etat=true;
+           objet.etats.load='terminated';
+           objet.etats.color='red';
+           objet.etats.errorCode='0';
+           this.updateOpInLastedFifteen('tc-retrait',id);
+        }else
+            if(resp._body.match('-12')){
+               objet.etats.etat=true;
+               objet.etats.load='terminated';
+               objet.etats.color='red';
+               objet.etats.errorCode='-12';
+               this.updateOpInLastedFifteen('tc-retrait',id);
+            }
+            else{
+              setTimeout(()=>{
+              this._tcService.verifierReponseTC(resp._body.trim().toString()).then(rep =>{
+                let donnee=rep._body.trim().toString();
+                console.log("Inside verifier retrait: "+donnee) ;
+                if(donnee=='1'){
+                   objet.etats.etat=true;
+                   objet.etats.load='terminated';
+                   objet.etats.color='green';
+                }
+                else{
+                  if(donnee!='-1'){
+                   objet.etats.etat=true;
+                   objet.etats.load='terminated';
+                   objet.etats.color='red';
+                   objet.etats.errorCode=donnee;
+                   this.updateOpInLastedFifteen('tc-retrait',id);
+                  }
+                  else{
+                    let periodicVerifierTCRetirer = setInterval(()=>{
+                      console.log("periodicVerifierTCRetirer : "+objet.etats.nbtour) ;
+                      objet.etats.nbtour = objet.etats.nbtour + 1 ;
+                      this._tcService.verifierReponseTC(resp._body.trim().toString()).then(rep =>{
+                        let donnee=rep._body.trim().toString();
+                        console.log("Inside verifier retrait: "+donnee) ;
+                        if(donnee=='1'){
+                           objet.etats.etat=true;
+                           objet.etats.load='terminated';
+                           objet.etats.color='green';
+                           clearInterval(periodicVerifierTCRetirer) ;
+                        }
+                        else{
+                          if(donnee!='-1'){
+                           objet.etats.etat=true;
+                           objet.etats.load='terminated';
+                           objet.etats.color='red';
+                           objet.etats.errorCode=donnee;
+                           clearInterval(periodicVerifierTCRetirer) ;
+                           this.updateOpInLastedFifteen('tc-retrait',id);
+                          }
+                          if(donnee=='-1' && objet.etats.nbtour>=5){
+                            this._tcService.demanderAnnulationTC(resp._body.trim().toString()).then(rep =>{
+                              console.log("demanderAnnulationTC : "+rep._body.trim().toString()) ;
+                              let donnee=rep._body.trim().toString();
+                              if(donnee=="c"){
+                                objet.etats.etat=true;
+                                objet.etats.load='terminated';
+                                objet.etats.color='red';
+                                objet.etats.errorCode="c";
+                                clearInterval(periodicVerifierTCRetirer) ;
+                                this.updateOpInLastedFifteen('tc-retrait',id);
+                              }
+                            }) ;
+                          }
+                        }
+                      });
+                      },10000);
+                  }
+                }
+              });
+            },60000);
+          }
+      }
+      else{
+        console.log("error") ;
+
+        }
+    });
+
+  }
+
+  retraitaveccodetc(objet:any){
+    let requete = "4/"+objet.data.coderetrait+"/"+objet.data.typepiece+"/"+objet.data.numeropiece+"/"+objet.data.montant+"/"+objet.data.num;
+    console.log(requete);
+    let id=this.repeatedInLastFifteen('tc-retrait', requete);
+
+    if (id==-1){
+      objet.etats.etat=true;
+      objet.etats.load='terminated';
+      objet.etats.color='red';
+      objet.etats.errorCode='r';
+      return 0 ;
+    }
+
+    this._tcService.requerirControllerTC(requete).then( resp => {
+      if (resp.status==200){
+
+        console.log("For this 'retrait', we just say : "+resp._body) ;
+
+        if(resp._body.trim()=='0'){
+           objet.etats.etat=true;
+           objet.etats.load='terminated';
+           objet.etats.color='red';
+           objet.etats.errorCode='0';
+           this.updateOpInLastedFifteen('tc-retrait',id);
+        }else
+            if(resp._body.match('-12')){
+               objet.etats.etat=true;
+               objet.etats.load='terminated';
+               objet.etats.color='red';
+               objet.etats.errorCode='-12';
+               this.updateOpInLastedFifteen('tc-retrait',id);
+            }
+            else{
+              setTimeout(()=>{
+              this._tcService.verifierReponseTC(resp._body.trim().toString()).then(rep =>{
+                let donnee=rep._body.trim().toString();
+                console.log("Inside verifier retrait: "+donnee) ;
+                if(donnee=='1'){
+                   objet.etats.etat=true;
+                   objet.etats.load='terminated';
+                   objet.etats.color='green';
+                   this.updateCaution();
+                }
+                else{
+                  if(donnee!='-1'){
+                   objet.etats.etat=true;
+                   objet.etats.load='terminated';
+                   objet.etats.color='red';
+                   objet.etats.errorCode=donnee;
+                   this.updateOpInLastedFifteen('tc-retrait',id);
+                  }
+                  else{
+                    let periodicVerifierTCRetraitCode = setInterval(()=>{
+                      console.log("periodicVerifierTCRetraitCode : "+objet.etats.nbtour) ;
+                      objet.etats.nbtour = objet.etats.nbtour + 1 ;
+                      this._tcService.verifierReponseTC(resp._body.trim().toString()).then(rep =>{
+                        let donnee=rep._body.trim().toString();
+                        console.log("Inside verifier retrait: "+donnee) ;
+                        if(donnee=='1'){
+                           objet.etats.etat=true;
+                           objet.etats.load='terminated';
+                           objet.etats.color='green';
+                           this.updateCaution();
+                           clearInterval(periodicVerifierTCRetraitCode) ;
+                        }
+                        else{
+                          if(donnee!='-1'){
+                           objet.etats.etat=true;
+                           objet.etats.load='terminated';
+                           objet.etats.color='red';
+                           objet.etats.errorCode=donnee;
+                           clearInterval(periodicVerifierTCRetraitCode) ;
+                           this.updateOpInLastedFifteen('tc-retrait',id);
+                          }
+                          if(donnee=='-1' && objet.etats.nbtour>=9){
+                            this._tcService.demanderAnnulationTC(resp._body.trim().toString()).then(rep =>{
+                              console.log("demanderAnnulationTC : "+rep._body.trim().toString()) ;
+                              let donnee=rep._body.trim().toString();
+                              if(donnee=="c"){
+                                objet.etats.etat=true;
+                                objet.etats.load='terminated';
+                                objet.etats.color='red';
+                                objet.etats.errorCode="c";
+                                clearInterval(periodicVerifierTCRetraitCode) ;
+                                this.updateOpInLastedFifteen('tc-retrait',id);
+                              }
+                            }) ;
+                          }
+                        }
+                      });
+                      },10000);
+                  }
+                }
+              });
+            },30000);
+          }
+           }
+      else{
+        console.log("error") ;
+
+        }
+    });
+
+  }
+
   myData(data){
     //console.log(data);
     let infoOperation:any;
     if(data){
       infoOperation={'etat':false,'id':this.process.length,'load':'loader','color':'', 'errorCode':'*', nbtour:0};
       let sesion={'data':data,'etats':infoOperation,'dataI':''};
+      console.log(sesion);
       let operateur=sesion.data.operateur;
       if(operateur==2){
         console.log('operateur bi bakh na');
@@ -363,7 +896,7 @@ export class LayoutComponent implements OnInit {
             }
             case 3:{
              console.log(this.process);
-                   //this.retraitAvecCode(sesion);
+                   this.retraitAvecCode(sesion);
                    break;
             }
             case 4:{
@@ -372,9 +905,34 @@ export class LayoutComponent implements OnInit {
                    break;
             }
             case 5:{
-                   //this.acheterCredit(sesion);
+                   this.acheterCredit(sesion);
                    break;
             }
+            default :break;
+          }
+        }
+        if(operateur==3){
+          let operation=sesion.data.operation;
+          this.process.push(sesion);
+          switch(operation){
+            case 1:{
+                  this.deposertc(sesion);
+                  break;
+                  }
+            case 2:{
+                  this.retirertc(sesion);
+                  break;
+            }
+            case 5:{
+                   // this.creditIZItc(sesion) ;
+                   console.log(sesion);
+                   
+                    break ;
+                  }
+            case 6:{
+                 this.retraitaveccodetc(sesion) ;
+                  break ;
+                  }
             default :break;
           }
         }
@@ -382,7 +940,7 @@ export class LayoutComponent implements OnInit {
   console.log("youpi");
     
   }
-    constructor(private dataService:SendDataService,private _omService:OrangeMoneyService,private modalService: BsModalService) {
+    constructor(private _tcService:FreeMoneyService,private dataService:SendDataService,private _omService:OrangeMoneyService,private modalService: BsModalService) {
       this.subscription = this.dataService.getData().subscribe(rep =>{
         this.data =rep;
         this.myData(this.data);  
@@ -636,4 +1194,28 @@ export class LayoutComponent implements OnInit {
       
       
         }
+        finprocess(etat:any,imprime:any){
+          if(etat.data.operateur==5){
+              //this.router.navigate(['/accueil','panier']);
+            }
+         if(etat.etats.etat==true){
+    
+         if(etat.etats.etat==true){
+    
+             if(etat.data.operateur!=2 && etat.data.operateur!=6 && etat.data.operateur!=3 && etat.data.operateur!=1 && etat.etats.color=='green'){
+    
+               
+              // this.router.navigate(['accueil']);
+               //setTimeout(()=>this.router.navigate(['accueil/impression']),100);
+            }
+    
+               this.process.splice(etat.etats.id,1);
+             for (let i=0 ; i<this.process.length ; i++){
+              if(this.process[i].etats.id > etat.etats.id)
+              this.process[i].etats.id = this.process[i].etats.id - 1 ;
+             }
+               console.log(etat.etats.id);
+        }
+      }
+    }
 }

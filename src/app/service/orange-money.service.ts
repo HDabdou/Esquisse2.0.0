@@ -29,7 +29,7 @@ export class OrangeMoneyService {
     let params="requestParam="+JSON.stringify({requestParam : requete, tokenParam : JSON.parse(sessionStorage.getItem('currentUser')).baseToken});
     console.log(params);
     let link=this.link+"/om-sen/requerirControllerOM";
-    return this.http.post(link,params,{headers:this.headers}).toPromise().then( res =>{console.log(res);return res} ).catch(error => {return 'bad' });
+    return this.http.post(link,params,{headers:this.headers}).toPromise().then( res =>{return res} ).catch(error => {return 'bad' });
   }
 
   public verifierReponseOM(requete:any): Promise<any>{

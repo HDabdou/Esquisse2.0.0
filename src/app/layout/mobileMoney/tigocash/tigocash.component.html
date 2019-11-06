@@ -4,13 +4,13 @@
       <img mat-card-image src="assets/images/tigocash.jpg" style="max-width: 10rem;margin-top: 1rem;"></h1> 
       <div class="row" style="margin-left: 16rem;">
           <div >
-             <a class="mat-raised-button myButton" (click)="loadOperation('depot')"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Depot</a> 
+             <a class="mat-raised-button myButton" (click)="loadOperation('depot');reinitialiser()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Depot</a> 
           </div>
           <div >
-             <a class="mat-raised-button myButton" (click)="loadOperation('retrait')"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Retrait</a> 
+             <a class="mat-raised-button myButton" (click)="loadOperation('retrait');reinitialiser()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Retrait</a> 
           </div>
           <div >
-             <a class="mat-raised-button myButton" (click)="loadOperation('payertransfert')" style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Payer transfert</a> 
+             <a class="mat-raised-button myButton" (click)="loadOperation('payertransfert');reinitialiser()" style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Payer transfert</a> 
           </div>
 
        </div>
@@ -25,25 +25,27 @@
              </div>
              <div fxFlex style="text-align: center;"><h1>Dépot</h1></div>
 
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div fxFlex style="text-align: center;">
                     <mat-form-field class=" w-50 md-form"> 
-                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Numéro">
+                        <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="num" class="w-50"  matInput placeholder="Numéro">
                     </mat-form-field>
+                    <p *ngIf="errorNum" class="alert alert-danger">numero incorrect</p>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div fxFlex style="text-align: center;">
                     <mat-form-field class=" w-50 md-form"> 
-                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom" class="w-50"  matInput placeholder="Montant">
+                        <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="mtt" class="w-50"  matInput placeholder="Montant">
                     </mat-form-field>
+                    <p *ngIf="errormtt"  class="alert alert-danger">Montant Incorrect</p>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                   <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                       <div fxFlex style="text-align: center;">
-                          <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                          <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                          <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="verifiersaisie();">Valider</button>
+                          <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                       </div>
                   </div>
               </div>
@@ -58,28 +60,30 @@
                </div>
                <div fxFlex style="text-align: center;"><h1>Retrait</h1></div>
   
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div fxFlex style="text-align: center;">
-                      <mat-form-field class=" w-50 md-form"> 
-                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Numéro">
-                      </mat-form-field>
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div fxFlex style="text-align: center;">
+                    <mat-form-field class=" w-50 md-form"> 
+                        <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="num" class="w-50"  matInput placeholder="Numéro">
+                    </mat-form-field>
+                    <p *ngIf="errorNum" class="alert alert-danger">numero incorrect</p>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div fxFlex style="text-align: center;">
+                    <mat-form-field class=" w-50 md-form"> 
+                        <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="mtt" class="w-50"  matInput placeholder="Montant">
+                    </mat-form-field>
+                    <p *ngIf="errormtt"  class="alert alert-danger">Montant Incorrect</p>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                  <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                      <div fxFlex style="text-align: center;">
+                          <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="verifiersaisie();">Valider</button>
+                          <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
+                      </div>
                   </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div fxFlex style="text-align: center;">
-                      <mat-form-field class=" w-50 md-form"> 
-                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom" class="w-50"  matInput placeholder="Montant">
-                      </mat-form-field>
-                  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-                    <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
-                        <div fxFlex style="text-align: center;">
-                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
-                        </div>
-                    </div>
-                </div>
+              </div>
                
             </div>
         </form>
@@ -94,8 +98,9 @@
                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div fxFlexFill>
                       <mat-form-field class=" w-100 md-form"> 
-                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="codeCreation"  matInput placeholder="Code retrait">
+                          <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="coderetrait"  matInput placeholder="Code retrait">
                       </mat-form-field>
+                      <p *ngIf="bcoderetrait"  class="alert alert-danger">code retrait Requis</p>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -103,6 +108,7 @@
                         <mat-form-field class=" w-100 md-form"> 
                             <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Prénom">
                         </mat-form-field>
+                        <p *ngIf="bprenom"  class="alert alert-danger">prenom Requis</p>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -110,47 +116,52 @@
                         <mat-form-field class=" w-100 md-form"> 
                             <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="nom">
                         </mat-form-field>
+                        <p *ngIf="bnom"  class="alert alert-danger">Nom Requis</p>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                       <div fxFlexFill>
                           <mat-form-field class=" w-100 md-form"> 
                               <mat-label>Type de piéce d'identité</mat-label>
-                              <mat-select>
+                              <mat-select  [(value)]="typepiece">
                                 <mat-option *ngFor="let food of typePiece" [value]="food.name">
                                   {{food.name}}
                                 </mat-option>
                               </mat-select>                        
                               </mat-form-field>
+                              <p *ngIf="btypepiece"  class="alert alert-danger">type de piece  Requis</p>
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                       <div fxFlexFill>
                           <mat-form-field class=" w-100 md-form"> 
-                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="numéro piéce">
+                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="numpiece"  matInput placeholder="numéro piéce">
                           </mat-form-field>
+                          <p *ngIf="bnumpiece"  class="alert alert-danger">numéro piéce Requis</p>
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <div fxFlexFill>
+                        <div fxFlex style="text-align: center;">
                             <mat-form-field class=" w-100 md-form"> 
-                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Numéro">
+                                <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="num" class="w-50"  matInput placeholder="Numéro">
                             </mat-form-field>
+                            <p *ngIf="errorNum" class="alert alert-danger">numero incorrect</p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <div fxFlexFill>
+                        <div fxFlex style="text-align: center;">
                             <mat-form-field class=" w-100 md-form"> 
-                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Montant">
+                                <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="mtt" class="w-50"  matInput placeholder="Montant">
                             </mat-form-field>
+                            <p *ngIf="errormtt"  class="alert alert-danger">Montant Incorrect</p>
                         </div>
                       </div>
                          
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                     <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                         <div fxFlex style="text-align: center;">
-                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="verifiersaisieretraitCode()">Valider</button>
+                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                         </div>
                     </div>
                 </div>
@@ -160,3 +171,83 @@
         
     </div>
   </div>
+
+
+  <div bsModal #addChildModal="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-sm">
+       <div class="modal-content" >
+         <div class="modal-header">
+         
+           <h4 *ngIf="operation == 'depot'" class="modal-title pull-left">Depot freeMoney</h4>
+           <h4 *ngIf="operation == 'retrait'" class="modal-title pull-left">Retrait freeMoney</h4>
+           <h4 *ngIf="operation == 'payertransfert'" class="modal-title pull-left">Payer transfert freeMoney</h4>
+           <button type="button" class="close pull-right" aria-label="Close" (click)="hideAddChildModal()">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div *ngIf="operation == 'depot'">
+                <form class="form">
+                    <div class="form-group">
+                        <label >numero client : {{this.num}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >montant : {{this.mtt}}</label>
+                    </div>
+                </form>
+
+            </div>
+            <div *ngIf="operation == 'retrait'">
+                <form class="form">
+                    <div class="form-group">
+                        <label >numero client : {{this.num}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >montant : {{this.mtt}}</label>
+                    </div>
+                </form>
+
+            </div>
+            <div *ngIf="operation == 'payertransfert'">
+                <form class="form">
+                    <div class="form-group">
+                        <label >Code retrait : {{this.coderetrait}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Prenom : {{this.prenom}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Nom : {{this.num}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Type piece : {{this.typepiece}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >CNI : {{this.numpiece}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >numero client : {{this.num}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >montant : {{this.mtt}}</label>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <input *ngIf="operation == 'depot'" type="button" value="valider"  (click)="deposer()" class="btn btn-success" />
+            <input *ngIf="operation == 'retrait'" type="button" value="valider"  (click)="retirer()" class="btn btn-success" />
+            <input *ngIf="operation == 'payertransfert'" type="button" value="valider"  (click)="retirerAvecCode()" class="btn btn-success" />
+            <input type="button" value="fermer" (click)="hideAddChildModal()" class="btn btn-danger" />
+        </div>
+     </div>
+   </div>
+
+
+
+
+</div>

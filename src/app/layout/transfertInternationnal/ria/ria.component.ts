@@ -17,13 +17,9 @@ export class RiaComponent implements OnInit {
   }
   next(){
     this.etapeEnvoie = this.etapeEnvoie +1;
-    console.log("typeEnvoie ->"+this.typeEnvoie);
-    
   }
   back(){
     this.etapeEnvoie = this.etapeEnvoie -1;
-    console.log("typeEnvoie ->"+this.typeEnvoie);
-
   }
 
   constructor() { }

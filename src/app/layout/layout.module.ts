@@ -32,6 +32,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import { CreateCompteComponent } from './create-compte/create-compte.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationServiceService } from '../service/authentication-service.service';
@@ -84,6 +85,7 @@ import { ZuuluComponent } from './mobileMoney/zuulu/zuulu.component';
         FormsModule,
         ModalModule.forRoot(),
         TranslateModule,
+        PopoverModule.forRoot(),
         
 
       
