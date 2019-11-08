@@ -21,5 +21,11 @@
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/assurance']">
             <mat-icon class="sidenav-icon">nature_people</mat-icon> {{ 'Assurance' | translate }}
         </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/airtime']">
+            <mat-icon class="sidenav-icon">phonelink_ring</mat-icon> {{ 'Vente crédit' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/paiementmarchand']">
+            <mat-icon class="sidenav-icon">cast_connected</mat-icon> {{ 'Paiement marchand' | translate }}
+        </a>
     </mat-nav-list>
 </div>

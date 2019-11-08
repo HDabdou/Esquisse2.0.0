@@ -4,16 +4,16 @@
       <img mat-card-image src="assets/images/wizall.jpg" style="max-width: 10rem;margin-top: 1rem;"></h1> 
       <div class="row" style="margin-left: 16rem;">
           <div >
-             <a class="mat-raised-button myButton" (click)="loadOperation('depot')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Depot</a> 
+             <a class="mat-raised-button myButton" (click)="loadOperation('depot');reinitialiser()"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Depot</a> 
           </div>
           <div >
-             <a class="mat-raised-button myButton" (click)="loadOperation('retrait')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Retrait</a> 
+             <a class="mat-raised-button myButton" (click)="loadOperation('retrait');reinitialiser()"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Retrait</a> 
           </div>
           <div >
-             <a class="mat-raised-button myButton" (click)="loadOperation('retraitbon')" style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Retrait de Bon</a> 
+             <a class="mat-raised-button myButton" (click)="loadOperation('retraitbon');reinitialiser()" style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Retrait de Bon</a> 
           </div>
           <div >
-             <a class="mat-raised-button myButton" (click)="loadOperation('envoiebon')" style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Envoie de bon</a> 
+             <a class="mat-raised-button myButton" (click)="loadOperation('envoiebon');reinitialiser()" style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Envoie de bon</a> 
           </div>
        </div>
     </div>
@@ -25,27 +25,30 @@
                 <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
                 <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
              </div>
-             <div fxFlex style="text-align: center;"><h1>Dépot</h1></div>
-
+             <div fxFlex style="text-align: center;"><h1>Dépot</h1>
+                <a (click)="showmodalfraiscashin()" class="fraistransfert" style="height: 3rem;cursor: pointer;color : #337ab7;"> Consulter les frais </a>
+            </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div fxFlex style="text-align: center;">
                     <mat-form-field class=" w-50 md-form"> 
-                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Numéro">
+                        <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="num" class="w-50"  matInput placeholder="Numéro">
                     </mat-form-field>
+                    <p style="color:red" *ngIf="errornumero">Verifier ce Champ</p>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div fxFlex style="text-align: center;">
                     <mat-form-field class=" w-50 md-form"> 
-                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom" class="w-50"  matInput placeholder="Montant">
+                        <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="mtt" class="w-50"  matInput placeholder="Montant">
                     </mat-form-field>
+                    <p style="color:red" *ngIf="errormontant">verifier ce champ</p>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                   <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                       <div fxFlex style="text-align: center;">
-                          <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                          <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                          <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="verifiersaisie();">Valider</button>
+                          <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                       </div>
                   </div>
               </div>
@@ -58,27 +61,30 @@
                   <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
                   <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
                </div>
-               <div fxFlex style="text-align: center;"><h1>Retrait de bon</h1></div>
-  
+               <div fxFlex style="text-align: center;"><h1>Retrait</h1>
+                  <a  class="fraistransfert" > Numéro Distributeur : 76 600 36 01 </a>
+              </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div fxFlex style="text-align: center;">
                       <mat-form-field class=" w-50 md-form"> 
-                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Numéro">
+                          <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="num" class="w-50"  matInput placeholder="Numéro">
                       </mat-form-field>
+                      <p style="color:red" *ngIf="errornumero">Verifier ce Champ</p>
                   </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div fxFlex style="text-align: center;">
                       <mat-form-field class=" w-50 md-form"> 
-                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom" class="w-50"  matInput placeholder="Montant">
+                          <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="mtt" class="w-50"  matInput placeholder="Montant">
                       </mat-form-field>
+                      <p style="color:red" *ngIf="errormontant">verifier ce champ</p>
                   </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                     <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                         <div fxFlex style="text-align: center;">
-                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="verifiersaisieRetrait();">Valider</button>
+                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                         </div>
                     </div>
                 </div>
@@ -196,19 +202,19 @@
                   <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
                   <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
                </div>
-               <div fxFlex style="text-align: center;"><h1>Retrait</h1></div>
+               <div fxFlex style="text-align: center;"><h1>Retrait de bon</h1></div>
                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div fxFlexFill>
                       <mat-form-field class=" w-100 md-form"> 
-                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="codeCreation"  matInput placeholder="Code retrait">
+                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="codebon"  matInput placeholder="Code retrait">
                       </mat-form-field>
                   </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                     <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                         <div fxFlex style="text-align: center;">
-                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="showmodalretraitbon()">Valider</button>
+                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                         </div>
                     </div>
                 </div>
@@ -217,3 +223,225 @@
          </form>
     </div>
   </div>
+
+  <div bsModal #modalfraiscashin="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-md">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">FRAIS DEPOT.</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="fermermodalfraiscashin()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img  src="assets/images/fraiswizall.PNG" />
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div bsModal #addChildModal="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-sm">
+       <div class="modal-content" >
+         <div class="modal-header">
+         
+           <h4 *ngIf="operation == 'depot'" class="modal-title pull-left">Depot OrangeMoney</h4>
+           <h4 *ngIf="operation == 'retrait'" class="modal-title pull-left">Retrait OrangeMoney</h4>
+           <h4 *ngIf="operation == 'retraitcode'" class="modal-title pull-left">Retrait avec code OrangeMoney</h4>
+           <h4 *ngIf="operation == 'ventecredit'" class="modal-title pull-left">Vente Crédit OrangeMoney</h4>
+           <button type="button" class="close pull-right" aria-label="Close" (click)="hideAddChildModal()">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div *ngIf="operation == 'depot'">
+                <form class="form">
+                    <div class="form-group">
+                        <label >Numèro Du Client : {{this.num}}</label>
+                      </div>
+                      <div class="form-group">
+                        <label >Montant Transaction : {{this.mtt}}</label>
+                      </div>
+                      <div class="form-group">
+                        <label >Frais Transaction : {{this.fraisDepot}}</label>
+                      </div>
+                      <div class="form-group">
+                        <label >Total à payer : {{montantNet}}</label>
+                      </div>
+                </form>
+
+            </div>
+            <div *ngIf="operation == 'retrait'">
+                <form class="form">
+                    <div class="form-group">
+                        <label >numero client : {{this.num}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >montant : {{this.mtt}}</label>
+                    </div>
+                </form>
+
+            </div>
+            <div *ngIf="operation == 'retraitcode'">
+                <form class="form">
+                    <div class="form-group">
+                        <label >Code retrait : {{this.coderetrait}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Prenom : {{this.prenom}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Nom : {{this.num}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Date de naissance : {{this.datenaissance}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >CNI : {{this.numpiece}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >numero client : {{this.num}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >montant : {{this.mtt}}</label>
+                    </div>
+                </form>
+
+            </div>
+            <div *ngIf="operation == 'ventecredit'">
+                <form class="form">
+                    <div class="form-group">
+                        <label >numero client : {{this.num}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >montant : {{this.mtt}}</label>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input *ngIf="operation == 'depot'" type="button" value="valider"  (click)="deposer()" class="btn btn-success" />
+            <input *ngIf="operation == 'retrait'" type="button" value="valider"  (click)="retirer()" class="btn btn-success" />
+            <input *ngIf="operation == 'retraitcode'" type="button" value="valider"  (click)="retirerAvecCode()" class="btn btn-success" />
+            <input *ngIf="operation == 'ventecredit'" type="button" value="valider"  (click)="ventecreditOM()" class="btn btn-success" />
+            <input type="button" value="fermer" (click)="hideAddChildModal()" class="btn btn-danger" />
+        </div>
+     </div>
+   </div>
+
+   <div bsModal #modalretraitbon="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="hidemodalretraitbon()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Fenêtre de confirmation retrait de bon.</h4>
+        </div>
+        <div class="modal-body">
+          <p *ngIf="errorverifcode" class="alert alert-danger">Code incorrect</p>
+          <div>
+            <form *ngIf="validerfirst" class="form">
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-xs-4">
+                  <h2>Envoyeur</h2>
+                  <div class="form-inline  badge">
+                    <label>{{prenomE}}</label>
+                  </div>
+                  <div class="form-inline  badge">
+                    <label>{{nomE}}</label>
+                  </div>
+                  <div class="form-inline  badge">
+                    <label>{{telE}}</label>
+                  </div>
+  
+                </div>
+  
+                <div class="col-lg-4 col-md-4 col-xs-4">
+                  <h2>Montant</h2>
+                  <div class="form-inline badge">
+                    <label>{{nombreFormate(montant)}}</label>
+                  </div>
+                </div>
+  
+                <div class="col-lg-4 col-md-4 col-xs-4">
+                  <h2>Beneficiaire</h2>
+                  <div class="form-inline  badge">
+                    <label>{{prenomB}}</label>
+                    </div>
+                  <div class="form-inline  badge">
+                    <label>{{nomB}}</label>
+                  </div>
+                  <div class="form-inline  badge">
+                    <label>{{telB}}</label>
+                  </div>
+                </div>
+              </div>
+              <input type="button" [disabled]="adejaclick==true" (click)="adejaclick=true;valider_code()" value="valider" class="btn btn-success" />
+            </form>
+            <form *ngIf="validersecond" class="col-lg-offset-3 col-md-offset-3 col-xs-offset-3 col-sm-offset-3" >
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                  <label>code de validation</label>
+                </div>
+                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                  <input type="text" class="textinput" [(ngModel)]="secondcode" name="secondcode" />
+                </div>
+  
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                  <label>nationalite</label>
+                </div>
+                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                  <select class="textinput" [(ngModel)]="nationalite" name="nationalite">
+                    <option value="SN">Sénégalaise</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row" style="margin-top:10px">
+                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                  <label>type carte</label>
+                </div>
+                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                  <select class="textinput" [(ngModel)]="type_piece" name="type_piece">
+                    <option value="idcard">cni</option>
+                    <option value="passport">passport</option>
+                    <option></option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                  <label>numero carte</label>
+                </div>
+                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                  <input type="text" class="textinput" [(ngModel)]="num_card" name="num_card" />
+                </div>
+  
+              </div>
+              <p *ngIf="messagesecondcode" class="alert alert-danger col-lg-3 col-md-3 col-xs-3 col-sm-3">Code Secret Incorrect</p>
+              <input type="button" [disabled]="adejaclick==true" (click)="adejaclick=true;validationretraitbon()" class="btn btn-success" value="valider" />
+            </form>
+  
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" value="fermer" (click)="hidemodalretraitbon()" class="btn btn-danger" />
+        </div>
+      </div>
+    </div>
+  
+  </div>
+
+
+
+
+</div>

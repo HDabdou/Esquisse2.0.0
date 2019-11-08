@@ -23,6 +23,8 @@ import { TntComponent } from './abonnementTv/tnt/tnt.component';
 import { CanalComponent } from './abonnementTv/canal/canal.component';
 import { ZuuluComponent } from './mobileMoney/zuulu/zuulu.component';
 import { KashKashComponent } from './mobileMoney/kash-kash/kash-kash.component';
+import { PaiementMarchandComponent } from './paiement-marchand/paiement-marchand.component';
+import { AirtimeComponent } from './airtime/airtime.component';
 
 const routes: Routes = [
     { path: '', component: LayoutComponent,
@@ -118,6 +120,14 @@ const routes: Routes = [
             {
                 path: 'kashkash',
                 component:KashKashComponent
+            },
+            {
+                path: 'paiementmarchand',
+                component:PaiementMarchandComponent
+            },
+            {
+                path: 'airtime',
+                component:AirtimeComponent
             }
         ]
     }

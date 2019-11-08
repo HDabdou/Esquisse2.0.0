@@ -1,0 +1,49 @@
+<!--<div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+    <div class="md-form"> 
+        <label for="form1" class="">Date Debut: </label> 
+        <input type="date" id="form1" [(ngModel)]="dateDebut"  class="form-control" aria-describedby="material-addon2"> 
+    </div>
+    <div class="md-form"> 
+        <label for="form1" class="">Date Fin: </label> 
+        <input type="date" id="form2" [(ngModel)]="dateFin"  class="form-control" aria-describedby="material-addon2"> 
+    </div>
+
+    <div class="md-form"> 
+        <a class="mat-raised-button"  style="margin-top: 2rem;background-color: #43a047;color: white;" (click)="rechercher()" mat-raised-button> Rechecher</a> 
+    </div>
+</div>
+
+<div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px" style="margin-bottom: 3rem">
+    <div fxFlex>
+        <app-stat [bgClass]="'danger'" [icon]="'view_list'" [count]="nombreTransaction" [label]="'Nbre Transactions!'"></app-stat>
+    </div>
+    <div fxFlex>
+        <app-stat [bgClass]="'warn'" [icon]="'play_for_work'" [count]="cashin" [label]="'CASH IN!'"></app-stat>
+    </div>
+    <div fxFlex>
+        <app-stat [bgClass]="'success'" [icon]="'open_in_browser'" [count]="cashout" [label]="'CASH OUT!'"></app-stat>
+    </div>
+    <div fxFlex>
+        <app-stat [bgClass]="'info'" [icon]="'payment'" [count]="commission" [label]="'COMMISSIONS!'"></app-stat>
+    </div>
+</div>-->
+
+
+<div fxFlex *ngFor="let item of places;let i=index" (click)="loadMobileMoney(item.service)" fxLayout="col-md-3 col-sm-4 col-xs-12" class="myCard">
+  <mat-card style="
+  text-align:  left !important;
+  min-width: 9rem;
+  max-width: 9rem;
+">
+      
+      <img mat-card-image [src]="item.imgSrc" style="max-width: 9rem;">
+      <mat-card-content>
+          
+          <p class="badge" style="font-size: 18px"> 
+               <i>{{item.service}}</i> 
+          </p>
+      </mat-card-content>
+
+     
+  </mat-card>
+</div>
