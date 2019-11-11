@@ -36,7 +36,7 @@ export class SeddoComponent implements OnInit {
   deposer(){
     
     // sessionStorage.setItem('curentProcess',JSON.stringify({'nom':'Orange money depot','operateur':2,'operation':1,'montant':this.num,'num':this.mtt}));
-   let object ={'nom':"izi",'operateur':9,'operation':1,'montant':this.mtt,'numero':this.num};
+   let object ={'nom':"ceddo",'operateur':9,'operation':1,'montant':this.mtt,'numero':this.num};
     this.dataService.sendData(object)
      this.hideAddChildModal()  
      this.dataService.clearData();
