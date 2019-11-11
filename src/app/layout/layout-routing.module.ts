@@ -25,6 +25,9 @@ import { ZuuluComponent } from './mobileMoney/zuulu/zuulu.component';
 import { KashKashComponent } from './mobileMoney/kash-kash/kash-kash.component';
 import { PaiementMarchandComponent } from './paiement-marchand/paiement-marchand.component';
 import { AirtimeComponent } from './airtime/airtime.component';
+import { SeddoComponent } from './venteCredit/seddo/seddo.component';
+import { IziComponent } from './venteCredit/izi/izi.component';
+import { YakalmaComponent } from './venteCredit/yakalma/yakalma.component';
 
 const routes: Routes = [
     { path: '', component: LayoutComponent,
@@ -128,6 +131,18 @@ const routes: Routes = [
             {
                 path: 'airtime',
                 component:AirtimeComponent
+            },
+            {
+                path: 'seddo',
+                component:SeddoComponent
+            },
+            {
+                path: 'izi',
+                component:IziComponent
+            },
+            {
+                path: 'yakalma',
+                component:YakalmaComponent
             }
         ]
     }

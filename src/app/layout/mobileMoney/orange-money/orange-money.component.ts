@@ -160,10 +160,6 @@ export class OrangeMoneyComponent implements OnInit {
   constructor(private dataService:SendDataService,private router:Router, private _masterService:MasterServiceService,private modalService: BsModalService) {
 
   }
-  modalRef: BsModalRef;
-  openModal(template: TemplateRef<any>) {
-      this.modalRef = this.modalService.show(template,);
-    }
 
   ngOnInit() {
   }

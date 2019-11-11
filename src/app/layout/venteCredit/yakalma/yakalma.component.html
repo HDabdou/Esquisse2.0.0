@@ -1,0 +1,86 @@
+<div class="container" style="background-color: whitesmoke;width: 100%;height: 1000px;position: absolute ;">
+  <div class="panel panel-heading"> <h1 style="font-family: monospace; text-align: center;"><!--fonSenelec-->
+    <div>
+    </div>
+    <img mat-card-image src="assets/images/expresso.jpg" style="max-width: 10rem;margin-top: 1rem;"></h1> 
+
+  </div>
+  <div class="panel panel-bady">
+      
+      <form class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;" >
+        <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+              <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+           </div>
+           <div fxFlex style="text-align: center;"><h1>Vente crédit expresso</h1></div>
+
+            
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div fxFlex style="text-align: center;">
+                  <mat-form-field class=" w-50 md-form"> 
+                      <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="num" class="w-50"  matInput placeholder="Numéro">
+                  </mat-form-field>
+                  <p *ngIf="errorNum" class="alert alert-danger">numero incorrect</p>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div fxFlex style="text-align: center;">
+                  <mat-form-field class=" w-50 md-form"> 
+                      <input [ngModelOptions]="{standalone: true}" type="text" pattern="[0-9]*" [(ngModel)]="mtt" class="w-50"  matInput placeholder="Montant">
+                  </mat-form-field>
+                  <p *ngIf="errormtt"  class="alert alert-danger">Montant Incorrect</p>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                    <div fxFlex style="text-align: center;">
+                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="verifiersaisie();">Valider</button>
+                        <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+      </form>
+     
+  </div>
+</div>
+
+<div bsModal #addChildModal="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-sm">
+       <div class="modal-content" >
+         <div class="modal-header">
+         
+           <h4  class="modal-title pull-left">Vente Crédit Expresso yakalma </h4>
+           <button type="button" class="close pull-right" aria-label="Close" (click)="hideAddChildModal()">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div >
+                <form class="form">
+                    <div class="form-group">
+                        <label >numero client : {{this.num}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >montant : {{this.mtt}}</label>
+                    </div>
+                </form>
+
+            </div>
+            
+        </div>
+        <div class="modal-footer">
+            <input  type="button" value="valider"  (click)="deposer()" class="btn btn-success" />
+             <input type="button" value="fermer" (click)="hideAddChildModal()" class="btn btn-danger" />
+        </div>
+     </div>
+   </div>
+
+
+
+
+</div>

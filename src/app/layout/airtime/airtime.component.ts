@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-airtime',
@@ -9,7 +10,20 @@ export class AirtimeComponent implements OnInit {
 
   places:any;
 
-  constructor() { }
+  loadAirtime(service){
+    if(service == "Orange"){
+        this.router.navigate(['/seddo']);
+    }
+    if(service == "Free"){
+        this.router.navigate(['/izi']);
+    }
+    if(service == 'Expresso'){
+        this.router.navigate(['/yakalma']);
+    }
+   
+  
+}
+  constructor(private router:Router) { }
 
   ngOnInit() {
 

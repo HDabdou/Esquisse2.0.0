@@ -32,7 +32,17 @@ export class WizallComponent implements OnInit {
   nomB:string;
   telB:string;
   montant:string;
+  secondcode:string;
+  nationalite:string;
+  type_piece:string;
+  num_card:string;
+  errorenvoi:boolean = false;
   reinitialiser(){
+    this.errorenvoi = false;
+    this.secondcode = undefined;
+    this.nationalite = undefined;
+    this.type_piece = undefined;
+    this.num_card = undefined;
     this.prenomE=undefined;
     this.nomE=undefined;
     this.telE=undefined;
@@ -58,28 +68,34 @@ export class WizallComponent implements OnInit {
   @ViewChild('addChildModal') public addChildModal:ModalDirective;
   @ViewChild('modalfraiscashin') public modalfraiscashin:ModalDirective;
   @ViewChild('modalretraitbon') public modalretraitbon:ModalDirective;
+  @ViewChild('modalfraisEnvoieBon') public modalfraisEnvoieBon:ModalDirective;
 
+  public showmodalfraisEnvoieBon(){
+    this.modalfraisEnvoieBon.show() ;
+  }
+  public fermermodalfraisEnvoieBon(){
+    this.modalfraisEnvoieBon.hide() ;
+  }
+
+  valider_code(){
+    this._wizallService.getSendSecureID(this.codebon).then( response =>{
+      console.log(response);
+      this.validerfirst=false;
+      this.validersecond=true;
+    }).catch(response => {
+      console.log(response);
+      this.validerfirst=false;
+      this.validersecond=true;
+    });
+  }
+  
 
   public showmodalretraitbon(){
-   // this.messageretraitcash=false;
-    //this.messageretraitcasherror=false;
-    //this.errorverifcode=false;
-    this.modalretraitbon.show();
-    //if(this.codebon!="" && this.codebon!=undefined){
-      //if(this.codebon == "1234ABCD4321"){
-        //this.validerfirst = true;
-        //this.prenomE="Abdoul Hamid";
-        //this.nomE="DIALLO";
-        //this.telE="221779854080";
-        //this.prenomB="Naby";
-        //this.nomB="NDIAYE";
-        //this.telB="221772220594";
-        //this.montant="300000";
-      //}else{
-        //this.errorverifcode = false;
-      //}
-      
-      /*this._wizallService.verifier_code_retraitbon(this.codebon).then(data => {
+    this.messageretraitcash=false;
+    this.messageretraitcasherror=false;
+    this.errorverifcode=false;
+    
+      this._wizallService.verifier_code_retraitbon(this.codebon).then(data => {
         if(typeof data !== 'object') {
           this.errorverifcode=true;
           this.messageretraitcasherror=false;
@@ -106,7 +122,7 @@ export class WizallComponent implements OnInit {
         console.log(response);
         this.errorverifcode=true;
         this.messageretraitcasherror=false;
-      });*/
+      });
     //}
   }
 
@@ -115,7 +131,9 @@ export class WizallComponent implements OnInit {
     this.reinitialiser();
   }
   public showAddChildModal():void {
-    this.addChildModal.show();
+   
+      this.addChildModal.show();
+    
   }
 
   public hideAddChildModal():void {
@@ -137,6 +155,33 @@ export class WizallComponent implements OnInit {
     this.operation=op;
   }
 
+  validationretraitbon(){
+    let montantRetrait = Number(this.montant);
+    // sessionStorage.setItem('curentProcess',JSON.stringify({'nom':'Orange money depot','operateur':2,'operation':1,'montant':this.num,'num':this.mtt}));
+   let object ={'nom':'Wizall retrait de bon','operateur':6,'operation':5, 'nationalite':this.nationalite,'num_card':this.num_card,'type_carte':this.type_piece,
+   'codebon':this.secondcode,'code_validation':this.codebon, 'montant':montantRetrait};
+    this.dataService.sendData(object)
+     this.hidemodalretraitbon(); 
+     this.dataService.clearData();
+     this.reinitialiser();
+   }
+   validerenvoibon(){
+    let montantNetEB = Number(this.mtt)+this.getFraisTransfert(this.mtt);
+    console.log(montantNetEB);
+    
+    console.log({'nom':'Wizall envoi de bon','operateur':6,'operation':6,prenomE:this.prenomE,nomE:this.nomE,
+    telE:this.telE,nationalite:this.nationalite,type_piece:this.type_piece,num_card:this.num_card,
+    montant:montantNetEB,prenomB:this.prenomB,nomB:this.nomB,telB:this.telB})
+   
+    // sessionStorage.setItem('curentProcess',JSON.stringify({'nom':'Orange money depot','operateur':2,'operation':1,'montant':this.num,'num':this.mtt}));
+   let object ={'nom':'Wizall envoi de bon','operateur':6,'operation':6,prenomE:this.prenomE,nomE:this.nomE,
+   telE:this.telE,nationalite:this.nationalite,type_piece:this.type_piece,num_card:this.num_card,
+   montant:montantNetEB,prenomB:this.prenomB,nomB:this.nomB,telB:this.telB};
+    this.dataService.sendData(object)
+     this.hideAddChildModal()  
+     this.dataService.clearData();
+     this.reinitialiser();
+   }
   retirer(){
     
     // sessionStorage.setItem('curentProcess',JSON.stringify({'nom':'Orange money depot','operateur':2,'operation':1,'montant':this.num,'num':this.mtt}));
@@ -183,6 +228,33 @@ export class WizallComponent implements OnInit {
       this.errormontant= true;
     }
   }
+  effacer(){
+    this.errormontant = false;
+  }
+  verifiersaisieEnvoieBon(){
+    this.errorenvoi = false;
+    this.errormontant = false;
+    console.log({'nom':'Wizall envoi de bon','operateur':6,'operation':6,prenomE:this.prenomE,nomE:this.nomE,
+    telE:this.telE,nationalite:this.nationalite,type_piece:this.type_piece,num_card:this.num_card,
+    montant:this.mtt,prenomB:this.prenomB,nomB:this.nomB,telB:this.telB})
+    if(this.prenomE!=undefined && this.nomE!=undefined && this.verif_phone_number(this.telE)==true &&
+     this.verif_montant(this.mtt)==true && this.verif_montant_envoie_bon(this.mtt)==true && this.nationalite!=undefined && this.type_piece!=undefined && 
+     this.num_card!=undefined && this.prenomB!=undefined && 
+    this.nomB!=undefined && this.verif_phone_number(this.telB)==true){
+      this.errorenvoi = false;
+      this.errormontant = false;
+      this.showAddChildModal();
+    }else{
+       if(!this.verif_montant_envoie_bon(this.mtt)){
+        this.errormontant = true;
+       }else{
+        this.errorenvoi = true
+       }
+      
+    }
+
+  }
+  
   constructor(private dataService:SendDataService,private _wizallService:WizallService) { }
 
   ngOnInit() {
@@ -209,6 +281,16 @@ export class WizallComponent implements OnInit {
       return false;
     }
     if(parseInt(mnt)>=1){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  verif_montant_envoie_bon(mnt:string):boolean{
+    if(mnt == null || mnt == ""){
+      return false;
+    }
+    if(parseInt(mnt)>=2000 && parseInt(mnt)<=1000000){
       return true;
     }else{
       return false;

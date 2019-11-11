@@ -97,21 +97,23 @@
                   <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
                   <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
                </div>
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" fxFlex style="text-align: center;"><h1>Envoie de bon</h1></div>
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+               <div fxFlex style="text-align: center;"><h1>Envoie de bon cash</h1>
+                <a (click)="showmodalfraisEnvoieBon()" class="fraistransfert" style="height: 3rem;cursor: pointer;color : #337ab7;"> Consulter les frais </a>
+               </div>                
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="row">
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div fxFlexFill>
                                 <mat-form-field class=" w-100 md-form"> 
-                                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Prénom">
+                                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenomE"  matInput placeholder="Prénom envoyeur">
                                 </mat-form-field>
                             </div>
                           </div>
                           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div fxFlexFill>
                                 <mat-form-field class=" w-100 md-form"> 
-                                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="nom">
+                                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nomE"  matInput placeholder="nom envoyeur">
                                 </mat-form-field>
                             </div>
                           </div>
@@ -121,15 +123,15 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div fxFlexFill>
                         <mat-form-field class=" w-100 md-form"> 
-                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Téléphone">
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="telE"  matInput placeholder="Téléphone envoyeur">
                         </mat-form-field>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div fxFlexFill>
                         <mat-form-field class=" w-100 md-form"> 
-                            <mat-label>Nationnalité</mat-label>
-                            <mat-select>
+                            <mat-label >Nationnalité envoyeur</mat-label>
+                            <mat-select [(value)]="nationalite">
                               <mat-option *ngFor="let food of nationnalite" [value]="food.name">
                                 {{food.name}}
                               </mat-option>
@@ -140,8 +142,8 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div fxFlexFill>
                         <mat-form-field class=" w-100 md-form"> 
-                            <mat-label>Type de piéce</mat-label>
-                            <mat-select>
+                            <mat-label>Type de piéce envoyeur</mat-label>
+                            <mat-select [(value)]="type_piece">
                               <mat-option *ngFor="let food of typePiece" [value]="food.name">
                                 {{food.name}}
                               </mat-option>
@@ -152,44 +154,48 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div fxFlexFill>
                         <mat-form-field class=" w-100 md-form"> 
-                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Numéro carte">
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="num_card"  matInput placeholder="Numéro piéce envoyeur">
                         </mat-form-field>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                       <div fxFlexFill>
                           <mat-form-field class=" w-100 md-form"> 
-                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Montant">
-                          </mat-form-field>
+                              <input [ngModelOptions]="{standalone: true}" (keyup)="effacer()" [(ngModel)]="mtt"  matInput placeholder="Montant à envoyé">
+                              <p *ngIf="errormontant" class="alert alert-danger" >le montant doit étre entre 2.000 et 1.000.000</p>   
+
+                            </mat-form-field>
+
                       </div>
+
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                       <div fxFlexFill>
                           <mat-form-field class=" w-100 md-form"> 
-                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Prenom bénéficiaire">
+                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nomB"  matInput placeholder="Prenom bénéficiaire">
                           </mat-form-field>
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <div fxFlexFill>
                             <mat-form-field class=" w-100 md-form"> 
-                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Nom bénéficiaire">
+                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenomB"  matInput placeholder="Nom bénéficiaire">
                             </mat-form-field>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <div fxFlexFill>
                             <mat-form-field class=" w-100 md-form"> 
-                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Téléphone bénéficiaire">
+                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="telB"  matInput placeholder="Téléphone bénéficiaire">
                             </mat-form-field>
                         </div>
                       </div>
-                         
+                      <p *ngIf="errorenvoi" class="alert alert-danger" >Veuillez remplir correctement les champs</p>   
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                     <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                         <div fxFlex style="text-align: center;">
-                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                            <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="verifiersaisieEnvoieBon()">Valider</button>
+                            <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                         </div>
                     </div>
                 </div>
@@ -245,14 +251,13 @@
 
   <div bsModal #addChildModal="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-md">
        <div class="modal-content" >
          <div class="modal-header">
          
-           <h4 *ngIf="operation == 'depot'" class="modal-title pull-left">Depot OrangeMoney</h4>
-           <h4 *ngIf="operation == 'retrait'" class="modal-title pull-left">Retrait OrangeMoney</h4>
-           <h4 *ngIf="operation == 'retraitcode'" class="modal-title pull-left">Retrait avec code OrangeMoney</h4>
-           <h4 *ngIf="operation == 'ventecredit'" class="modal-title pull-left">Vente Crédit OrangeMoney</h4>
+           <h4 *ngIf="operation == 'depot'" class="modal-title pull-left">Depot wizall</h4>
+           <h4 *ngIf="operation == 'retrait'" class="modal-title pull-left">Retrait wizall</h4>
+           <h4 *ngIf="operation == 'envoiebon'" class="modal-title pull-left">Envoie bon cash wizall</h4>
            <button type="button" class="close pull-right" aria-label="Close" (click)="hideAddChildModal()">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -287,161 +292,180 @@
                 </form>
 
             </div>
-            <div *ngIf="operation == 'retraitcode'">
-                <form class="form">
-                    <div class="form-group">
-                        <label >Code retrait : {{this.coderetrait}}</label>
-                    </div>
-                    <div class="form-group">
-                        <label >Prenom : {{this.prenom}}</label>
-                    </div>
-                    <div class="form-group">
-                        <label >Nom : {{this.num}}</label>
-                    </div>
-                    <div class="form-group">
-                        <label >Date de naissance : {{this.datenaissance}}</label>
-                    </div>
-                    <div class="form-group">
-                        <label >CNI : {{this.numpiece}}</label>
-                    </div>
-                    <div class="form-group">
-                        <label >numero client : {{this.num}}</label>
-                    </div>
-                    <div class="form-group">
-                        <label >montant : {{this.mtt}}</label>
-                    </div>
-                </form>
 
-            </div>
-            <div *ngIf="operation == 'ventecredit'">
-                <form class="form">
-                    <div class="form-group">
-                        <label >numero client : {{this.num}}</label>
+            <div *ngIf="operation == 'envoiebon'">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                      <h2>Envoyeur</h2>
+                      <div class="row badge" style="width: 100%;text-align: left;margin: 5px;">
+                        <label> prenom  : {{prenomE}}</label>
+                      </div>
+                      <div class="row badge" style="width: 100%;text-align: left;margin: 5px;">
+                        <label> nom  : {{nomE}}</label>
+                      </div>
+                      <div class="row badge" style="width: 100%;text-align: left;margin: 5px;">
+                        <label> telephone  : {{telE}}</label>
+                      </div>
+                      <div class="row badge" style="width: 100%;text-align: left;margin: 5px;">
+                        <label> nationalite : {{nationalite}}</label>
+                      </div>
                     </div>
-                    <div class="form-group">
-                        <label >montant : {{this.mtt}}</label>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                      <h2>Beneficiaire</h2>
+                      <div class="row badge" style="width: 100%;text-align: left;margin: 5px;">
+                        <label>prenom : {{prenomB}}</label>
+                      </div>
+                      <div class="row badge" style="width: 100%;text-align: left;margin: 5px;">
+                        <label>nom : {{nomB}}</label>
+                      </div>
+                      <div class="row badge" style="width: 100%;text-align: left;margin: 5px;">
+                        <label>telephone : {{telB}}</label>
+                      </div>
                     </div>
-                </form>
+                  </div>
+                  <div class="row badge" style="width: 50%;text-align: center;margin-left: 8px;">
+                    <label>montant : {{mtt}}</label>
+                  </div>
+                  <div class="row badge" style="width: 50%;text-align: center;margin-left: 0px;">
+                    <label>frais : {{ getFraisTransfert(mtt) }}</label>
+                  </div>
 
             </div>
         </div>
         <div class="modal-footer">
             <input *ngIf="operation == 'depot'" type="button" value="valider"  (click)="deposer()" class="btn btn-success" />
             <input *ngIf="operation == 'retrait'" type="button" value="valider"  (click)="retirer()" class="btn btn-success" />
-            <input *ngIf="operation == 'retraitcode'" type="button" value="valider"  (click)="retirerAvecCode()" class="btn btn-success" />
-            <input *ngIf="operation == 'ventecredit'" type="button" value="valider"  (click)="ventecreditOM()" class="btn btn-success" />
+            <input *ngIf="operation == 'envoiebon'" type="button" value="valider"  (click)="validerenvoibon()" class="btn btn-success" />
             <input type="button" value="fermer" (click)="hideAddChildModal()" class="btn btn-danger" />
         </div>
      </div>
    </div>
+</div>
 
-   <div bsModal #modalretraitbon="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div bsModal #modalretraitbon="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Fenêtre de confirmation retrait de bon.</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hidemodalretraitbon()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="errorverifcode" class="alert alert-danger">Code incorrect</p>
+        <div>
+          <form *ngIf="validerfirst" class="form">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-xs-4">
+                <h2>Envoyeur</h2>
+                <div class="form-inline  badge">
+                  <label>{{prenomE}}</label>
+                </div>
+                <div class="form-inline  badge">
+                  <label>{{nomE}}</label>
+                </div>
+                <div class="form-inline  badge">
+                  <label>{{telE}}</label>
+                </div>
+
+              </div>
+
+              <div class="col-lg-4 col-md-4 col-xs-4">
+                <h2>Montant</h2>
+                <div class="form-inline badge">
+                  <label>{{nombreFormate(montant)}}</label>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-4 col-xs-4">
+                <h2>Beneficiaire</h2>
+                <div class="form-inline  badge">
+                  <label>{{prenomB}}</label>
+                  </div>
+                <div class="form-inline  badge">
+                  <label>{{nomB}}</label>
+                </div>
+                <div class="form-inline  badge">
+                  <label>{{telB}}</label>
+                </div>
+              </div>
+            </div>
+            <input type="button" [disabled]="adejaclick==true" (click)="adejaclick=true;valider_code()" value="valider" class="btn btn-success" />
+          </form>
+          <form *ngIf="validersecond" class="col-lg-offset-3 col-md-offset-3 col-xs-offset-3 col-sm-offset-3" >
+            <div class="row" style="margin-top: 1rem;">
+              <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                <label>code de validation</label>
+              </div>
+              <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                <input type="text" class="form-control" [(ngModel)]="secondcode" name="secondcode" />
+              </div>
+
+            </div>
+            <div class="row" style="margin-top: 1rem;">
+              <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                <label>nationalite</label>
+              </div>
+              <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                <select class="form-control" [(ngModel)]="nationalite" name="nationalite">
+                  <option value="SN">Sénégalaise</option>
+                </select>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 1rem;">
+              <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                <label>type carte</label>
+              </div>
+              <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                <select class="form-control" [(ngModel)]="type_piece" name="type_piece">
+                  <option value="idcard">cni</option>
+                  <option value="passport">passport</option>
+                  <option></option>
+                </select>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 1rem;">
+              <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                <label>numero carte</label>
+              </div>
+              <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                <input type="text" class="form-control" [(ngModel)]="num_card" name="num_card" />
+              </div>
+
+            </div>
+            <div style="text-align: center;margin-top: 1rem;">
+                <p *ngIf="messagesecondcode" class="alert alert-danger col-lg-3 col-md-3 col-xs-3 col-sm-3">Code Secret Incorrect</p>
+                <input type="button"  (click)="adejaclick=true;validationretraitbon()" class="btn btn-success" value="valider" />
+            </div>         
+           </form>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="button" value="fermer" (click)="hidemodalretraitbon()" class="btn btn-danger" />
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div bsModal #modalfraisEnvoieBon="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
       <div class="modal-content" >
         <div class="modal-header">
-          <button type="button" class="close pull-right" aria-label="Close" (click)="hidemodalretraitbon()">
+            <h4 class="modal-title" id="myModalLabel">FRAIS TRANSFERT</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="fermermodalfraisEnvoieBon()">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title" id="myModalLabel">Fenêtre de confirmation retrait de bon.</h4>
         </div>
         <div class="modal-body">
-          <p *ngIf="errorverifcode" class="alert alert-danger">Code incorrect</p>
-          <div>
-            <form *ngIf="validerfirst" class="form">
-              <div class="row">
-                <div class="col-lg-4 col-md-4 col-xs-4">
-                  <h2>Envoyeur</h2>
-                  <div class="form-inline  badge">
-                    <label>{{prenomE}}</label>
-                  </div>
-                  <div class="form-inline  badge">
-                    <label>{{nomE}}</label>
-                  </div>
-                  <div class="form-inline  badge">
-                    <label>{{telE}}</label>
-                  </div>
-  
-                </div>
-  
-                <div class="col-lg-4 col-md-4 col-xs-4">
-                  <h2>Montant</h2>
-                  <div class="form-inline badge">
-                    <label>{{nombreFormate(montant)}}</label>
-                  </div>
-                </div>
-  
-                <div class="col-lg-4 col-md-4 col-xs-4">
-                  <h2>Beneficiaire</h2>
-                  <div class="form-inline  badge">
-                    <label>{{prenomB}}</label>
-                    </div>
-                  <div class="form-inline  badge">
-                    <label>{{nomB}}</label>
-                  </div>
-                  <div class="form-inline  badge">
-                    <label>{{telB}}</label>
-                  </div>
-                </div>
-              </div>
-              <input type="button" [disabled]="adejaclick==true" (click)="adejaclick=true;valider_code()" value="valider" class="btn btn-success" />
-            </form>
-            <form *ngIf="validersecond" class="col-lg-offset-3 col-md-offset-3 col-xs-offset-3 col-sm-offset-3" >
-              <div class="row">
-                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
-                  <label>code de validation</label>
-                </div>
-                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
-                  <input type="text" class="textinput" [(ngModel)]="secondcode" name="secondcode" />
-                </div>
-  
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
-                  <label>nationalite</label>
-                </div>
-                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
-                  <select class="textinput" [(ngModel)]="nationalite" name="nationalite">
-                    <option value="SN">Sénégalaise</option>
-                  </select>
-                </div>
-              </div>
-              <div class="row" style="margin-top:10px">
-                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
-                  <label>type carte</label>
-                </div>
-                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
-                  <select class="textinput" [(ngModel)]="type_piece" name="type_piece">
-                    <option value="idcard">cni</option>
-                    <option value="passport">passport</option>
-                    <option></option>
-                  </select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
-                  <label>numero carte</label>
-                </div>
-                <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
-                  <input type="text" class="textinput" [(ngModel)]="num_card" name="num_card" />
-                </div>
-  
-              </div>
-              <p *ngIf="messagesecondcode" class="alert alert-danger col-lg-3 col-md-3 col-xs-3 col-sm-3">Code Secret Incorrect</p>
-              <input type="button" [disabled]="adejaclick==true" (click)="adejaclick=true;validationretraitbon()" class="btn btn-success" value="valider" />
-            </form>
-  
-          </div>
+          <img  src="assets/images/fraiswizalltrans.PNG" />
         </div>
         <div class="modal-footer">
-          <input type="button" value="fermer" (click)="hidemodalretraitbon()" class="btn btn-danger" />
         </div>
       </div>
     </div>
-  
   </div>
-
-
-
-
-</div>
+  

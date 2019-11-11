@@ -8,6 +8,7 @@ import { BsModalService, BsModalRef, ModalDirective } from 'ngx-bootstrap/modal'
 import { FreeMoneyService } from '../service/free-money.service';
 import { EMoneyService } from '../service/e-money.service';
 import { WizallService } from '../service/wizall.service';
+import { AirtimeService } from '../service/airtime.service';
 
 @Component({
     selector: 'app-layout',
@@ -1156,6 +1157,106 @@ retraitEmoney(objet:any){
 
   /************************************ FIN WIZALL ******************************************************************/
 
+  /**===================================AIRTIME============================================== */
+  validerAirtime(objet:any){
+		this.airtimeService.Airtime(objet.data.nom,objet.data.numero,objet.data.montant).then(reponse =>{
+		     console.log(typeof reponse);
+		 if (reponse.status==200){
+              console.log(reponse);
+              console.log(reponse._body);
+            if(reponse._body.trim()=='0'){
+               console.log(reponse);
+               objet.etats.etat=true;
+               objet.etats.load='terminated';
+               objet.etats.color='red';
+               objet.etats.errorCode='0';
+            }else
+            if(reponse._body.trim()=='-12'){
+               objet.etats.etat=true;
+               objet.etats.load='terminated';
+               objet.etats.color='red';
+               objet.etats.errorCode='-12';
+            }
+            else
+              setTimeout(()=>{
+              this.airtimeService.verifierReponse(reponse._body.trim().toString()).then(rep =>{
+                console.log(rep);
+                let donnee=rep._body.trim().toString();
+                console.log("Inside verifier depot : "+donnee) ;
+                if(donnee=='1'){
+                   objet.etats.etat=true;
+                   objet.etats.load='terminated';
+                   objet.etats.color='green';
+                   objet.etats.errorCode=donnee;
+                }
+                else{
+                  if(donnee!='-1' && donnee!='2'){
+                     objet.etats.etat=true;
+                     objet.etats.load='terminated';
+                     objet.etats.color='red';
+                     objet.etats.errorCode=donnee;
+
+                   /*}else{
+                        if(donnee=='2' || donnee==2){
+							// objet.etats.etat=true;
+							 objet.etats.load='loader';
+							 objet.etats.color='orange';
+							 objet.etats.errorCode=donnee;
+
+                        }
+                    */
+                  }
+                  else{
+                        let periodicVerifierOMAcheterCredit = setInterval(()=>{
+                        objet.etats.nbtour = objet.etats.nbtour + 1 ;
+                        this.airtimeService.verifierReponse(reponse._body.trim().toString()).then(rep =>{
+                          let donnee=rep._body.trim().toString();
+                          console.log("Inside verifier depot : "+donnee) ;
+                          if(donnee=='1'){
+                             objet.etats.etat=true;
+                             objet.etats.load='terminated';
+                             objet.etats.color='green';
+                              objet.etats.errorCode=donnee;
+                             clearInterval(periodicVerifierOMAcheterCredit) ;
+                          }
+                          else{
+                            if(donnee!='-1' && donnee!='2'){
+                             objet.etats.etat=true;
+                             objet.etats.load='terminated';
+                             objet.etats.color='red';
+                             objet.etats.errorCode=donnee;
+                             clearInterval(periodicVerifierOMAcheterCredit) ;
+                            }
+                            if(donnee=='2'){
+                             //objet.etats.etat=true;
+                             objet.etats.load='loader';
+                             objet.etats.color='orange';
+                             objet.etats.errorCode=donnee;
+                            // clearInterval(periodicVerifierOMAcheterCredit) ;
+                            }
+                            if(donnee=='-1' && objet.etats.nbtour>=6){
+                              this.airtimeService.demanderAnnulation(reponse._body.trim().toString()).then(rep =>{
+                                let donnee=rep._body.trim().toString();
+                                 if(donnee=="c"){
+                                   objet.etats.etat=true;
+                                   objet.etats.load='terminated';
+                                   objet.etats.color='red';
+                                   objet.etats.errorCode="c";
+                                   clearInterval(periodicVerifierOMAcheterCredit) ;
+                                   }
+                              }) ;
+                            }
+                          }
+                        });
+                        },10000);
+                   }
+                }
+              });
+              },30000);
+      }
+		});
+
+  }
   myData(data){
     //console.log(data);
     let infoOperation:any;
@@ -1251,16 +1352,18 @@ retraitEmoney(objet:any){
             break;
           }
           case 2:{
-            console.log(sesion);
+            
             this.cashOutWizall(sesion);
             break;
           }
           case 5:{
-            //this.validationretraitbon(sesion);
+             this.validationretraitbon(sesion);
             break;
           }
           case 6:{
-            //this.validerenvoibon(sesion);
+            console.log(sesion);
+            console.log("envoie de bon cash");
+            this.validerenvoibon(sesion);
             break;
           }
           case 7:{
@@ -1269,12 +1372,20 @@ retraitEmoney(objet:any){
           }
          default : break;
         }
-    }
+      }
+      if(operateur==9){
+        this.process.push(sesion);
+        if(sesion.data.operation==1){
+          console.log(sesion);
+          
+           this.validerAirtime(sesion);
+       }
+     }
     }
   console.log("youpi");
     
   }
-    constructor(private _wizallService:WizallService ,private Emservice:EMoneyService ,private _tcService:FreeMoneyService,private dataService:SendDataService,private _omService:OrangeMoneyService,private modalService: BsModalService) {
+    constructor(private airtimeService:AirtimeService ,private _wizallService:WizallService ,private Emservice:EMoneyService ,private _tcService:FreeMoneyService,private dataService:SendDataService,private _omService:OrangeMoneyService,private modalService: BsModalService) {
       this.subscription = this.dataService.getData().subscribe(rep =>{
         this.data =rep;
         this.myData(this.data);  

@@ -59,6 +59,9 @@ import { KashKashComponent } from './mobileMoney/kash-kash/kash-kash.component';
 import { ZuuluComponent } from './mobileMoney/zuulu/zuulu.component';
 import { PaiementMarchandComponent } from './paiement-marchand/paiement-marchand.component';
 import { AirtimeComponent } from './airtime/airtime.component';
+import { SeddoComponent } from './venteCredit/seddo/seddo.component';
+import { IziComponent } from './venteCredit/izi/izi.component';
+import { YakalmaComponent } from './venteCredit/yakalma/yakalma.component';
 
 @NgModule({
     imports: [
@@ -102,7 +105,7 @@ import { AirtimeComponent } from './airtime/airtime.component';
     ],
     exports: [
         MatSortModule,],
-    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, PosteCashComponent, SenelecComponent, SdeComponent, WoyofalComponent, RapidoComponent, RiaComponent, WorldRemitComponent, MoneyExchangeComponent, TntComponent, CanalComponent, ZuuluComponent, KashKashComponent, PaiementMarchandComponent, AirtimeComponent, ]
+    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, PosteCashComponent, SenelecComponent, SdeComponent, WoyofalComponent, RapidoComponent, RiaComponent, WorldRemitComponent, MoneyExchangeComponent, TntComponent, CanalComponent, ZuuluComponent, KashKashComponent, PaiementMarchandComponent, AirtimeComponent, SeddoComponent, IziComponent, YakalmaComponent, ]
 
 })
 export class LayoutModule { }
