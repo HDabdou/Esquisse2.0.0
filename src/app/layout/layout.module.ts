@@ -18,7 +18,10 @@ import {
     MatSelectModule,
     MAT_LABEL_GLOBAL_OPTIONS,
     MatFormFieldModule,
-    MatRippleModule
+    MatRippleModule,
+    MAT_CHECKBOX_CLICK_ACTION,
+    MatCheckboxModule,
+    MatSpinner
 } from '@angular/material';
 import { TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -91,6 +94,7 @@ import { YakalmaComponent } from './venteCredit/yakalma/yakalma.component';
         ModalModule.forRoot(),
         TranslateModule,
         PopoverModule.forRoot(),
+        MatCheckboxModule,
         
 
       
@@ -102,6 +106,7 @@ import { YakalmaComponent } from './venteCredit/yakalma/yakalma.component';
         AuthenticationServiceService,
         MatSnackBar,
         {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY, useValue: {duration: 2500}},
+        {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}
     ],
     exports: [
         MatSortModule,],

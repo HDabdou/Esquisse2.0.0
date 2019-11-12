@@ -9,6 +9,7 @@ import { FreeMoneyService } from '../service/free-money.service';
 import { EMoneyService } from '../service/e-money.service';
 import { WizallService } from '../service/wizall.service';
 import { AirtimeService } from '../service/airtime.service';
+import { CanalService } from '../service/canal.service';
 
 @Component({
     selector: 'app-layout',
@@ -1257,6 +1258,34 @@ retraitEmoney(objet:any){
 		});
 
   }
+
+  /**==============================================================
+   * *****************************CANAL Plus**********************
+   * ============================
+   */
+  payerCanalReab(objet){
+    
+    let infosClient = {'operation':'CANAL Réabonnement', 'nomclient': objet.data.nomclient, 'prenom' : objet.data.prenom, 'tel': objet.data.tel, 'numAbo': objet.data.numAbo, 'numDec' : objet.data.numDec, 'numCarte' : objet.data.numCarte, 'formule': objet.data.formule, 'montant' : objet.data.montant, 'nbreMois' : objet.data.nbreMois, 'charme' : objet.data.charme, 'pvd' : objet.data.pvd, 'ecranII' : objet.data.deuxiemeEcran} ;
+    
+    //console.log(infosClient) ;
+
+    let infosToSend = JSON.stringify(infosClient) ;
+
+    this._canalService.payer(infosToSend).then(response =>{
+      console.log(response._body);
+      if(response._body==1){
+        objet.etats.etat=true;
+        objet.etats.load='terminated';
+        objet.etats.color='green';
+    
+      }else{
+          objet.etats.etat=true;
+          objet.etats.load='terminated';
+          objet.etats.color='red';
+          objet.etats.errorCode="*";
+      }
+    });
+  }
   myData(data){
     //console.log(data);
     let infoOperation:any;
@@ -1381,11 +1410,19 @@ retraitEmoney(objet:any){
            this.validerAirtime(sesion);
        }
      }
+     if(operateur == 12){
+      this.process.push(sesion);
+      if(sesion.data.operation==1){
+        console.log(sesion);
+        
+         this.payerCanalReab(sesion);
+     }
+     }
     }
   console.log("youpi");
     
   }
-    constructor(private airtimeService:AirtimeService ,private _wizallService:WizallService ,private Emservice:EMoneyService ,private _tcService:FreeMoneyService,private dataService:SendDataService,private _omService:OrangeMoneyService,private modalService: BsModalService) {
+    constructor(private _canalService:CanalService, private airtimeService:AirtimeService ,private _wizallService:WizallService ,private Emservice:EMoneyService ,private _tcService:FreeMoneyService,private dataService:SendDataService,private _omService:OrangeMoneyService,private modalService: BsModalService) {
       this.subscription = this.dataService.getData().subscribe(rep =>{
         this.data =rep;
         this.myData(this.data);  

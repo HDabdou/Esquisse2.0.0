@@ -3,12 +3,12 @@
     <div>
     </div>
     <img mat-card-image src="assets/images/canal.jpg" style="max-width: 10rem;margin-top: 1rem;"></h1> 
-    <div class="row" style="margin-left: 22rem;">
+    <div class="row" style="margin-left: 18rem;">
         <div >
-           <a class="mat-raised-button myButton" (click)="loadOperation('reabonnement')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Réabonnement</a> 
+           <a class="mat-raised-button myButton" (click)="loadOperation('reabonnement');reinitialiser()"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Réabonnement</a> 
         </div>
         <div >
-           <a class="mat-raised-button myButton" (click)="loadOperation('recructement')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Recrutement</a> 
+           <a class="mat-raised-button myButton" (click)="loadOperation('recructement');reinitialiser()"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Recrutement</a> 
         </div>
 
      </div>
@@ -21,25 +21,115 @@
               <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
               <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
            </div>
-           <div fxFlex style="text-align: center;"><h1>Dépot</h1></div>
-
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+           <div fxFlex style="text-align: center;"><h1>Abonnement</h1></div>
+          <!-- <mat-spinner *ngIf="tntloading"></mat-spinner>-->
+            <div *ngIf="!chearch" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div fxFlex style="text-align: center;">
                   <mat-form-field class=" w-50 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Numéro Abonné / Numéro Carte, Numéro Décodeur Ou Numéro Téléphone">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="reachAbonne" class="w-50"  matInput placeholder="Numéro Abonné / Numéro Carte, Numéro Décodeur Ou Numéro Téléphone">
                   </mat-form-field>
               </div>
             </div>
-           
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+            <div *ngIf="!chearch" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                 <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                     <div fxFlex style="text-align: center;">
-                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                        <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="rechercher()">Valider</button>
+                        <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                     </div>
                 </div>
             </div>
+            <div *ngIf="chearch" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px;    padding-left: 2rem;
+            padding-right: 2rem;">
+                <div class="row">
+                        <div  class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div fxFlex style="text-align: center;">
+                                <mat-form-field class=" w-100 md-form"> 
+                                    <input readonly [ngModelOptions]="{standalone: true}" style="font-size: 1rem;" [(ngModel)]="numAb" class="w-50"  matInput placeholder="Numero Abonneé">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div fxFlex style="text-align: center;">
+                                <mat-form-field class=" w-100 md-form"> 
+                                    <input readonly [ngModelOptions]="{standalone: true}"  style="font-size: 1rem;" [(ngModel)]="nomAb" class="w-50"  matInput placeholder="Nom">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div  class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div fxFlex style="text-align: center;">
+                                <mat-form-field class=" w-100 md-form"> 
+                                    <input readonly [ngModelOptions]="{standalone: true}"  style="font-size: 1rem;" [(ngModel)]="prenomAb" class="w-50"  matInput placeholder="Prenom">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                      
+                        <div  class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div fxFlex style="text-align: center;">
+                                <mat-form-field class=" w-100 md-form"> 
+                                    <input readonly [ngModelOptions]="{standalone: true}"  style="font-size: 1rem;" [(ngModel)]="matAb" class="w-50"  matInput placeholder="Numéro Carte">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div fxFlex style="text-align: center;">
+                                <mat-form-field class=" w-100 md-form"> 
+                                     <input readonly [ngModelOptions]="{standalone: true}"  style="font-size: 1rem;" [(ngModel)]="formuleAb" class="w-50"  matInput placeholder="Formule actuelle">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+            <div *ngIf="chearch" style="margin-top: 1rem;padding-left: 2rem;padding-right: 2rem;"  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div  class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                        <mat-label>Bouquet</mat-label>
+                        <mat-select [(value)]="Bouquet">
+                            <mat-option (click)="getMontant()" *ngFor="let food of bouquet1" [value]="food.name">
+                            {{food.name}}
+                            </mat-option>
+                        </mat-select>                        
+                        </mat-form-field>                
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div fxFlexFill>
+                            <mat-form-field class=" w-100 md-form"> 
+                                <input [ngModelOptions]="{standalone: true}" (keyup)="getMontant()" (click)="getMontant()" type="number" [(ngModel)]="nombreMois"  matInput placeholder="Nombre De Mois">
+                            </mat-form-field>
+                        </div>
+                </div>
+             
+            
+            <!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+               <div fxFlexFill style="text-align: left;">
+                    <mat-label style="margin-left: 1rem;">Offres Optionnelles</mat-label>
+                   <section class="example-section">
+                       <mat-checkbox style="margin-left: 1rem;" class="example-margin" [ngModelOptions]="{standalone: true}" (click)="getCharme()" title="6000" value="1" [(ngModel)]="charme">CHARME</mat-checkbox>
+                       <mat-checkbox style="margin-left: 1rem;" *ngIf="Bouquet != 'Date à date Access'" class="example-margin" [ngModelOptions]="{standalone: true}"(click)="getPVD()" title="5000" value="1" [(ngModel)]="pvd">PVR</mat-checkbox>
+                       <mat-checkbox style="margin-left: 1rem;" *ngIf="Bouquet != 'Date à date Access'" class="example-margin" [ngModelOptions]="{standalone: true}"  (click)="get2EECRAN()" title="6000" value="1"  [(ngModel)]="deuxiemeEcran">2E ECRAN</mat-checkbox>
+                   </section>                  
+               </div>
+           </div>-->
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+               <div fxFlexFill style="text-align: center;">
+                    <mat-label>Montant net à payer : <strong>{{montantNet}}</strong>  FCFA</mat-label>
+                  
+               </div>
+           </div>
+        </div> 
            
+            <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                    <div fxFlex style="text-align: center;">
+                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="showmodalreabonnement()">Valider</button>
+                        <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
+                    </div>
+                </div>
+            </div>
+           </div>
         </div>
       </form>
     
@@ -124,7 +214,7 @@
                 <mat-form-field class=" w-100 md-form"> 
                 <mat-label>Bouquet</mat-label>
                 <mat-select>
-                  <mat-option *ngFor="let food of bouquet" [value]="food.name">
+                  <mat-option *ngFor="let food of bouquet2" [value]="food.name">
                     {{food.name}}
                   </mat-option>
                 </mat-select>                        
@@ -145,6 +235,19 @@
                   </mat-form-field>
               </div>
               </div>
+             
+             
+              <div *ngIf="etapeRecructement == 2" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div fxFlexFill style="text-align: center;">
+                  
+                    <h4 >Offres Optionnelles</h4>
+                    <section class="example-section">
+                      <mat-checkbox style="margin-left: 1rem;" class="example-margin" [ngModelOptions]="{standalone: true}" [(ngModel)]="checked">CHARME</mat-checkbox>
+                      <mat-checkbox style="margin-left: 1rem;" class="example-margin" [ngModelOptions]="{standalone: true}" [(ngModel)]="indeterminate">PVR</mat-checkbox>
+                      <mat-checkbox style="margin-left: 1rem;" class="example-margin" [ngModelOptions]="{standalone: true}" [(ngModel)]="indeterminate">2E ECRAN</mat-checkbox>
+                    </section>                  
+              </div>
+              </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                   <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                       <div fxFlex style="text-align: center;">
@@ -160,4 +263,63 @@
        </form>
      
   </div>
+</div>
+
+<div bsModal #reabonnement="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-sm">
+           <div class="modal-content" >
+             <div class="modal-header">
+                    <h2  class="modal-title" id="myModalLabel"><strong>{{Bouquet}}</strong></h2>
+                 <button type="button" class="close pull-right" aria-label="Close" (click)="hidereabonnement()">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form class="form">
+                        <div class="form-group">
+                            <label >Numéro abonné : {{numAb}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >Nom : {{nomAb}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >Prenom : {{prenomAb}}</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label >No carte : {{matAb}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >Formule : {{Bouquet}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >nombre Mois : {{nombreMois}}</label>
+                        </div>
+                        <!--<div class="form-group">
+                            <label >Offres Optionnelles : {{charme}} {{pvr}} {{deuxiemeEcran}} </label>
+                        </div>-->
+                        <div class="form-group">
+                            <label >Montant : {{montantNet}} FCFA </label>
+                        </div>
+                    </form>
+    
+                </div>
+             </div>
+            <div class="modal-footer">
+                <input style=" border-radius: 2rem 0rem 2rem 2rem;margin-top: 1rem;"  type="button" class="btn btn-success" (click)="abonnement();hidereabonnement()"  value="valider"/>
+                <input style=" border-radius: 2rem 0rem 2rem 2rem;margin-top: 1rem;"  type="button" class="btn btn-danger" (click)="hidereabonnement()"  value="Annuler"/>
+            </div>
+         </div>
+       </div>
+
+ <div *ngIf="tntloading" style="position: absolute ; left: 15%; top:25%; min-width: 100rem ; min-height: 40rem ;text-align: -webkit-center; padding-top: 10%; z-index:1000; background-color: white; opacity: 0.4;">
+    <div class="loader">
+        <div class="ball-pulse">
+        <div></div>
+        <div></div>
+        <div></div>
+        </div>
+    </div>
 </div>

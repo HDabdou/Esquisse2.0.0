@@ -141,6 +141,36 @@
                   </div>
 
                 </div>
+                <!--Canal plus-->
+                <div *ngIf="item.data.operateur==12">
+                    <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold;">
+                      {{retrieveOperationInfo(item)}}
+                    </div>
+                    <div >
+                      <div *ngIf="item.data.operation==1">
+                        <div>Prénom : {{item.data.prenom}}</div><br>
+                        <div>Nom  :{{item.data.nomclient}}</div><br>
+                        <div>Numero abonné: {{item.data.numAbo}}</div><br>
+                        <div>Numero Carte: {{item.data.numCarte}}</div><br>
+                        <div>Formule :{{item.data.nom_benef}}</div><br>
+                        <div>Montant payer :{{item.data.montant}} Fcfa</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==2">
+                        <div>Prénom émetteur: {{item.data.info.prenom_emet}}</div><br>
+                        <div>Nom émetteur : {{item.data.info.nom_emet}}</div><br>
+                        <div>ville émetteur : {{item.data.info.ville_emet}}</div><br>
+                        <div>Pays émetteur : {{item.data.info.pays_emet}}</div><br>
+                        <div>adresse émetteur : {{item.data.info.adresse_emet}}</div><br>
+                        <div>Prénom bénéficiaire: {{item.data.info.prenom_benef}}</div><br>
+                        <div>Nom bénéficiaire : {{item.data.info.nom_benef}}</div><br>
+                        <div>ville émetteur : {{item.data.info.ville_benef}}</div><br>
+                        <div>Pays émetteur : {{item.data.info.pays_benef}}</div><br>
+                        <div>adresse émetteur : {{item.data.info.adresse_benef}}</div><br>
+                        <div>Montant emis: {{item.data.info.montant_emis}} {{item.data.info.devise_emission}} </div><br>
+                      </div>
+                    </div>
+  
+                  </div>
                 <!-- OM -->
                 <div *ngIf="item.data.operateur==5">
 
