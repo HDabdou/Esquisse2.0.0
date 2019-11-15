@@ -3,15 +3,14 @@
     <div>
     </div>
     <img mat-card-image src="assets/images/TNT.jpg" style="max-width: 10rem;margin-top: 1rem;"></h1> 
-    <div class="row" style="margin-left: 16rem;">
-        <div >
-           <a class="mat-raised-button myButton" (click)="loadOperation('abonnement')"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Abonnement</a> 
+    
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div fxFlex style="text-align: center;">
+            <a class="mat-raised-button myButton" (click)="loadOperation('abonnement');reinitialiser()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Abonnement</a> 
+            <a class="mat-raised-button myButton" (click)="loadOperation('ventedecodeur');reinitialiser()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Vente decodeur</a> 
         </div>
-        <div >
-           <a class="mat-raised-button myButton" (click)="loadOperation('ventedecodeur')"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Vente decodeur</a> 
-        </div>
-       
-     </div>
+    </div>
+  
   </div>
   <div class="panel panel-bady">
       
@@ -23,18 +22,100 @@
            </div>
            <div fxFlex style="text-align: center;"><h1>Abonnement TNT</h1></div>
 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div *ngIf="!chearch" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div fxFlex style="text-align: center;">
                   <mat-form-field class=" w-50 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="uméro Chip, Numéro Carte Ou Téléphone">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="verifierNumInput" class="w-50"  matInput placeholder="Numéro Chip, Numéro Carte Ou Téléphone">
                   </mat-form-field>
               </div>
             </div>
+            <div *ngIf="chearch" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px;padding-left: 5px;padding-right: 5px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div fxFlexFill>
+                    <mat-form-field class=" w-100 md-form"> 
+                        <input [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="prenoma"  matInput placeholder="Prénom">
+                    </mat-form-field>
+                </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div fxFlexFill>
+                    <mat-form-field class=" w-100 md-form"> 
+                        <input [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="noma"  matInput placeholder="nom">
+                    </mat-form-field>
+                </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div fxFlexFill>
+                    <mat-form-field class=" w-100 md-form"> 
+                        <input [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="telNewClient"  matInput placeholder="Téléphone">
+                    </mat-form-field>
+                </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div fxFlexFill>
+                    <mat-form-field class=" w-100 md-form"> 
+                        <input [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="chip"  matInput placeholder="Numéro chip">
+                    </mat-form-field>
+                </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div fxFlexFill>
+                    <mat-form-field class=" w-100 md-form"> 
+                        <input [ngModelOptions]="{standalone: true}" readonly type="text" [(ngModel)]="carte"  matInput placeholder="Numéro carte">
+                    </mat-form-field>
+                </div>
+                </div>  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                            <input [ngModelOptions]="{standalone: true}" readonly type="text" [(ngModel)]="tbouquet"  matInput placeholder="Bouquet précédant">
+                        </mat-form-field>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                    <mat-form-field class=" w-100 md-form"> 
+                        <mat-label>Type</mat-label>
+                        <mat-select [(value)]="tbouquet">
+                        <mat-option (click)="getMontant()" *ngFor="let food of typeBouquet" [value]="food.name">
+                            {{food.name}}
+                        </mat-option>
+                        </mat-select>                        
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div fxFlexFill>
+                        <mat-form-field class=" w-100 md-form"> 
+                            <input [ngModelOptions]="{standalone: true}" (keyup)="getMontant()" (click)="getMontant()" type="number" [(ngModel)]="nombreMois"  matInput placeholder="Nombre de mois">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div fxFlexFill style="text-align: center;">
+                            <mat-label>Montant net à payer : <strong>{{montantNet}}</strong>  FCFA</mat-label>
+                    </div>
+                </div>
+                        
+            </div>
+            </div>
+                  
+
+            </div>
           
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+            <div *ngIf="!chearch" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                 <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                     <div fxFlex style="text-align: center;">
-                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
+                        <button mat-raised-button color="primary" [disabled]="!verifierNumInput"  style="background-color: #43a047;" class="w-45" (click)="validVerifierNum()">Valider</button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="chearch" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                    <div fxFlex style="text-align: center;">
+                        <button mat-raised-button color="primary" [disabled]="!tbouquet && !nombreMois"  style="background-color: #43a047;" class="w-45" (click)="showmodalabonnement()">Valider</button>
                         <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
                     </div>
                 </div>
@@ -139,4 +220,62 @@
        </form>
      
   </div>
+</div>
+<div bsModal #modalabonnement="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="font-family:'caviar dreams bold'">
+
+    <div class="modal-dialog modal-sm">
+       <div class="modal-content" >
+         <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Confirmation Détails Abonnement</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalabonnement.hide();">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        <div class="modal-body">
+
+        <div>
+          <form class="form">
+            <div class="form-group">
+              <label >Nom client : {{ this.noma}}</label>
+            </div>
+            <div class="form-group">
+              <label >Prènom client : {{this.prenoma}} </label>
+            </div>
+            <div class="form-group">
+              <label >Telephone client : {{this.telNewClient}}</label>
+            </div>
+            <div class="form-group">
+              <label >Numero chip : {{this.chip}}</label>
+            </div>
+            <div class="form-group">
+              <label >Numero carte : {{this.carte}}</label>
+            </div>
+            <div class="form-group">
+              <label > Nombre de mois : {{this.nombreMois}}</label>
+            </div>
+            <div class="form-group">
+              <label > Type bouquet : {{this.tbouquet}}</label>
+            </div>
+           
+          </form>
+
+        </div>
+        </div>
+        <div class="modal-footer">
+         <input style="border-radius: 2rem 0rem 2rem 2rem;"  type="button" value="valider"  (click)="abonnement()" class="btn btn-success" />
+         <input style="border-radius: 2rem 0rem 2rem 2rem;"  type="button" value="fermer" (click)="modalabonnement.hide();" class="btn btn-danger" />
+        </div>
+     </div>
+     </div>
+
+
+</div>
+<div *ngIf="loading" style="position: absolute ; left: 15%; top:25%; min-width: 100rem ; min-height: 40rem ;text-align: -webkit-center; padding-top: 10%; z-index:1000; background-color: white; opacity: 0.4;">
+    <div class="loader">
+        <div class="ball-pulse">
+        <div></div>
+        <div></div>
+        <div></div>
+        </div>
+    </div>
 </div>

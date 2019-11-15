@@ -18,29 +18,35 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div fxFlex style="text-align: center;">
                   <mat-form-field class=" w-50 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Téléphone ">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="numclient" class="w-50"  matInput placeholder="Téléphone ">
                   </mat-form-field>
+                  <p *ngIf="errorTel" class="alert alert-danger">Numéro téléphone incorrect </p>
+
               </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div fxFlex style="text-align: center;">
                   <mat-form-field class=" w-50 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom" class="w-50"  matInput placeholder="Montant A Recharger">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="montant" class="w-50"  matInput placeholder="Montant A Recharger">
                   </mat-form-field>
+                  <p *ngIf="errorMontant" class="alert alert-danger">Montant incorrect </p>
+
               </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div fxFlex style="text-align: center;">
                     <mat-form-field class=" w-50 md-form"> 
-                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom" class="w-50"  matInput placeholder="Badge">
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="badge" class="w-50"  matInput placeholder="Badge">
                     </mat-form-field>
+                    <p *ngIf="errorBadge" class="alert alert-danger">Badge incorrect </p>
+
                 </div>
               </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                 <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                     <div fxFlex style="text-align: center;">
-                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                        <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="showmodalrapido()">Valider</button>
+                        <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                     </div>
                 </div>
             </div>
@@ -50,3 +56,33 @@
      
   </div>
 </div>
+
+<div style="font-family:'caviar dreams bold'" bsModal #modalrapido="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="font-family:'caviar dreams bold'">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content" >
+       <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Fenêtre de confirmation Woyofal.</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="hidemodalrapido()">
+             <span aria-hidden="true">&times;</span>
+         </button>
+         </div>
+        <div class="modal-body">
+         <form class="form">
+           <div class="form-group">
+              <label >Telephone : {{this.numclient}}</label>
+            </div>
+            <div class="form-group">
+              <label >Montant  : {{this.montant}}</label>
+            </div>
+            <div class="form-group">
+             <label >Badge  : {{this.badge}}</label>
+            </div>
+           </form>
+        </div>
+        <div class="modal-footer">
+         <input style="border-radius: 2rem 0rem 2rem 2rem;" type="button"   (click)="validerrapido()" value="valider" class="btn btn-success" />
+         <input style="border-radius: 2rem 0rem 2rem 2rem;" type="button" value="fermer" (click)="hidemodalrapido()"  class="btn btn-danger" />
+        </div>
+     </div>
+    </div>
+ </div>

@@ -2,30 +2,20 @@
 <div class="container" style="background-color: #735996!important;width: 100%;height: 1000px;position: absolute ;">
     <div class="panel panel-heading"> <h1 style="font-family: monospace; text-align: center;">
       <img mat-card-image src="assets/images/worldremit.jpg" style="max-width: 10rem;margin-top: 1rem;"></h1> 
-      <div class="row" style="margin-left: 28rem;">
-          <div >
-             <a class="mat-raised-button myButton" (click)="loadOperation('envoie')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Envoi</a> 
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div fxFlex style="text-align: center;">
+                
+                    <a class="mat-raised-button myButton" (click)="loadOperation('envoie')"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Envoi</a> 
+               
+                    <a class="mat-raised-button myButton" (click)="loadOperation('retrait')"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Retrait</a> 
+               
+            </div>
           </div>
-          <div >
-             <a class="mat-raised-button myButton" (click)="loadOperation('retrait')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Retrait</a> 
-          </div>
-         
-       </div>
+     
     </div>
     <div class="panel panel-bady">
-        <div class="row" *ngIf="operation == 'envoie' && typeEnvoie == ''" style="margin-left: 15rem;">
-            <div >
-               <a class="mat-raised-button myButton" (click)="typeEnvoie = 'cash'"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Envoie Cash to Cash</a> 
-            </div>
-            <div >
-               <a class="mat-raised-button myButton" (click)="typeEnvoie = 'compteB'"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Envoie Cash to Compte</a> 
-            </div>
-            <div >
-                <a class="mat-raised-button myButton" (click)="typeEnvoie = 'wallet'"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Envoie Cash to Wallet</a> 
-             </div>
-           
-         </div>
-        <form *ngIf="operation == 'envoie' && typeEnvoie != ''" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;" >
+      
+        <form *ngIf="operation == 'envoie' && typeEnvoie == ''" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;" >
             <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
@@ -154,34 +144,7 @@
                               </mat-form-field>
                           </div>
                         </div>
-                        <div *ngIf="etapeEnvoie == 3 && typeEnvoie == 'compteB'" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                          <div fxFlexFill>
-                              <mat-form-field class=" w-100 md-form"> 
-                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Numero Compte Bancaire">
-                              </mat-form-field>
-                          </div>
-                        </div>
-                        <div *ngIf="etapeEnvoie == 3 && typeEnvoie == 'compteB'" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                          <div fxFlexFill>
-                              <mat-form-field class=" w-100 md-form"> 
-                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Nom De La Banque">
-                              </mat-form-field>
-                          </div>
-                        </div>
-                        <div *ngIf="etapeEnvoie == 3 && typeEnvoie == 'wallet'" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                          <div fxFlexFill>
-                              <mat-form-field class=" w-100 md-form"> 
-                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Numero Compte Wallet">
-                              </mat-form-field>
-                          </div>
-                        </div>
-                        <div *ngIf="etapeEnvoie == 3 && typeEnvoie == 'wallet'" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                          <div fxFlexFill>
-                              <mat-form-field class=" w-100 md-form"> 
-                                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Nom De La Wallet">
-                              </mat-form-field>
-                          </div>
-                        </div>
+                     
                         
                     
 

@@ -31,10 +31,26 @@ export class CanalComponent implements OnInit {
   deuxiemeEcran:string ="";
   pvr:string ="";
   charme:string = "";
+  titre:string = "";
+  cni:string = "";
+  ville:string = "";
+  numDec:string = "";
+  adresse:string = "";
+  mail:string = "";
+  tel:string = "";
+  
   reinitialiser(){
     this.deuxiemeEcran ="";
     this.pvr ="";
-    this.charme = "";
+    this.charme = ""; 
+
+    this.titre ="";
+    this.cni ="";
+    this.ville = "";   
+     this.numDec ="";
+    this.adresse ="";
+    this.mail = "";
+    this.tel = "";
     this.montantNet = 0
     this.Bouquet =null
     this.prixCharme = 0
@@ -132,11 +148,23 @@ export class CanalComponent implements OnInit {
      }); 
    
   }
-
+  recructement(){
+    
+    // sessionStorage.setItem('curentProcess',JSON.stringify({'nom':'Orange money depot','operateur':2,'operation':1,'montant':this.num,'num':this.mtt}));
+   let object ={'nom':'canal plus recrutement','operateur':12,'operation':2, 'nomclient': +this.nomAb,
+    'prenom' : +this.prenomAb, 'tel': this.tel, 'numAbo': this.numAb, 'numDec' : this.matAb,
+     'numCarte' : this.matAb, 'formule': this.Bouquet,
+    'montant' : this.montantNet, 'nbreMois' : this.nombreMois, 'charme' : '', 'pvd' : '', 'ecranII' : ''};
+    console.log(object);
+    this.dataService.sendData(object)
+     this.hidereabonnement()  
+     this.dataService.clearData();
+     this.reinitialiser();
+  }
   abonnement(){
     
     // sessionStorage.setItem('curentProcess',JSON.stringify({'nom':'Orange money depot','operateur':2,'operation':1,'montant':this.num,'num':this.mtt}));
-   let object ={'nom':'canal plus','operateur':12,'operation':1, 'nomclient': this.nomAb, 'prenom' : this.prenomAb,
+   let object ={'nom':'canal plus réabonnment','operateur':12,'operation':1, 'nomclient': this.nomAb, 'prenom' : this.prenomAb,
     'tel': '', 'numAbo': this.numAb, 'numDec' : '', 'numCarte' : this.matAb,
      'formule': this.Bouquet, 'montant' : this.montantNet, 'nbreMois' : this.nombreMois,
     'charme' : this.charme, 'pvd' : this.pvr, 'ecranII' : this.deuxiemeEcran};
@@ -146,7 +174,7 @@ export class CanalComponent implements OnInit {
      this.reinitialiser();
    }
 
-  titre= [
+  Titre= [
     {name:"Monsieur"},
     {name:"Madame"},
     {name:"Mademoiselle"},

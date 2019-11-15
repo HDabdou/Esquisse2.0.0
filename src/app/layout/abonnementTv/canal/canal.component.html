@@ -3,15 +3,14 @@
     <div>
     </div>
     <img mat-card-image src="assets/images/canal.jpg" style="max-width: 10rem;margin-top: 1rem;"></h1> 
-    <div class="row" style="margin-left: 18rem;">
-        <div >
-           <a class="mat-raised-button myButton" (click)="loadOperation('reabonnement');reinitialiser()"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Réabonnement</a> 
+     
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div fxFlex style="text-align: center;">
+            <a class="mat-raised-button myButton" (click)="loadOperation('reabonnement');reinitialiser()"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Réabonnement</a> 
+            <a class="mat-raised-button myButton" (click)="loadOperation('recructement');reinitialiser()"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Recrutement</a> 
         </div>
-        <div >
-           <a class="mat-raised-button myButton" (click)="loadOperation('recructement');reinitialiser()"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Recrutement</a> 
-        </div>
-
-     </div>
+    </div>
+   
   </div>
   <div class="panel panel-bady">
       
@@ -124,7 +123,7 @@
             <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                 <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                     <div fxFlex style="text-align: center;">
-                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="showmodalreabonnement()">Valider</button>
+                        <button mat-raised-button color="primary" [disabled]="nombreMois <=0 && montantNet <=0"  style="background-color: #43a047;" class="w-45" (click)="showmodalreabonnement()">Valider</button>
                         <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                     </div>
                 </div>
@@ -133,7 +132,7 @@
         </div>
       </form>
     
-      <form *ngIf="operation == 'recructement'" class="login-form" fxFlex style="margin-top: 1rem;;margin: 10px;background: white;" >
+      <form *ngIf="operation == 'recructement'" class="login-form" fxFlex style="margin-top: 1rem;;margin: 10px;background: white;padding-left: 5px;padding-right: 5px;" >
           <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px;">
              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
@@ -145,8 +144,8 @@
               <div fxFlexFill>
               <mat-form-field class=" w-100 md-form"> 
               <mat-label>Titre</mat-label>
-              <mat-select>
-                <mat-option *ngFor="let food of titre" [value]="food.name">
+              <mat-select [(value)]="titre">
+                <mat-option *ngFor="let food of Titre" [value]="food.name">
                   {{food.name}}
                 </mat-option>
               </mat-select>                        
@@ -156,88 +155,92 @@
               <div *ngIf="etapeRecructement == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                 <mat-form-field class=" w-100 md-form"> 
-                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Prénom">
+                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenomAb"  matInput placeholder="Prénom">
                 </mat-form-field>
               </div>
               </div>
               <div *ngIf="etapeRecructement == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                 <mat-form-field class=" w-100 md-form"> 
-                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="nom">
+                    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nomAb"  matInput placeholder="nom">
                 </mat-form-field>
               </div>
               </div>
               <div *ngIf="etapeRecructement == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                   <mat-form-field class=" w-100 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="CNI (Carte Nationale D'Identité)">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="cni"  matInput placeholder="CNI (Carte Nationale D'Identité)">
                   </mat-form-field>
               </div>
               </div>
               <div *ngIf="etapeRecructement == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                   <mat-form-field class=" w-100 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Ville">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="ville"  matInput placeholder="Ville">
                   </mat-form-field>
               </div>
               </div>
               <div *ngIf="etapeRecructement == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                   <mat-form-field class=" w-100 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Adresse">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="adresse"  matInput placeholder="Adresse">
                   </mat-form-field>
               </div>
               </div>
               <div *ngIf="etapeRecructement == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                   <mat-form-field class=" w-100 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="E-mail">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="mail"  matInput placeholder="E-mail">
                   </mat-form-field>
               </div>
               </div>
               <div *ngIf="etapeRecructement == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                   <mat-form-field class=" w-100 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Téléphone">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="tel"  matInput placeholder="Téléphone">
                   </mat-form-field>
               </div>
               </div>
               <div *ngIf="etapeRecructement == 1" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                   <mat-form-field class=" w-100 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Numéro Décodeur">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="numDec"  matInput placeholder="Numéro Décodeur">
                   </mat-form-field>
               </div>
               </div>
-              <div *ngIf="etapeRecructement == 2" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="row">
+                      
+              <div *ngIf="etapeRecructement == 2" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div fxFlexFill>
                 <mat-form-field class=" w-100 md-form"> 
                 <mat-label>Bouquet</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let food of bouquet2" [value]="food.name">
+                <mat-select [(value)]="Bouquet">
+                  <mat-option (click)="getMontant()" *ngFor="let food of bouquet2" [value]="food.name">
                     {{food.name}}
                   </mat-option>
                 </mat-select>                        
-                </mat-form-field>                </div>
+                </mat-form-field>              
+              </div>
               </div>
               <div *ngIf="etapeRecructement == 2" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                   <mat-form-field class=" w-100 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="nom"  matInput placeholder="Nombre De Mois">
+                      <input [ngModelOptions]="{standalone: true}" (keyup)="getMontant()" (click)="getMontant()" type="number" [(ngModel)]="nombreMois"  matInput placeholder="Nombre De Mois">
                   </mat-form-field>
               </div>
               </div>
-             
-              <div *ngIf="etapeRecructement == 2" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div fxFlexFill>
-                  <mat-form-field class=" w-100 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="nom"  matInput placeholder="Montant">
-                  </mat-form-field>
+                  </div>
               </div>
-              </div>
-             
              
               <div *ngIf="etapeRecructement == 2" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div fxFlexFill style="text-align: center;">
+                    <mat-label>Montant net à payer : <strong>{{montantNet}}</strong>  FCFA</mat-label>
+              </div>
+              </div>
+             
+             
+              <!--<div *ngIf="etapeRecructement == 2" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div fxFlexFill style="text-align: center;">
                   
                     <h4 >Offres Optionnelles</h4>
@@ -247,11 +250,11 @@
                       <mat-checkbox style="margin-left: 1rem;" class="example-margin" [ngModelOptions]="{standalone: true}" [(ngModel)]="indeterminate">2E ECRAN</mat-checkbox>
                     </section>                  
               </div>
-              </div>
+              </div>-->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                   <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                       <div fxFlex style="text-align: center;">
-                        <button *ngIf="etapeRecructement == 2 " mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
+                        <button *ngIf="etapeRecructement == 2 " mat-raised-button color="primary" [disabled]="nombreMois <=0 && montantNet <=0"  style="background-color: #43a047;" class="w-45" (click)="showmodalreabonnement()">Valider</button>
                         <button *ngIf="etapeRecructement == 2 " mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
                         <button *ngIf="etapeRecructement == 2 " (click)="back()" mat-raised-button color="primary" style="background-color: #337ab7;margin-left: 1rem;"  class="w-45" ><mat-icon class="sidenav-icon">keyboard_arrow_left</mat-icon>precedant</button>
                         <button *ngIf="etapeRecructement == 1 " (click)="next()" mat-raised-button color="primary" style="background-color: #337ab7;margin-left: 1rem;"  class="w-45" >suivant <mat-icon class="sidenav-icon">keyboard_arrow_right</mat-icon></button>
@@ -277,7 +280,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <form class="form">
+                    <form class="form" *ngIf="operation == 'reabonnement'">
                         <div class="form-group">
                             <label >Numéro abonné : {{numAb}}</label>
                         </div>
@@ -304,11 +307,52 @@
                             <label >Montant : {{montantNet}} FCFA </label>
                         </div>
                     </form>
+                    <form class="form" *ngIf="operation == 'recructement'">
+                        <div class="form-group">
+                            <label >Titre : {{titre}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >Nom : {{nomAb}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >Prenom : {{prenomAb}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >CNI : {{cni}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >Ville : {{ville}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >Adresse : {{adresse}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >E-mail : {{mail}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >Téléphone : {{tel}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >No découdeur : {{numDec}}</label>
+                        </div>
+    
+                        <div class="form-group">
+                            <label >Formule : {{Bouquet}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label >nombre Mois : {{nombreMois}}</label>
+                        </div>
+                      
+                        <div class="form-group">
+                            <label >Montant : {{montantNet}} FCFA </label>
+                        </div>
+                    </form>
     
                 </div>
              </div>
             <div class="modal-footer">
-                <input style=" border-radius: 2rem 0rem 2rem 2rem;margin-top: 1rem;"  type="button" class="btn btn-success" (click)="abonnement();hidereabonnement()"  value="valider"/>
+                <input *ngIf="operation == 'reabonnement'" style=" border-radius: 2rem 0rem 2rem 2rem;margin-top: 1rem;"  type="button" class="btn btn-success" (click)="abonnement();hidereabonnement()"  value="valider"/>
+                <input *ngIf="operation == 'recructement'" style=" border-radius: 2rem 0rem 2rem 2rem;margin-top: 1rem;"  type="button" class="btn btn-success" (click)="recructement();hidereabonnement()"  value="valider"/>
                 <input style=" border-radius: 2rem 0rem 2rem 2rem;margin-top: 1rem;"  type="button" class="btn btn-danger" (click)="hidereabonnement()"  value="Annuler"/>
             </div>
          </div>

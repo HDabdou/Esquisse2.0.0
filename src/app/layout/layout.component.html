@@ -3,332 +3,332 @@
 <app-sidebar></app-sidebar>
 <div class="main-container" style="padding: 0 !important;">
     <router-outlet></router-outlet>
-    
-</div>
-<div *ngIf="process.length > 0" class="panel"  style="background-color: white;margin-bottom: 0%;position: fixed;width: 100%;margin-top: 38rem;height: 52px;margin-left:15rem;">
-    <div class="row">
-        <div class="col-md-2 col-lg-2 col-xs-3 col-sm-3"  style="margin-left: 1.5rem;" *ngFor="let item of process">
-            <div  (click)="finprocess(item,item.dataI)" [ngStyle]="{'background-color':item.data.operateur==5?'orange':item.etats.color}"
-                  class="row pendingTask" [popover]="popTemplate" popoverTitle="{{item.data.nom}}" triggers="mouseenter:mouseleave" >
-              <div  class="{{item.etats.load}}" style="text-align: end ;">
-                <i *ngIf="item.etats.etat&&item.etats.color=='green'" class="fa fa-check fa-2x" aria-hidden="true"></i>
-                <i *ngIf="item.etats.etat&&item.etats.color=='red'" class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i>
-                <i *ngIf="item.etats.etat&&item.etats.color=='yellow'" class="fa fa-refresh fa-2x" aria-hidden="true"></i>
-              </div>
-              <div>{{item.data.nom}}</div>
-            </div>
-            <ng-template #popTemplate >
-                <div *ngIf="item.data.operateur==10">
-                    <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">{{retrieveOperationInfo(item)}}</div>
-                    <div *ngIf="item.data.operation==1">
-                        <div>Infos : "Infos"</div><br>
-                    </div>
+    <div *ngIf="process.length > 0" class="panel" style="background-color: white;margin-bottom: 0%;position: fixed;width: 100%;margin-top: 38rem;height: 4rem;background-size: 400px;bottom: 0;">
+        <div class="row">
+            <div class="col-md-2 col-lg-2 col-xs-3 col-sm-3"  style="margin-left: 1.5rem;" *ngFor="let item of process">
+                <div  (click)="finprocess(item,item.dataI)" [ngStyle]="{'background-color':item.data.operateur==5?'orange':item.etats.color}"
+                      class="row pendingTask" [popover]="popTemplate" popoverTitle="{{item.data.nom}}" triggers="mouseenter:mouseleave" >
+                  <div  class="{{item.etats.load}}" style="text-align: end ;">
+                    <i *ngIf="item.etats.etat&&item.etats.color=='green'" class="fa fa-check fa-2x" aria-hidden="true"></i>
+                    <i *ngIf="item.etats.etat&&item.etats.color=='red'" class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i>
+                    <i *ngIf="item.etats.etat&&item.etats.color=='yellow'" class="fa fa-refresh fa-2x" aria-hidden="true"></i>
+                  </div>
+                  <div>{{item.data.nom}}</div>
                 </div>
-                <!-- OM -->
-                <div *ngIf="item.data.operateur==2">
-                  <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">{{retrieveOperationInfo(item)}}</div>
-                  <div *ngIf="item.data.operation==1">
-                      <div>Montant : {{item.data.montant}}</div><br>
-                      <div>Numéro Client :{{item.data.num}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==2">
-                    <div>Montant : {{item.data.montant}}</div><br>
-                    <div>Numéro Client :{{item.data.num}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==3">
-                    <div>Code Retrait: {{item.data.coderetrait}}</div><br>
-                    <div>Prènom : {{item.data.prenom}}</div><br>
-                    <div>Nom : {{item.data.nomclient}}</div><br>
-                    <div>Date De Naiss. : {{item.data.date}}</div><br>
-                    <div>N° CNI :{{item.data.cni}}</div><br>
-                    <div>Numéro Client :{{item.data.num}}</div><br>
-                    <div>Montant:{{item.data.montant}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==5">
-                    <div>Montant : {{item.data.montant}}</div><br>
-                    <div>Numéro Client :{{item.data.numclient}}</div><br>
-                  </div>
-                </div>
-                <!--E-commerce -->
-                <div *ngIf="item.data.operateur==5;let j=index" class="row" style="border-radius:10px 0 10px 10px;width:300px;">
-                  <div  *ngFor="let article of articles let i=index"  class="col-lg-5 col-md-5 col-xs-5 col-sm-5" [ngStyle]="{'border-right':i%2==0?'4px solid orange':'2px solid white','border-top':i>=2?'4px solid orange':'2px solid white','border-bottom':(i==articles.length-2 && articles.length%2!=0)?'4px solid orange':'2px solid white'}" style="height:180px;border-radius:0px">
-                    <div class="row">
-                      <p style="color:blue;font-size:0.8em;text-align:center">{{getFormatted(article.data.designation)}}</p>
+                <ng-template #popTemplate >
+                    <div *ngIf="item.data.operateur==10">
+                        <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">{{retrieveOperationInfo(item)}}</div>
+                        <div *ngIf="item.data.operation==1">
+                            <div>Infos : "Infos"</div><br>
+                        </div>
                     </div>
-                    <div class="row"  style="background-image:url(../../assets/mag-rondell.png);background-repeat:no-repeat;">
-                      <img class="card-img-top  col-lg-8 col-md-8 col-xs-8 col-sm-8 img-circle" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{article.data.nomImg}}" style="width:90px;height:90px;margin-left:6%;margin-top:5px" alt="Card image cap">
-                    </div>
-                    <div class="row">
-                      <p class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="max-width:150px"><b style="color:blue;font-size:0.9em">{{currency(article.data.prix)}} fcfa</b></p>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <b class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="color:blue">Total : {{currency(totalpanier())}}</b>
-                  </div>
-
-                </div>
-                <!-- TNT -->
-                <div *ngIf="item.data.operateur==4">
-                  <div *ngIf="item.etats.errorCode=='*'">
-                    <div *ngIf="item.data.operation==1">
-                      <div>Prénom client: {{item.data.prenom}}</div><br>
-                      <div>Nom Client :{{item.data.nom}}</div><br>
-                      <div>Téléphone :{{item.data.tel}}</div><br>
-                      <div>Numéro CNI  :{{item.data.cni}}</div><br>
-                      <div>Numéro CHIP :{{item.data.chip}}</div><br>
-                      <div>Numéro CARTE:{{item.data.carte}}</div><br>
-                      <div>Durée :{{item.data.duree}} mois</div><br>
-                      <div>Bouquet : <a *ngIf="item.data.typedebouquet==1"> Maanaa</a>
-                        <a *ngIf="item.data.typedebouquet==2"> Boul Khool</a>
-                        <a *ngIf="item.data.typedebouquet==3"> Maana + Boul Khool</a>
-                      </div><br>
-                    </div>
-                    <div *ngIf="item.data.operation==2">
-                      <div>Prénom client: {{item.data.prenom}}</div><br>
-                      <div>Nom Client :{{item.data.nomclient}}</div><br>
-                      <div>Téléphone :{{item.data.tel}}</div><br>
-                      <div>Numéro CHIP :{{item.data.chip}}</div><br>
-                      <div>Numéro CARTE:{{item.data.carte}}</div><br>
-                      <div>Bouquet : <a *ngIf="item.data.typedebouquet==0"> Sans Abonnement</a>
-                        <a *ngIf="item.data.typedebouquet==1"> + 1 mois</a>
-                        <a *ngIf="item.data.typedebouquet==3"> + 3 mois</a>
-                      </div><br>
-                    </div>
-
-                    <div *ngIf="item.data.operation==3">
-                      <div>Prénom client: {{item.data.prenom}}</div><br>
-                      <div>Nom Client :{{item.data.nomclient}}</div><br>
-                      <div>Téléphone :{{item.data.tel}}</div><br>
-                      <div>Adresse :{{item.data.adresse}}</div><br>
-                      <div>Numéro CARTE:{{item.data.carte}}</div><br>
-                    </div>
-
-                  </div>
-                  <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold;">
-                    {{retrieveOperationInfo(item)}}
-                  </div>
-
-                </div>
-                <!-- Transfert internationnal-->
-                <div *ngIf="item.data.operateur==11">
-                  <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold;">
-                    {{retrieveOperationInfo(item)}}
-                  </div>
-                  <div *ngIf="item.etats.errorCode =='*'">
-                    <div *ngIf="item.data.operation==1">
-                      <div>Prénom émetteur: {{item.data.prenom_emet}}</div><br>
-                      <div>Nom émetteur :{{item.data.nom_emet}}</div><br>
-                      <div>Prénom bénéficiaire: {{item.data.prenom_benef}}</div><br>
-                      <div>Nom bénéficiaire :{{item.data.nom_benef}}</div><br>
-                      <div>Numéro transastion: {{item.data.noTransaction}}</div><br>
-                      <div>Code transaction :{{item.data.codeTransation}}</div><br>
-                      <div>Montant emis: {{item.data.montant_emis}}</div><br>
-                      <div>Montant payer :{{item.data.montant_payer}} Fcfa</div><br>
-                    </div>
-                    <div *ngIf="item.data.operation==2">
-                      <div>Prénom émetteur: {{item.data.info.prenom_emet}}</div><br>
-                      <div>Nom émetteur : {{item.data.info.nom_emet}}</div><br>
-                      <div>ville émetteur : {{item.data.info.ville_emet}}</div><br>
-                      <div>Pays émetteur : {{item.data.info.pays_emet}}</div><br>
-                      <div>adresse émetteur : {{item.data.info.adresse_emet}}</div><br>
-                      <div>Prénom bénéficiaire: {{item.data.info.prenom_benef}}</div><br>
-                      <div>Nom bénéficiaire : {{item.data.info.nom_benef}}</div><br>
-                      <div>ville émetteur : {{item.data.info.ville_benef}}</div><br>
-                      <div>Pays émetteur : {{item.data.info.pays_benef}}</div><br>
-                      <div>adresse émetteur : {{item.data.info.adresse_benef}}</div><br>
-                      <div>Montant emis: {{item.data.info.montant_emis}} {{item.data.info.devise_emission}} </div><br>
-                    </div>
-                  </div>
-
-                </div>
-                <!--Canal plus-->
-                <div *ngIf="item.data.operateur==12">
-                    <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold;">
-                      {{retrieveOperationInfo(item)}}
-                    </div>
-                    <div >
+                    <!-- OM -->
+                    <div *ngIf="item.data.operateur==2">
+                      <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">{{retrieveOperationInfo(item)}}</div>
                       <div *ngIf="item.data.operation==1">
-                        <div>Prénom : {{item.data.prenom}}</div><br>
-                        <div>Nom  :{{item.data.nomclient}}</div><br>
-                        <div>Numero abonné: {{item.data.numAbo}}</div><br>
-                        <div>Numero Carte: {{item.data.numCarte}}</div><br>
-                        <div>Formule :{{item.data.nom_benef}}</div><br>
-                        <div>Montant payer :{{item.data.montant}} Fcfa</div><br>
+                          <div>Montant : {{item.data.montant}}</div><br>
+                          <div>Numéro Client :{{item.data.num}}</div><br>
                       </div>
                       <div *ngIf="item.data.operation==2">
-                        <div>Prénom émetteur: {{item.data.info.prenom_emet}}</div><br>
-                        <div>Nom émetteur : {{item.data.info.nom_emet}}</div><br>
-                        <div>ville émetteur : {{item.data.info.ville_emet}}</div><br>
-                        <div>Pays émetteur : {{item.data.info.pays_emet}}</div><br>
-                        <div>adresse émetteur : {{item.data.info.adresse_emet}}</div><br>
-                        <div>Prénom bénéficiaire: {{item.data.info.prenom_benef}}</div><br>
-                        <div>Nom bénéficiaire : {{item.data.info.nom_benef}}</div><br>
-                        <div>ville émetteur : {{item.data.info.ville_benef}}</div><br>
-                        <div>Pays émetteur : {{item.data.info.pays_benef}}</div><br>
-                        <div>adresse émetteur : {{item.data.info.adresse_benef}}</div><br>
-                        <div>Montant emis: {{item.data.info.montant_emis}} {{item.data.info.devise_emission}} </div><br>
+                        <div>Montant : {{item.data.montant}}</div><br>
+                        <div>Numéro Client :{{item.data.num}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==3">
+                        <div>Code Retrait: {{item.data.coderetrait}}</div><br>
+                        <div>Prènom : {{item.data.prenom}}</div><br>
+                        <div>Nom : {{item.data.nomclient}}</div><br>
+                        <div>Date De Naiss. : {{item.data.date}}</div><br>
+                        <div>N° CNI :{{item.data.cni}}</div><br>
+                        <div>Numéro Client :{{item.data.num}}</div><br>
+                        <div>Montant:{{item.data.montant}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==5">
+                        <div>Montant : {{item.data.montant}}</div><br>
+                        <div>Numéro Client :{{item.data.numclient}}</div><br>
                       </div>
                     </div>
-  
-                  </div>
-                <!-- OM -->
-                <div *ngIf="item.data.operateur==5">
-
-                  <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">
-                    {{retrieveOperationInfo(item)}}
-                  </div>
-
-                  <div *ngIf="item.data.operation==1">
-                    <div>Montant : {{item.data.montant}}</div><br>
-                    <div>Numéro Client :{{item.data.num}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==2">
-                    <div>Montant : {{item.data.montant}}</div><br>
-                    <div>Numéro Client :{{item.data.num}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==3">
-                    <div>Montant:{{item.data.montant}}</div><br>
-                    <div>Réfèrence Client: {{item.data.refclient}}</div><br>
-                    <div>Réfèrence Facture : {{item.data.refFacture}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==4">
-                    <div>Montant:{{item.data.montant}}</div><br>
-                    <div>Police: {{item.data.police}}</div><br>
-                    <div>Numéro Facture : {{item.data.numfacture}}</div><br>
-                  </div>
-                </div>
-                <!-- TC -->
-                <div *ngIf="item.data.operateur==3">
-
-                  <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">
-                    {{retrieveOperationInfo(item)}}
-                  </div>
-
-                  <div *ngIf="item.data.operation==1">
-                    <div>Montant : {{item.data.montant}}</div><br>
-                    <div>Numéro Client :{{item.data.num}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==2">
-                    <div>Montant : {{item.data.montant}}</div><br>
-                    <div>Numéro Client :{{item.data.num}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==3">
-                    <div>Montant:{{item.data.montant}}</div><br>
-                    <div>Réfèrence Client: {{item.data.refclient}}</div><br>
-                    <div>Réfèrence Facture : {{item.data.refFacture}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==4">
-                    <div>Montant:{{item.data.montant}}</div><br>
-                    <div>Police: {{item.data.police}}</div><br>
-                    <div>Numéro Facture : {{item.data.numfacture}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==5">
-                    <div>Montant : {{item.data.montant}}</div><br>
-                    <div>Numéro Client :{{item.data.num}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==6">
-                    <div>Code : {{item.data.coderetrait}}</div><br>
-                    <div>Prenom :{{item.data.prenom}}</div><br>
-                    <div>Nom :{{item.data.nom}}</div><br>
-                  </div>
-
-                </div>
-                <!-- wizall -->
-                <div *ngIf="item.data.operateur==6">
-
-                  <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">
-                    {{retrieveOperationInfo(item)}}
-                  </div>
-
-                  <div *ngIf="item.data.operation==1">
-                    <div>Montant : {{item.data.montant}}</div><br>
-                    <div>Numéro Client :{{item.data.num}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==2">
-                    <div>Montant : {{item.data.montant}}</div><br>
-                    <div>Numéro Client :{{item.data.num}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==3">
-                    <div>Montant:{{item.data.montant}}</div><br>
-                    <div>Réfèrence Client: {{item.data.refclient}}</div><br>
-                    <div>Réfèrence Facture : {{item.data.refFacture}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==4">
-                    <div>Montant:{{item.data.montant}}</div><br>
-                    <div>Police: {{item.data.police}}</div><br>
-                    <div>Numéro Facture : {{item.data.numfacture}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==5">
-                    <div>Montant:{{item.data.montant}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==6">
-                    <div>Montant:{{item.data.montant}}</div><br>
-                  </div>
-                </div>
-                <!-- E-MONEY -->
-                <div *ngIf="item.data.operateur==7">
-                              <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">
-                                {{retrieveOperationInfo(item)}}
-                              </div>
-                              <div *ngIf="item.data.operation==1">
-                                <div>Montant : {{item.data.mnt}}</div><br>
-                                <div>Numéro Client :{{item.data.numclient}}</div><br>
-                              </div>
-                              <div *ngIf="item.data.operation==2">
-                                <div>Reference : {{item.data.transactionReference}}</div><br>
-                                <div>OTP :{{item.data.OTP}}</div><br>
-                              </div>
-                              <div *ngIf="item.data.operation==3">
-                                <div>Montant:{{item.data.pin}}</div><br>
-                                <div>N° CNI: {{item.data.pin}}</div><br>
-                              </div>
-                </div>
-                <!-- FACTURIER -->
-                <div *ngIf="item.data.operateur==8">
-
-                  <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">
-                    {{retrieveOperationInfo(item)}}
-                  </div>
-
-                  <div *ngIf="item.data.operation==1">
-                    <div>Ref. Client: {{item.data.reference_client}}</div><br>
-                    <div>Montant: {{item.data.montant}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==2">
-                    <div>Numero:{{item.data.numclient}}</div><br>
-                    <div>Montant: {{item.data.montant}}</div><br>
-                    <div>Badge: {{item.data.badge}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==3">
-                    <div>Compteur : {{item.data.compteur}}</div><br>
-                    <div>Montant :{{item.data.montant}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==4">
-                    <div>Montant:{{item.data.montant}}</div><br>
-                    <div>Police: {{item.data.police}}</div><br>
-                    <div>Numéro Facture: {{item.data.num_facture}}</div><br>
-                  </div>
-                  <div *ngIf="item.data.operation==5">
-                    <div>Telephone:{{item.data.telephone}}</div><br>
-                    <div>Numero Compte: {{item.data.compte}}</div><br>
-                    <div>Montant: {{item.data.montant}}</div><br>
-                  </div>
-
-                </div>
-                <div *ngIf="item.data.operateur==9">
-                  <div *ngIf="item.etats.errorCode!='*'" [ngStyle]="{'color':item.etats.errorCode==1?'green':'red' , 'font-weight': 'bold' }">
-                    {{retrieveOperationInfo(item)}}
-                  </div>
-                  <div>Numero :{{item.data.numero}}</div><br/>
-                  <div>Montant :{{item.data.montant}}</div>
-                </div>
-                
-                
-              </ng-template>
-        </div>
-    </div>
+                    <!--E-commerce -->
+                    <div *ngIf="item.data.operateur==5;let j=index" class="row" style="border-radius:10px 0 10px 10px;width:300px;">
+                      <div  *ngFor="let article of articles let i=index"  class="col-lg-5 col-md-5 col-xs-5 col-sm-5" [ngStyle]="{'border-right':i%2==0?'4px solid orange':'2px solid white','border-top':i>=2?'4px solid orange':'2px solid white','border-bottom':(i==articles.length-2 && articles.length%2!=0)?'4px solid orange':'2px solid white'}" style="height:180px;border-radius:0px">
+                        <div class="row">
+                          <p style="color:blue;font-size:0.8em;text-align:center">{{getFormatted(article.data.designation)}}</p>
+                        </div>
+                        <div class="row"  style="background-image:url(../../assets/mag-rondell.png);background-repeat:no-repeat;">
+                          <img class="card-img-top  col-lg-8 col-md-8 col-xs-8 col-sm-8 img-circle" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{article.data.nomImg}}" style="width:90px;height:90px;margin-left:6%;margin-top:5px" alt="Card image cap">
+                        </div>
+                        <div class="row">
+                          <p class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="max-width:150px"><b style="color:blue;font-size:0.9em">{{currency(article.data.prix)}} fcfa</b></p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <b class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="color:blue">Total : {{currency(totalpanier())}}</b>
+                      </div>
     
+                    </div>
+                    <!-- TNT -->
+                    <div *ngIf="item.data.operateur==4">
+                      <div *ngIf="item.etats.errorCode=='*'">
+                        <div *ngIf="item.data.operation==1">
+                          <div>Prénom client: {{item.data.prenom}}</div><br>
+                          <div>Nom Client :{{item.data.nom}}</div><br>
+                          <div>Téléphone :{{item.data.tel}}</div><br>
+                          <div>Numéro CNI  :{{item.data.cni}}</div><br>
+                          <div>Numéro CHIP :{{item.data.chip}}</div><br>
+                          <div>Numéro CARTE:{{item.data.carte}}</div><br>
+                          <div>Durée :{{item.data.duree}} mois</div><br>
+                          <div>Bouquet : <a *ngIf="item.data.typedebouquet==1"> Maanaa</a>
+                            <a *ngIf="item.data.typedebouquet==2"> Boul Khool</a>
+                            <a *ngIf="item.data.typedebouquet==3"> Maana + Boul Khool</a>
+                          </div><br>
+                        </div>
+                        <div *ngIf="item.data.operation==2">
+                          <div>Prénom client: {{item.data.prenom}}</div><br>
+                          <div>Nom Client :{{item.data.nomclient}}</div><br>
+                          <div>Téléphone :{{item.data.tel}}</div><br>
+                          <div>Numéro CHIP :{{item.data.chip}}</div><br>
+                          <div>Numéro CARTE:{{item.data.carte}}</div><br>
+                          <div>Bouquet : <a *ngIf="item.data.typedebouquet==0"> Sans Abonnement</a>
+                            <a *ngIf="item.data.typedebouquet==1"> + 1 mois</a>
+                            <a *ngIf="item.data.typedebouquet==3"> + 3 mois</a>
+                          </div><br>
+                        </div>
+    
+                        <div *ngIf="item.data.operation==3">
+                          <div>Prénom client: {{item.data.prenom}}</div><br>
+                          <div>Nom Client :{{item.data.nomclient}}</div><br>
+                          <div>Téléphone :{{item.data.tel}}</div><br>
+                          <div>Adresse :{{item.data.adresse}}</div><br>
+                          <div>Numéro CARTE:{{item.data.carte}}</div><br>
+                        </div>
+    
+                      </div>
+                      <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold;">
+                        {{retrieveOperationInfo(item)}}
+                      </div>
+    
+                    </div>
+                    <!-- Transfert internationnal-->
+                    <div *ngIf="item.data.operateur==11">
+                      <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold;">
+                        {{retrieveOperationInfo(item)}}
+                      </div>
+                      <div *ngIf="item.etats.errorCode =='*'">
+                        <div *ngIf="item.data.operation==1">
+                          <div>Prénom émetteur: {{item.data.prenom_emet}}</div><br>
+                          <div>Nom émetteur :{{item.data.nom_emet}}</div><br>
+                          <div>Prénom bénéficiaire: {{item.data.prenom_benef}}</div><br>
+                          <div>Nom bénéficiaire :{{item.data.nom_benef}}</div><br>
+                          <div>Numéro transastion: {{item.data.noTransaction}}</div><br>
+                          <div>Code transaction :{{item.data.codeTransation}}</div><br>
+                          <div>Montant emis: {{item.data.montant_emis}}</div><br>
+                          <div>Montant payer :{{item.data.montant_payer}} Fcfa</div><br>
+                        </div>
+                        <div *ngIf="item.data.operation==2">
+                          <div>Prénom émetteur: {{item.data.info.prenom_emet}}</div><br>
+                          <div>Nom émetteur : {{item.data.info.nom_emet}}</div><br>
+                          <div>ville émetteur : {{item.data.info.ville_emet}}</div><br>
+                          <div>Pays émetteur : {{item.data.info.pays_emet}}</div><br>
+                          <div>adresse émetteur : {{item.data.info.adresse_emet}}</div><br>
+                          <div>Prénom bénéficiaire: {{item.data.info.prenom_benef}}</div><br>
+                          <div>Nom bénéficiaire : {{item.data.info.nom_benef}}</div><br>
+                          <div>ville émetteur : {{item.data.info.ville_benef}}</div><br>
+                          <div>Pays émetteur : {{item.data.info.pays_benef}}</div><br>
+                          <div>adresse émetteur : {{item.data.info.adresse_benef}}</div><br>
+                          <div>Montant emis: {{item.data.info.montant_emis}} {{item.data.info.devise_emission}} </div><br>
+                        </div>
+                      </div>
+    
+                    </div>
+                    <!--Canal plus-->
+                    <div *ngIf="item.data.operateur==12">
+                        <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold;">
+                          {{retrieveOperationInfo(item)}}
+                        </div>
+                        <div >
+                          <div *ngIf="item.data.operation==1">
+                            <div>Prénom : {{item.data.prenom}}</div><br>
+                            <div>Nom  :{{item.data.nomclient}}</div><br>
+                            <div>Numero abonné: {{item.data.numAbo}}</div><br>
+                            <div>Numero Carte: {{item.data.numCarte}}</div><br>
+                            <div>Formule :{{item.data.nom_benef}}</div><br>
+                            <div>Montant payer :{{item.data.montant}} Fcfa</div><br>
+                          </div>
+                          <div *ngIf="item.data.operation==2">
+                            <div>Prénom émetteur: {{item.data.info.prenom_emet}}</div><br>
+                            <div>Nom émetteur : {{item.data.info.nom_emet}}</div><br>
+                            <div>ville émetteur : {{item.data.info.ville_emet}}</div><br>
+                            <div>Pays émetteur : {{item.data.info.pays_emet}}</div><br>
+                            <div>adresse émetteur : {{item.data.info.adresse_emet}}</div><br>
+                            <div>Prénom bénéficiaire: {{item.data.info.prenom_benef}}</div><br>
+                            <div>Nom bénéficiaire : {{item.data.info.nom_benef}}</div><br>
+                            <div>ville émetteur : {{item.data.info.ville_benef}}</div><br>
+                            <div>Pays émetteur : {{item.data.info.pays_benef}}</div><br>
+                            <div>adresse émetteur : {{item.data.info.adresse_benef}}</div><br>
+                            <div>Montant emis: {{item.data.info.montant_emis}} {{item.data.info.devise_emission}} </div><br>
+                          </div>
+                        </div>
+      
+                      </div>
+                    <!-- OM -->
+                    <div *ngIf="item.data.operateur==5">
+    
+                      <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">
+                        {{retrieveOperationInfo(item)}}
+                      </div>
+    
+                      <div *ngIf="item.data.operation==1">
+                        <div>Montant : {{item.data.montant}}</div><br>
+                        <div>Numéro Client :{{item.data.num}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==2">
+                        <div>Montant : {{item.data.montant}}</div><br>
+                        <div>Numéro Client :{{item.data.num}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==3">
+                        <div>Montant:{{item.data.montant}}</div><br>
+                        <div>Réfèrence Client: {{item.data.refclient}}</div><br>
+                        <div>Réfèrence Facture : {{item.data.refFacture}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==4">
+                        <div>Montant:{{item.data.montant}}</div><br>
+                        <div>Police: {{item.data.police}}</div><br>
+                        <div>Numéro Facture : {{item.data.numfacture}}</div><br>
+                      </div>
+                    </div>
+                    <!-- TC -->
+                    <div *ngIf="item.data.operateur==3">
+    
+                      <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">
+                        {{retrieveOperationInfo(item)}}
+                      </div>
+    
+                      <div *ngIf="item.data.operation==1">
+                        <div>Montant : {{item.data.montant}}</div><br>
+                        <div>Numéro Client :{{item.data.num}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==2">
+                        <div>Montant : {{item.data.montant}}</div><br>
+                        <div>Numéro Client :{{item.data.num}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==3">
+                        <div>Montant:{{item.data.montant}}</div><br>
+                        <div>Réfèrence Client: {{item.data.refclient}}</div><br>
+                        <div>Réfèrence Facture : {{item.data.refFacture}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==4">
+                        <div>Montant:{{item.data.montant}}</div><br>
+                        <div>Police: {{item.data.police}}</div><br>
+                        <div>Numéro Facture : {{item.data.numfacture}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==5">
+                        <div>Montant : {{item.data.montant}}</div><br>
+                        <div>Numéro Client :{{item.data.num}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==6">
+                        <div>Code : {{item.data.coderetrait}}</div><br>
+                        <div>Prenom :{{item.data.prenom}}</div><br>
+                        <div>Nom :{{item.data.nom}}</div><br>
+                      </div>
+    
+                    </div>
+                    <!-- wizall -->
+                    <div *ngIf="item.data.operateur==6">
+    
+                      <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">
+                        {{retrieveOperationInfo(item)}}
+                      </div>
+    
+                      <div *ngIf="item.data.operation==1">
+                        <div>Montant : {{item.data.montant}}</div><br>
+                        <div>Numéro Client :{{item.data.num}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==2">
+                        <div>Montant : {{item.data.montant}}</div><br>
+                        <div>Numéro Client :{{item.data.num}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==3">
+                        <div>Montant:{{item.data.montant}}</div><br>
+                        <div>Réfèrence Client: {{item.data.refclient}}</div><br>
+                        <div>Réfèrence Facture : {{item.data.refFacture}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==4">
+                        <div>Montant:{{item.data.montant}}</div><br>
+                        <div>Police: {{item.data.police}}</div><br>
+                        <div>Numéro Facture : {{item.data.numfacture}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==5">
+                        <div>Montant:{{item.data.montant}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==6">
+                        <div>Montant:{{item.data.montant}}</div><br>
+                      </div>
+                    </div>
+                    <!-- E-MONEY -->
+                    <div *ngIf="item.data.operateur==7">
+                                  <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">
+                                    {{retrieveOperationInfo(item)}}
+                                  </div>
+                                  <div *ngIf="item.data.operation==1">
+                                    <div>Montant : {{item.data.mnt}}</div><br>
+                                    <div>Numéro Client :{{item.data.numclient}}</div><br>
+                                  </div>
+                                  <div *ngIf="item.data.operation==2">
+                                    <div>Reference : {{item.data.transactionReference}}</div><br>
+                                    <div>OTP :{{item.data.OTP}}</div><br>
+                                  </div>
+                                  <div *ngIf="item.data.operation==3">
+                                    <div>Montant:{{item.data.pin}}</div><br>
+                                    <div>N° CNI: {{item.data.pin}}</div><br>
+                                  </div>
+                    </div>
+                    <!-- FACTURIER -->
+                    <div *ngIf="item.data.operateur==8">
+    
+                      <div *ngIf="item.etats.errorCode!='*'" style="color:red ; font-weight: bold ;">
+                        {{retrieveOperationInfo(item)}}
+                      </div>
+    
+                      <div *ngIf="item.data.operation==1">
+                        <div>Ref. Client: {{item.data.reference_client}}</div><br>
+                        <div>Montant: {{item.data.montant}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==2">
+                        <div>Numero:{{item.data.numclient}}</div><br>
+                        <div>Montant: {{item.data.montant}}</div><br>
+                        <div>Badge: {{item.data.badge}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==3">
+                        <div>Compteur : {{item.data.compteur}}</div><br>
+                        <div>Montant :{{item.data.montant}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==4">
+                        <div>Montant:{{item.data.montant}}</div><br>
+                        <div>Police: {{item.data.police}}</div><br>
+                        <div>Numéro Facture: {{item.data.num_facture}}</div><br>
+                      </div>
+                      <div *ngIf="item.data.operation==5">
+                        <div>Telephone:{{item.data.telephone}}</div><br>
+                        <div>Numero Compte: {{item.data.compte}}</div><br>
+                        <div>Montant: {{item.data.montant}}</div><br>
+                      </div>
+    
+                    </div>
+                    <div *ngIf="item.data.operateur==9">
+                      <div *ngIf="item.etats.errorCode!='*'" [ngStyle]="{'color':item.etats.errorCode==1?'green':'red' , 'font-weight': 'bold' }">
+                        {{retrieveOperationInfo(item)}}
+                      </div>
+                      <div>Numero :{{item.data.numero}}</div><br/>
+                      <div>Montant :{{item.data.montant}}</div>
+                    </div>
+                    
+                    
+                  </ng-template>
+            </div>
+        </div>
+        
+    </div>
 </div>
+
 <div style="font-family:'caviar dreams bold';" bsModal #waitingmodal="bs-modal"  class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content" style="background-color: #f39200; color: white;">

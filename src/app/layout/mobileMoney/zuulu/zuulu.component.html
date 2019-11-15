@@ -4,20 +4,17 @@
     <div>
     </div>
     <img mat-card-image src="assets/images/zp.jpg" style="max-width: 10rem;margin-top: 1rem;"></h1> 
-    <div class="row" style="margin-left: 16rem;">
-        <div >
-           <a class="mat-raised-button myButton" (click)="loadOperation('depotagent')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Depot agent</a> 
-        </div>
-        <div >
-           <a class="mat-raised-button myButton" (click)="loadOperation('depotclient')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Depot Client</a> 
-        </div>
-        <div >
-           <a class="mat-raised-button myButton" (click)="loadOperation('transfertcode')" style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Transfert par code</a> 
-        </div>
-        <div >
-           <a class="mat-raised-button myButton" (click)="loadOperation('retrait')" style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Retrait</a> 
-        </div>
-     </div>
+    
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div fxFlex style="text-align: center;">
+                <a class="mat-raised-button myButton" (click)="loadOperation('depotagent')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Depot agent</a> 
+                <a class="mat-raised-button myButton" (click)="loadOperation('depotclient')"  style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Depot Client</a> 
+                <a class="mat-raised-button myButton" (click)="loadOperation('transfertcode')" style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Transfert par code</a> 
+                <a class="mat-raised-button myButton" (click)="loadOperation('retrait')" style="margin-top: 1rem;background-color: #337ab7;color: white;margin-left: 1rem;"  mat-raised-button> Retrait</a> 
+
+            </div>
+    </div>
+       
   </div>
   <div class="panel panel-bady">
       

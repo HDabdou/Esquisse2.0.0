@@ -10,6 +10,11 @@ import { EMoneyService } from '../service/e-money.service';
 import { WizallService } from '../service/wizall.service';
 import { AirtimeService } from '../service/airtime.service';
 import { CanalService } from '../service/canal.service';
+import { FactureService } from '../service/facture.service';
+import { TntService } from '../service/tnt.service';
+import { TarifsService } from '../service/tarifs.service';
+import { PosteCashComponent } from './mobileMoney/poste-cash/poste-cash.component';
+import { PosteCashService } from '../service/poste-cash.service';
 
 @Component({
     selector: 'app-layout',
@@ -22,6 +27,7 @@ export class LayoutComponent implements OnInit {
     data:any;
     indexOp:number=0;
     quinzeMinutes = 900000;
+    dataImpression:any;
      // om:OrangeMoneyComponent;
  
      @ViewChild('waitingmodal') public waitingmodal:ModalDirective;
@@ -1286,6 +1292,647 @@ retraitEmoney(objet:any){
       }
     });
   }
+
+  payerCanalRec(objet){
+    
+    let infosClient = {'operation':'CANAL Recrutement', 'nomclient': objet.data.nomclient, 'prenom' : objet.data.prenom, 'tel': objet.data.tel, 'numAbo': objet.data.numAbo, 'numDec' : objet.data.numDec, 'numCarte' : objet.data.numCarte, 'formule': objet.data.formule, 'montant' : objet.data.montant, 'nbreMois' : objet.data.nbreMois, 'charme' : objet.data.charme, 'pvd' : objet.data.pvd, 'ecranII' : objet.data.deuxiemeEcran} ;
+    
+    //console.log(infosClient) ;
+
+    let infosToSend = JSON.stringify(infosClient) ;
+
+    this._canalService.payer(infosToSend).then(response =>{
+      console.log(response._body);
+      if(response._body==1){
+        objet.etats.etat=true;
+        objet.etats.load='terminated';
+        objet.etats.color='green';
+      }else{
+          objet.etats.etat=true;
+          objet.etats.load='terminated';
+          objet.etats.color='red';
+          objet.etats.errorCode='*';
+      }
+    });
+  }
+  /**=====================================================
+   * *****************Facture*****************************
+   * ==================================================
+   */
+  validerpaimentsenelec(objet){
+		this._facturierService.validerpaimentsenelec(objet.data.police,objet.data.num_facture,objet.data.montant,objet.data.telephone).then(reponse =>{
+      console.log(reponse);
+      let tontou=reponse["_body"].trim();
+      if(tontou=="0"){
+        objet.etats.etat=true;
+        objet.etats.load='terminated';
+        objet.etats.color='red';
+        objet.etats.errorCode="Vous n'etes pas autorise a effectue cette transaction.";
+      }else{
+      setTimeout(()=>{
+        this._facturierService.getReponse(tontou).then(rep =>{
+          let Tontou=rep["_body"].trim();
+          if(Tontou!="no"){
+            switch(parseInt(Tontou)){
+              case 200:{
+                objet.dataI = {
+                  apiservice:'facturier',
+                  service:'senelec',
+                  infotransaction:{
+                    client:{
+                      transactionApi: "y-y-y-y",
+                      transactionBBS: 'x-x-x-x',
+                      police: objet.data.police,
+                      numfacture: objet.data.num_facture,
+                      client: "",
+                      montant: objet.data.montant,
+                      dateecheance: objet.data.echeance,
+                    },
+
+                  },
+                }
+                objet.etats.etat=true;
+                objet.etats.load='terminated';
+                objet.etats.color='green';
+                this.updateCaution();
+                break;
+
+              }
+              case 400:{
+                objet.etats.errorCode = "Votre requête n'a pas pu être traitée correctement. Veulliez reessayer plus tard.";
+                objet.etats.etat=true;
+                objet.etats.load='terminated';
+                objet.etats.color='red';
+                break;
+              }
+              case 600:{
+                objet.etats.errorCode = "Numero facture ou reference incorrect";
+                objet.etats.etat=true;
+                objet.etats.load='terminated';
+                objet.etats.color='red';
+                break;
+              }
+              case 700:{
+                objet.etats.errorCode = "Facture deja payée.";
+                objet.etats.etat=true;
+                objet.etats.load='terminated';
+                objet.etats.color='red';
+                break;
+              }
+              case 800:{
+                objet.etats.color='orange';
+								objet.etats.errorCode='Votre requete est en cour de traitement veuillez patienter svp.';
+								break;
+              }
+              default :{
+                break;
+              }
+
+            }
+
+          }else{
+            let nb=0;
+            let timer=setInterval(()=>{
+              if(nb<15){
+                nb++;
+              this._facturierService.getReponse(tontou).then(rep =>{
+                let t=rep["_body"].trim();
+                if(t!="no"){
+                  switch(parseInt(t)){
+                    case 200:{
+                      objet.dataI = {
+                        apiservice:'facturier',
+                        service:'senelec',
+                        infotransaction:{
+                          client:{
+                            transactionApi: "y-y-y-y",
+                            transactionBBS: 'x-x-x-x',
+                            police: objet.data.police,
+                            numfacture: objet.data.num_facture,
+                            client: "",
+                            montant: objet.data.montant,
+                            dateecheance: objet.data.echeance,
+                          },
+
+                        },
+                      }
+                      objet.etats.etat=true;
+                      objet.etats.load='terminated';
+                      objet.etats.color='green';
+                      this.updateCaution();
+                      clearInterval(timer);
+                      break;
+                    }
+                    case 400:{
+                      objet.etats.errorCode = "Votre requête n'a pas pu être traitée correctement. Veulliez reessayer plus tard.";
+                      objet.etats.etat=true;
+                      objet.etats.load='terminated';
+                      objet.etats.color='red';
+                      clearInterval(timer);
+                      break;
+                    }
+                    case 600:{
+                      objet.etats.errorCode = "Numero facture ou reference incorrect";
+                      objet.etats.etat=true;
+                      objet.etats.load='terminated';
+                      objet.etats.color='red';
+                      clearInterval(timer);
+                      break;
+                    }
+                    case 700:{
+                      objet.etats.errorCode = "Facture deja payée.";
+                      objet.etats.etat=true;
+                      objet.etats.load='terminated';
+                      objet.etats.color='red';
+                      clearInterval(timer);
+                      break;
+                    }
+                    case 800:{
+                      objet.etats.color='orange';
+                      objet.etats.errorCode='Votre requete est en cour de traitement veuillez patienter svp.';
+                      clearInterval(timer);
+                      break;
+                    }
+                    default :{
+                      break;
+                    }
+
+                  }
+
+                }
+
+              });
+
+            }else{
+              this._facturierService.annulation(tontou).then(rep =>{
+                let serverRep=rep["_body"].trim();
+                console.log(serverRep);
+                if(serverRep=="ko"){
+                  objet.etats.errorCode = "Operation annule.";
+                  objet.etats.etat=true;
+                  objet.etats.load='terminated';
+                  objet.etats.color='red';
+                  clearInterval(timer);
+                }else{
+                  if(serverRep=="200"){
+                    objet.etats.etat=true;
+                    objet.etats.load='terminated';
+                    objet.etats.color='green';
+                    clearInterval(timer);
+                  }
+                }
+              });
+
+            }
+           },10000);
+          }
+        });
+      },30000);
+     }
+		});
+   }
+   validerwoyofal(objet){
+    console.log('nns');
+     this._facturierService.validerwoyofal(objet.data.montant, objet.data.compteur,objet.data.telephone,'').then(response =>{
+       console.log(response) ;
+       if(typeof response !== 'object') {
+         objet.etats.errorCode = "Votre requête n'a pas pu être traitée correctement. Merci de contacter le service client."
+         objet.etats.etat=true;
+         objet.etats.load='terminated';
+         objet.etats.color='red';
+       }
+       else if( (typeof response.errorCode != "undefined") && response.errorCode == "0" && response.errorMessage == ""){
+         objet.dataI = {
+           apiservice:'facturier',
+           service:'achatcodewayafal',
+           infotransaction:{
+             client:{
+               transactionPostCash: response.transactionId,
+               transactionBBS: 'x-x-x-x',
+               codewoyafal: response.code,
+               montant: objet.data.montant,
+               compteur: objet.data.compteur,
+             },
+           },
+         };
+         objet.etats.etat=true;
+         objet.etats.load='terminated';
+         objet.etats.color='green';
+         this.updateCaution();
+       }
+       else if(typeof response.errorMessage == "string"){
+         objet.etats.errorCode = response.errorMessage
+         objet.etats.etat=true;
+         objet.etats.load='terminated';
+         objet.etats.color='red';
+       }
+       else{
+         objet.etats.errorCode = "Votre requête n'a pas pu être traitée correctement. Merci de contacter le service client."
+         objet.etats.etat=true;
+         objet.etats.load='terminated';
+         objet.etats.color='red';
+       }
+     }).catch(response => {
+       console.log(response);
+       objet.etats.errorCode = response;
+       objet.etats.etat=true;
+       objet.etats.load='terminated';
+       objet.etats.color='red';
+     });
+   }
+   payeroolusolar(objet){
+    this._facturierService.payeroolusolar("00221"+objet.data.telephone.toString(),objet.data.compte,objet.data.montant).then(response =>{
+      console.log(response);
+      let Response = JSON.parse(response);
+      console.log(Response);
+
+      if(Response.errorCode==0){
+          objet.etats.etat=true;
+          objet.etats.load='terminated';
+          objet.etats.color='green';
+          this.updateCaution();
+      }else{
+          objet.etats.etat=true;
+          objet.etats.load='terminated';
+          objet.etats.color='red';
+          objet.etats.errorCode=Response.errorMessage;
+      }
+    });
+  }
+  validerrapido(objet){
+    console.log(objet);
+    this._facturierService.validerrapido(objet.data.numclient,objet.data.montant,objet.data.badge).then(response =>{
+      console.log(response);
+      if(typeof response !== 'object') {
+        objet.etats.errorCode = "Votre requête n'a pas pu être traitée correctement. Merci de contacter le service client."
+        objet.etats.etat=true;
+        objet.etats.load='terminated';
+        objet.etats.color='red';
+      }
+      else if(response.errorCode==0){
+        objet.etats.etat=true;
+        objet.etats.load='terminated';
+        objet.etats.color='green';
+        this.updateCaution();
+        this.dataImpression = {
+          apiservice:'facturier',
+          service:'rapido',
+          infotransaction:{
+            client:{
+              transactionBBS: 'x-x-x-x',
+              badge: objet.data.badge,
+              numclient: objet.data.numclient,
+              montant: objet.data.montant,
+              transactionID:response.transactionid
+            },
+
+          },
+        }
+        sessionStorage.setItem('dataImpression', JSON.stringify(this.dataImpression));
+      }else{
+        objet.etats.errorCode = "Votre requête n'a pas pu être traitée correctement. Merci de contacter le service client."
+        objet.etats.etat=true;
+        objet.etats.load='terminated';
+        objet.etats.color='red';
+      }
+    }).catch(response => {
+      console.log(response);
+      objet.etats.errorCode = response;
+      objet.etats.etat=true;
+      objet.etats.load='terminated';
+      objet.etats.color='red';
+    });
+  }
+  paiemantsde(objet){
+    this._facturierService.paimentsde(objet.data.reference_client,objet.data.telephone,objet.data.reference_facture,objet.data.montant).then( resp =>{
+      console.log("********************************************************");
+      let serverResponse=resp["_body"].trim();
+    if(serverResponse=="0"){
+      objet.etats.etat=true;
+      objet.etats.load='terminated';
+      objet.etats.color='red';
+      objet.etats.errorCode="Vous n'etes pas autorise a effectue cette transaction.";
+    }else{
+      setTimeout(()=>{
+		this._facturierService.getReponse(serverResponse).then(tontou =>{
+			let TonTou=tontou["_body"].trim();
+			if(TonTou!="no"){
+					switch(parseInt(TonTou)){
+						case 200:{
+							let donnees=TonTou.split("#");
+							objet.dataI = {
+							apiservice:'facturier',
+							service:'sde',
+							infotransaction:{
+							client:{
+							  transactionApi: 256665,
+							  transactionBBS: 'x-x-x-x',
+							  reference_client: objet.data.reference_client,
+							  reference_facture: objet.data.reference_facture,
+							  client: "",
+							  date_echeance: objet.data.echeance,
+							  montant: objet.data.montant,
+							 },
+
+							},
+						   };
+							objet.etats.etat=true;
+							objet.etats.load='terminated';
+							objet.etats.color='green';
+							this.updateCaution();
+							break;
+						}
+						case 400:{
+							objet.etats.errorCode = "Votre requête n'a pas pu être traitée correctement. Veulliez reessayer plus tard."
+							objet.etats.etat=true;
+							objet.etats.load='terminated';
+							objet.etats.color='red';
+							break;
+						}
+						case 600:{
+							objet.etats.errorCode = "Numero facture ou reference incorrect"
+							objet.etats.etat=true;
+							objet.etats.load='terminated';
+							objet.etats.color='red';
+							break;
+						}
+						case 700:{
+							objet.etats.errorCode = "Facture deja payée."
+							objet.etats.etat=true;
+							objet.etats.load='terminated';
+							objet.etats.color='red';
+							break;
+						}
+						case 800:{
+						    objet.etats.color='orange';
+						    objet.etats.errorCode='Votre requete est en cour de traitement veuillez patienter svp.';
+							break;
+						}
+						default :{
+							break;
+						}
+					}
+			}else{
+          let nb=0;
+			     let timer=setInterval(()=>{
+             if(nb<15){
+                this._facturierService.getReponse(serverResponse).then(reponse =>{
+                  let rep=reponse["_body"].trim();
+                  if(rep!="no"){
+                    switch(parseInt(rep)){
+                      case 200:{
+                        //let donnees=TonTou.split("#");
+                        objet.dataI = {
+                        apiservice:'facturier',
+                        service:'sde',
+                        infotransaction:{
+                        client:{
+                          transactionApi: 256665,
+                          transactionBBS: 'x-x-x-x',
+                          reference_client: objet.data.reference_client,
+                          reference_facture: objet.data.reference_facture,
+                          client: "bbs invest",
+                          date_echeance: objet.data.echeance,
+                          montant: objet.data.montant,
+                        },
+
+                        },
+                        };
+                        objet.etats.etat=true;
+                        objet.etats.load='terminated';
+                        objet.etats.color='green';
+                        this.updateCaution();
+                        clearInterval(timer);
+                        break;
+
+                      }
+                      case 400:{
+                        objet.etats.errorCode = "Votre requête n'a pas pu être traitée correctement. Veulliez reessayer plus tard."
+                        objet.etats.etat=true;
+                        objet.etats.load='terminated';
+                        objet.etats.color='red';
+                        clearInterval(timer);
+                        break;
+                      }
+                      case 600:{
+                        objet.etats.errorCode = "Numero facture ou reference incorrect"
+                        objet.etats.etat=true;
+                        objet.etats.load='terminated';
+                        objet.etats.color='red';
+                        clearInterval(timer);
+                        break;
+                      }
+                      case 700:{
+                        objet.etats.errorCode = "Facture deja payée."
+                        objet.etats.etat=true;
+                        objet.etats.load='terminated';
+                        objet.etats.color='red';
+                        clearInterval(timer);
+                        break;
+                      }
+                      case 800:{
+                        objet.etats.color='orange';
+                        objet.etats.errorCode='Votre requete est en cour de traitement veuillez patienter svp.';
+                        break;
+                          }
+                      default :{
+                        break;
+                      }
+                }
+
+                  }
+                });
+
+          }else{
+            this._facturierService.annulation(serverResponse).then(rep =>{
+              let serverRep=rep["_body"].trim();
+              console.log(serverRep);
+              if(serverRep=="ko"){
+                objet.etats.errorCode = "Operation annule.";
+                objet.etats.etat=true;
+                objet.etats.load='terminated';
+                objet.etats.color='red';
+                clearInterval(timer);
+              }else{
+                if(serverRep=="200"){
+                  objet.etats.etat=true;
+                  objet.etats.load='terminated';
+                  objet.etats.color='green';
+                  clearInterval(timer);
+                }
+              }
+            });
+          }
+        },5000);
+			}
+
+		});
+      },10000);
+    }
+    }).catch(response => {
+      objet.etats.errorCode = response;
+      objet.etats.etat=true;
+      objet.etats.load='terminated';
+      objet.etats.color='red';
+    });
+
+  }
+  /**================================================
+   * ************************TNT*********************
+   * ===============================================
+   */
+  validnabon(objet:any){
+    this._tntService.abonner(objet.data.token, objet.data.prenom,objet.data.nomclient, objet.data.tel,objet.data.cni, objet.data.chip, objet.data.carte, objet.data.duree, objet.data.typedebouquet).then( response =>
+      {
+
+        let montant:number = 0;
+        let typedebouquet = "" ;
+        console.log(response);
+        
+        response = JSON.parse(response['_body']) ;
+        if(response.response=="ok"){
+
+           objet.etats.etat=true;
+           objet.etats.load='terminated';
+           objet.etats.color='green';
+           this.updateCaution();
+          this._tarifsService.getTarifTntAbon({typedemande:'abonne',typedebouquet:Number(objet.data.typedebouquet),duree:Number(objet.data.duree)})
+            .then(
+              data => {
+                console.log(data);
+                if(data.errorCode){
+                  typedebouquet = data.message.typedebouquetLetter;
+                  montant = data.message.montant
+                }
+                else{
+                  typedebouquet = data.errorMessage;
+                }
+              }),
+              error => console.log(error),
+              () => {
+                objet.dataI = {
+                  apiservice:'tnt',
+                  service:'abonnement',
+                  infotransaction:{
+                    client:{
+                      transactionBBS: response.idtransactionbbs,
+                      prenom:objet.data.prenom,
+                      nom:objet.data.nomclient,
+                      telephone:objet.data.tel,
+                      carte:objet.data.carte,
+                      chip:objet.data.chip,
+                      typebouquet:typedebouquet,
+                      montant: montant,
+                      duree:objet.data.duree
+                    },
+
+                  },
+                }
+              }
+            
+        }else{
+           objet.etats.etat=true;
+           objet.etats.load='terminated';
+           objet.etats.color='red';
+           objet.etats.errorCode='0';
+      }
+
+      });
+
+  }
+  /*==================================================================================
+  *********************************************POSTE CASH============================
+  =====================================================================================*/
+  validrechargementespecePostCash(objet:any){
+
+    let index = this.process.findIndex(
+      item => (item.data.num === objet.data.num && item.data.montant === objet.data.montant && item.data.nom === objet.data.nom
+    ));
+
+    this.process[index].etats.pourcentage = Math.floor(Math.random() * 3) + 1;
+
+    this._postCashService.rechargementespece('00221'+objet.data.telephone+'',''+objet.data.montant).then(postcashwebserviceList => {
+          console.log(postcashwebserviceList);
+
+          if( (typeof postcashwebserviceList.errorCode != "undefined") && postcashwebserviceList.errorCode == "0" && postcashwebserviceList.errorMessage == ""){
+
+          
+          console.log(this.process[index]);
+
+            this.process[index].etats.pourcentage = 5;
+
+            objet.etats.etat=true;
+            objet.etats.load='terminated';
+            objet.etats.color='#36A9E0';
+            this.process[index].etats.pourcentage = 5;
+            objet.dataI = {
+            apiservice:'postecash',
+            service:'rechargementespece',
+
+            infotransaction:{
+              client:{
+                transactionPostCash: postcashwebserviceList.transactionId,
+                transactionBBS: 'Id BBS',
+                telephone:'00221'+objet.data.telephone,
+                montant:objet.data.montant,
+              },
+
+            },
+          } ;
+      }else{
+            objet.etats.etat=true;
+            objet.etats.load='terminated';
+            objet.etats.color='red';
+            this.process[index].etats.pourcentage = 5;
+      }
+    });
+
+  }
+  validateachatjula(objet:any){
+    let index = this.process.findIndex(
+      item => (item.data.mt_carte === objet.data.mt_carte && item.data.mt_carte === objet.data.mt_carte && item.data.nom === objet.data.nom
+    ));
+
+    this.process[index].etats.pourcentage = Math.floor(Math.random() * 3) + 1  ;
+
+    
+     this._postCashService.achatjula(objet.data.mt_carte+'',objet.data.nb_carte+'').then(postcashwebserviceList => {
+      
+
+        if( (typeof postcashwebserviceList.errorCode != "undefined") && postcashwebserviceList.errorCode == "0" && postcashwebserviceList.errorMessage == ""){
+        
+         this.process[index].etats.pourcentage = 5;
+        
+         let mt_carte = objet.data.nb_carte * objet.data.mt_carte ;
+         objet.dataI = {
+         
+
+              apiservice:'postecash',
+              service:'achatjula',
+              infotransaction:{
+                client:{
+                  transactionPostCash: postcashwebserviceList.transactionId,
+                  transactionBBS: 'id BBS',
+                  typecarte:objet.data.mt_carte,
+                  nbcarte:objet.data.nb_carte,
+                  montant:mt_carte,
+                },
+
+              },
+            }
+         objet.etats.etat=true;
+         objet.etats.load='terminated';
+         objet.etats.color='red';
+        }else{
+             objet.etats.etat=true;
+             objet.etats.load='terminated';
+             objet.etats.color='#36A9E0';
+
+             this.process[index].etats.pourcentage = 5;
+        }
+      });
+
+  }
   myData(data){
     //console.log(data);
     let infoOperation:any;
@@ -1294,6 +1941,29 @@ retraitEmoney(objet:any){
       let sesion={'data':data,'etats':infoOperation,'dataI':''};
       console.log(sesion);
       let operateur=sesion.data.operateur;
+      if(operateur==1){
+      let operation=sesion.data.operation;
+      this.process.push(sesion);
+      switch(operation){
+        case 1:{
+              this.validrechargementespecePostCash(sesion);
+              break;
+        }
+        case 2:{
+              this.validateachatjula(sesion);
+              break;
+        }
+        case 3:{
+             // this.validatedetailfacturesenelec(sesion);
+              break;
+        }
+        case 4:{
+             // this.validateachatcodewoyofal(sesion);
+              break;
+        }
+        default:break;
+      }
+      }
       if(operateur==2){
       let operation=sesion.data.operation;
       this.process.push(sesion);
@@ -1349,18 +2019,43 @@ retraitEmoney(objet:any){
           default :break;
         }
       }
+      if(operateur==4){
+        let operation=sesion.data.operation;
+        this.process.push(sesion);
+        switch(operation){
+          case 1:{
+              this.validnabon(sesion);
+                break;
+                }
+          case 2:{
+                this.retirertc(sesion);
+                break;
+          }
+          case 5:{
+                  // this.creditIZItc(sesion) ;
+                  console.log(sesion);
+                  
+                  break ;
+                }
+          case 6:{
+                this.retraitaveccodetc(sesion) ;
+                break ;
+                }
+          default :break;
+        }
+      }
       if(operateur==7){
         let operation=sesion.data.operation;
         this.process.push(sesion);
         switch(operation){
           case 1:{
             //this.cashInEmoney(sesion);
-           // this.depotEmoney(sesion);
+               this.depotEmoney(sesion);
                 break;
           }
           case 2:{
             // this.cashOutEmoney(sesion);
-            //this.retraitEmoney(sesion);
+            this.retraitEmoney(sesion);
               break;
           }
           case 3:{
@@ -1369,6 +2064,39 @@ retraitEmoney(objet:any){
           }
           default : break;
           }
+      
+      }
+      if(operateur==8){
+        let operation=sesion.data.operation;
+        this.process.push(sesion);
+        switch(operation){
+          case 1:{
+            console.log(sesion);
+               this.paiemantsde(sesion);
+               break;
+          }
+          case 2:{
+            console.log(sesion);
+              this.validerrapido(sesion);
+              break;
+          }
+          case 3:{
+            console.log(sesion);
+              this.validerwoyofal(sesion);
+              break;
+          }
+          case 4:{
+              console.log(sesion);
+              this.validerpaimentsenelec(sesion);
+              break;
+          }
+          case 5:{
+
+              //this.payeroolusolar(sesion);
+              break;
+          }
+          default : break;
+      }
       
       }
       if(operateur==6){
@@ -1417,12 +2145,18 @@ retraitEmoney(objet:any){
         
          this.payerCanalReab(sesion);
      }
+     if(sesion.data.operation==2){
+       console.log(sesion);
+       
+        this.payerCanalRec(sesion);
+    }
+
      }
     }
   console.log("youpi");
     
   }
-    constructor(private _canalService:CanalService, private airtimeService:AirtimeService ,private _wizallService:WizallService ,private Emservice:EMoneyService ,private _tcService:FreeMoneyService,private dataService:SendDataService,private _omService:OrangeMoneyService,private modalService: BsModalService) {
+    constructor(private _postCashService:PosteCashService ,private _tarifsService:TarifsService, private _tntService:TntService ,private _facturierService:FactureService ,private _canalService:CanalService, private airtimeService:AirtimeService ,private _wizallService:WizallService ,private Emservice:EMoneyService ,private _tcService:FreeMoneyService,private dataService:SendDataService,private _omService:OrangeMoneyService,private modalService: BsModalService) {
       this.subscription = this.dataService.getData().subscribe(rep =>{
         this.data =rep;
         this.myData(this.data);  
