@@ -6,10 +6,10 @@
     
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div fxFlex style="text-align: center;">
-            <a class="mat-raised-button myButton" (click)="loadOperation('rechargeEspece')"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Recharge Espece</a> 
-            <a class="mat-raised-button myButton" (click)="loadOperation('achatJula')"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Achat Jula</a> 
-            <a class="mat-raised-button myButton" (click)="loadOperation('retraitEspece')" style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Retrait Espece</a> 
-            <a class="mat-raised-button myButton" (click)="loadOperation('debiterCarte')" style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Debiter carte</a> 
+            <a class="mat-raised-button myButton" (click)="loadOperation('rechargeEspece');reinitialiser();"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Recharge Espece</a> 
+            <a class="mat-raised-button myButton" (click)="loadOperation('achatJula');reinitialiser()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Achat Jula</a> 
+            <a class="mat-raised-button myButton" (click)="loadOperation('retraitEspece');reinitialiser()" style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Retrait Espece</a> 
+            <a class="mat-raised-button myButton" (click)="loadOperation('debiterCarte');reinitialiser()" style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Debiter carte</a> 
 
           </div>
     </div>
@@ -46,7 +46,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                 <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                     <div fxFlex style="text-align: center;">
-                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="modalRechargementEspece()">Valider</button>
+                        <button mat-raised-button color="primary" [disabled]="!montant && !telephone"  style="background-color: #43a047;" class="w-45" (click)="modalRechargementEspece()">Valider</button>
                         <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                     </div>
                 </div>
@@ -65,27 +65,29 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div fxFlex style="text-align: center;">
                     <mat-form-field class=" w-50 md-form"> 
-                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Nombre De Carte">
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nb_carte" class="w-50"  matInput placeholder="Nombre De Carte">
                     </mat-form-field>
+                    <p class="alert alert-danger" *ngIf="mtcartebool">Nuéro carte Incorrect</p>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div fxFlex style="text-align: center;">
                   <mat-form-field class=" w-50 md-form"> 
                     <mat-label>Montant Carte</mat-label>
-                    <mat-select>
+                    <mat-select [(value)]="montant">
                       <mat-option *ngFor="let food of monatntJula" [value]="food.name">
                         {{food.name}}
                       </mat-option>
                     </mat-select>                        
                     </mat-form-field>
+                    <p class="alert alert-danger" *ngIf="mtcartebool">Montant Incorrect</p>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                   <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                       <div fxFlex style="text-align: center;">
-                          <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                          <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                          <button mat-raised-button color="primary" [disabled]="!nb_carte && !montant"  style="background-color: #43a047;" class="w-45" (click)="modalAchatJULA()">Valider</button>
+                          <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                       </div>
                   </div>
               </div>
@@ -100,29 +102,32 @@
            </div>
            <div fxFlex style="text-align: center;"><h1>Retrait Espèce</h1></div>
 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div fxFlex style="text-align: center;">
-                  <mat-form-field class=" w-50 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Téléphone client">
-                  </mat-form-field>
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div fxFlex style="text-align: center;">
+                <mat-form-field class=" w-50 md-form"> 
+                    <input [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="telephone" class="w-50"  matInput placeholder="Téléphone client">
+                </mat-form-field>
+                <p class="alert alert-danger" *ngIf="telephonebool">Numero Incorrect</p>
+
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div fxFlex style="text-align: center;">
+                <mat-form-field class=" w-50 md-form"> 
+                    <input [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="montant" class="w-50"  matInput placeholder="Montant à recharger">
+                </mat-form-field>
+                <p class="alert alert-danger" *ngIf="montantbool">Montant Incorrect</p>
+
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+              <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                  <div fxFlex style="text-align: center;">
+                      <button mat-raised-button color="primary" [disabled]="!montant && !telephone"  style="background-color: #43a047;" class="w-45" (click)="modalretraitcarte()">Valider</button>
+                      <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
+                  </div>
               </div>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div fxFlex style="text-align: center;">
-                  <mat-form-field class=" w-50 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom" class="w-50"  matInput placeholder="Montant à recharger">
-                  </mat-form-field>
-              </div>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-                <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
-                    <div fxFlex style="text-align: center;">
-                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                        <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
-                    </div>
-                </div>
-            </div>
-           
+          </div>
         </div>
       </form>
       <form *ngIf="operation == 'debiterCarte'" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;" >
@@ -133,29 +138,32 @@
            </div>
            <div fxFlex style="text-align: center;"><h1>Debiter Carte</h1></div>
 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div fxFlex style="text-align: center;">
-                  <mat-form-field class=" w-50 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom" class="w-50"  matInput placeholder="Téléphone client">
-                  </mat-form-field>
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div fxFlex style="text-align: center;">
+                <mat-form-field class=" w-50 md-form"> 
+                    <input [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="telephone" class="w-50"  matInput placeholder="Téléphone client">
+                </mat-form-field>
+                <p class="alert alert-danger" *ngIf="telephonebool">Numero Incorrect</p>
+
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div fxFlex style="text-align: center;">
+                <mat-form-field class=" w-50 md-form"> 
+                    <input [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="montant" class="w-50"  matInput placeholder="Montant à recharger">
+                </mat-form-field>
+                <p class="alert alert-danger" *ngIf="montantbool">Montant Incorrect</p>
+
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+              <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+                  <div fxFlex style="text-align: center;">
+                      <button mat-raised-button color="primary" [disabled]="!montant && !telephone"  style="background-color: #43a047;" class="w-45" (click)="modalRechargementEspece()">Valider</button>
+                      <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
+                  </div>
               </div>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div fxFlex style="text-align: center;">
-                  <mat-form-field class=" w-50 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom" class="w-50"  matInput placeholder="Montant à recharger">
-                  </mat-form-field>
-              </div>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-                <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
-                    <div fxFlex style="text-align: center;">
-                        <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                        <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
-                    </div>
-                </div>
-            </div>
-           
+          </div>
         </div>
       </form>
   </div>
@@ -166,28 +174,104 @@
     <div class="modal-dialog modal-sm">
        <div class="modal-content" >
          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Rechargement Espece POSTECASH.</h4>
+          <h4 class="modal-title" *ngIf=" operation == 'rechargeEspece'" id="myModalLabel">Rechargement Espece POSTECASH.</h4>
+          <h4 class="modal-title" *ngIf=" operation == 'achatJula'" id="myModalLabel">Achat JULA.</h4>
+          <h4 class="modal-title" *ngIf=" operation == 'retraitEspece'" id="myModalLabel">Retrait Espèce .</h4>
+          <h4 class="modal-title" *ngIf=" operation == 'debiterCarte'" id="myModalLabel">Debiter Carte.</h4>
 
            <button type="button" class="close pull-right" aria-label="Close" (click)="hidemodalRechargementEspece()">
            <span aria-hidden="true">&times;</span>
            </button>
          </div>
          <div class="modal-body">
-            <div>
-              <form class="form">
-                <div class="form-group">
-                  <label >numero client : {{this.telephone}}</label>
-                </div>
-                <div class="form-group">
-                  <label >montant : {{this.montant}}</label>
-                </div>
-              </form>
-            </div>
+          <div *ngIf=" operation == 'rechargeEspece'">
+            <form class="form">
+              <div class="form-group">
+                <label >numero client : {{this.telephone}}</label>
+              </div>
+              <div class="form-group">
+                <label >montant : {{this.montant}}</label>
+              </div>
+            </form>
+          </div>
+          <div *ngIf=" operation == 'retraitEspece'">
+            <form class="form">
+              <div class="form-group">
+                <label >numero client : {{this.telephone}}</label>
+              </div>
+              <div class="form-group">
+                <label >montant : {{this.montant}}</label>
+              </div>
+            </form>
+          </div>
+          <div *ngIf=" operation == 'debiterCarte'">
+            <form class="form">
+              <div class="form-group">
+                <label >numero client : {{this.telephone}}</label>
+              </div>
+              <div class="form-group">
+                <label >montant : {{this.montant}}</label>
+              </div>
+            </form>
+          </div>
+          <div *ngIf=" operation == 'achatJula'">
+            <form class="form">
+              <div class="form-group">
+                <label >numero Carte : {{this.nb_carte}}</label>
+              </div>
+              <div class="form-group">
+                <label >montant : {{this.montant}}</label>
+              </div>
+            </form>
+          </div>
           </div>
         <div class="modal-footer">
-          <input type="button" value="valider"  (click)="validrechargementespece()" class="btn btn-success" />
+          <input type="button" value="valider" *ngIf=" operation == 'rechargeEspece'"  (click)="validrechargementespece()" class="btn btn-success" />
+          <input type="button" value="valider" *ngIf=" operation == 'achatJula'" (click)="validAchatJULA()" class="btn btn-success" />
+          <input type="button" value="valider" *ngIf=" operation == 'retraitEspece'" (click)="validretraitEspece()" class="btn btn-success" />
+          <input type="button" value="valider" *ngIf=" operation == 'debiterCarte'" (click)="validdebiterCarte()" class="btn btn-success" />
           <input type="button" value="fermer" (click)="hidemodalRechargementEspece()" class="btn btn-danger" />
         </div>
      </div>
     </div>
+</div>
+
+<div bsModal #retraitecarte="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabelretraitespece" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" >
+        <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="hidmodalretraitecarte()">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Retrait Sur Carte POSTECASH.</h4>
+        </div>
+        <div class="modal-body">
+            <h5 style="font-family: 'caviar dreams bold';" *ngIf="this.erreur">
+                Désolé! Votre requête n'a pas pu être traitée.<b style="color : red">{{errorMessage}}</b>
+            </h5>
+            <div class="form-group row" *ngIf="codevaliadtion" >
+                <label for="codevalidation" class="col-sm-3 col-form-label">Code de validation</label>
+                <div class="col-sm-8">
+                  <input type="number" [(ngModel)]="this.codevalidation"   name="codevalidation" id="codevalidation" class="form-control" placeholder="Code de validation" required>
+                </div>
+            </div>
+            <p class="alert alert-danger" *ngIf="!codevaliadtion">Code de validation Incorrect</p>
+        </div>
+        <div class="modal-footer">
+            <input type="button" *ngIf="codevaliadtion" value="valider"  (click)="validatedebitercarte()" class="btn btn-success" />
+            <input type="button" value="fermer" (click)="hidemodalretraitcarte()" class="btn btn-danger" />
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="loading" style="position: absolute ; left: 15%; top:25%; min-width: 100rem ; min-height: 40rem ;text-align: -webkit-center; padding-top: 10%; z-index:1000; background-color: white; opacity: 0.4;">
+  <div class="loader">
+      <div class="ball-pulse">
+      <div></div>
+      <div></div>
+      <div></div>
+      </div>
+  </div>
 </div>

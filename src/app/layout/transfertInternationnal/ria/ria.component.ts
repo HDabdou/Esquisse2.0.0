@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { StylesCompileDependency } from '@angular/compiler';
+import { TransfertInternatinnalService } from 'src/app/service/transfert-internatinnal.service';
 
 @Component({
   selector: 'app-ria',
@@ -7,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RiaComponent implements OnInit {
 
+  codeRetrait:string;
   etapeEnvoie:number=1;
   operation:string;
   typeEnvoie:string="";
@@ -22,9 +25,23 @@ export class RiaComponent implements OnInit {
     this.etapeEnvoie = this.etapeEnvoie -1;
   }
 
-  constructor() { }
-
+  recherche(){
+    this._transfertIService.initSession().then(res =>{
+      console.log(res);
+      
+    })
+  }
+  constructor(private _transfertIService:TransfertInternatinnalService) { }
+  listPays :any =[];
   ngOnInit() {
+    var countries = require('country-data').countries;
+    this.listPays = countries.all;
+    console.log(countries);
+    console.log(this.listPays);
+
+    
+    
+
   }
 
 }
