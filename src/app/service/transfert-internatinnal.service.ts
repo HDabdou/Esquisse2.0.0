@@ -18,6 +18,7 @@ constructor(private http:Http) {
  }
 
 public initSession(): Promise<any>  {
+  
   let reEspParams = {token:this.token} ;
   console.log(reEspParams)
   let params="params="+JSON.stringify(reEspParams);
@@ -25,5 +26,32 @@ public initSession(): Promise<any>  {
   return  this.http.post(link,params,{headers:this.headers}).toPromise().then( res =>{console.log(res);return res} ).catch(error => {return 'bad' });
  
 }
+public searchByCode(codeRetrait,correspondant): Promise<any>  {
+  
+  let requestParam = {token:this.token,codetransaction:codeRetrait,correspondant:correspondant} ;
+  console.log(requestParam)
+  let params="params="+JSON.stringify(requestParam);
+  let link=this.link+"/brm_backend/search";
+  return  this.http.post(link,params,{headers:this.headers}).toPromise().then( res =>{console.log(res);return res} ).catch(error => {return 'bad' });
+ 
+}
+public payTransfert(codeRetrait,correspondant,numerotransaction,typedepiece,numeropiece): Promise<any>  {
+  
+  let requestParam = {token:this.token,codetransaction:codeRetrait,correspondant:correspondant,numerotransaction:numerotransaction,typedepiece:typedepiece,numeropiece:numeropiece} ;
+  console.log(requestParam)
+  let params="params="+JSON.stringify(requestParam);
+  let link=this.link+"/brm_backend/pay";
+  return  this.http.post(link,params,{headers:this.headers}).toPromise().then( res =>{console.log(res);return res} ).catch(error => {return 'bad' });
+ 
+}
 
+public send(data,correspondant): Promise<any>  {
+  
+  let requestParam = {token:this.token,data:data,correspondant:correspondant} ;
+  console.log(requestParam)
+  let params="params="+JSON.stringify(requestParam);
+  let link=this.link+"/brm_backend/send";
+  return  this.http.post(link,params,{headers:this.headers}).toPromise().then( res =>{console.log(res);return res} ).catch(error => {return 'bad' });
+ 
+}
 }

@@ -3,7 +3,7 @@
 <app-sidebar></app-sidebar>
 <div class="main-container" style="padding: 0 !important;">
     <router-outlet></router-outlet>
-    <div *ngIf="process.length > 0" class="panel" style="background-color: white;margin-bottom: 0%;position: fixed;width: 100%;margin-top: 38rem;height: 4rem;background-size: 400px;bottom: 0;">
+    <div *ngIf="process.length > 0" class="panel" style="background-color: white;margin-bottom: 0%;position: fixed;width: 100%;margin-top: 38rem;height: 4rem;background-size: 400px;bottom: 0;overflow: scroll;">
         <div class="row">
             <div class="col-md-2 col-lg-2 col-xs-3 col-sm-3"  style="margin-left: 1.5rem;" *ngFor="let item of process">
                 <div  (click)="finprocess(item,item.dataI)" [ngStyle]="{'background-color':item.data.operateur==5?'orange':item.etats.color}"
