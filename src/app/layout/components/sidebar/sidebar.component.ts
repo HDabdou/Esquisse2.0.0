@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MasterServiceService } from 'src/app/service/master-service.service';
+import { Subscription } from 'rxjs';
+import { SendDataService } from 'src/app/service/send-data.service';
+import { UtilsService } from 'src/app/service/utils.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -8,11 +11,24 @@ import { MasterServiceService } from 'src/app/service/master-service.service';
 })
 export class SidebarComponent implements OnInit {
     public showMenu: string;
+    subscription : Subscription;
     solde:any;
-    constructor(private _masterService:MasterServiceService) {}
+    data:any;
+    constructor(private _masterService:MasterServiceService,private dataService:SendDataService,private _utilsService:UtilsService) {
+        this.subscription = this.dataService.getData().subscribe(rep =>{
+            this.data =rep;
+            console.log(rep);
+            
+            this.updateCaution(this.subscription);  
+        });
+        //console.log("fi la ko beugué");
+    }
+    updateCaution(soldeN){
+        this.solde = soldeN;
+    } 
     getSolde(){
-        this._masterService.getSolde().then(res =>{
-           this.solde = res['caution']
+        this._utilsService.checkCaution().then(res =>{
+            this.solde =parseInt(res['_body'].split('"')[1]);
             
         })
     }
@@ -21,8 +37,12 @@ export class SidebarComponent implements OnInit {
       }
     ngOnInit() {
         this.showMenu = '';
-        this._masterService.getSolde().then(res =>{
-            this.solde = res['caution']
+        this._utilsService.checkCaution().then(res =>{
+            console.log(res['_body'].split('"')[1]);
+            console.log(parseInt(res['_body'].split('"')[1]));
+            
+            this.solde =parseInt(res['_body'].split('"')[1]);
+            console.log(this.solde);
             
         })
     }

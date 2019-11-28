@@ -28,6 +28,8 @@ import { AirtimeComponent } from './airtime/airtime.component';
 import { SeddoComponent } from './venteCredit/seddo/seddo.component';
 import { IziComponent } from './venteCredit/izi/izi.component';
 import { YakalmaComponent } from './venteCredit/yakalma/yakalma.component';
+import { ImpressionComponent } from './impression/impression.component';
+import { GestionReportingComponent } from './gestion-reporting/gestion-reporting.component';
 
 const routes: Routes = [
     { path: '', component: LayoutComponent,
@@ -143,6 +145,14 @@ const routes: Routes = [
             {
                 path: 'yakalma',
                 component:YakalmaComponent
+            },
+            {
+                path: 'impression',
+                component:ImpressionComponent
+            },
+            {
+                path: 'gestionreporting',
+                component:GestionReportingComponent
             }
         ]
     }

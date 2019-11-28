@@ -7,10 +7,10 @@
     </div>
     <span class="nav-spacer"></span>
    
-    <button class="hidden-sm" mat-icon-button [matMenuTriggerFor]="language">
-        <mat-icon>language</mat-icon>
+    <button  mat-icon-button title="gestion reporting" [routerLinkActive]="'active'" [routerLink]="['/gestionreporting']" >
+        <mat-icon>assessment</mat-icon>
     </button>
-    <mat-menu #language="matMenu">
+    <!--<mat-menu #language="matMenu">
         <button mat-menu-item (click)="changeLang('en')">
             <span>{{ 'English' | translate }}</span>
         </button>
@@ -20,7 +20,7 @@
         <button mat-menu-item (click)="changeLang('ur')">
             <span>{{ 'Urdu' | translate }}s</span>
         </button>
-    </mat-menu>
+    </mat-menu>-->
     <button class="hidden-sm" mat-icon-button [matMenuTriggerFor]="profile">
         <mat-icon>account_circle</mat-icon>
     </button>

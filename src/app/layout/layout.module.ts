@@ -21,7 +21,10 @@ import {
     MatRippleModule,
     MAT_CHECKBOX_CLICK_ACTION,
     MatCheckboxModule,
-    MatSpinner
+    MatSpinner,
+    MatDatepicker,
+    MatDatepickerModule,
+    MatNativeDateModule
 } from '@angular/material';
 import { TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -65,6 +68,8 @@ import { AirtimeComponent } from './airtime/airtime.component';
 import { SeddoComponent } from './venteCredit/seddo/seddo.component';
 import { IziComponent } from './venteCredit/izi/izi.component';
 import { YakalmaComponent } from './venteCredit/yakalma/yakalma.component';
+import { ImpressionComponent } from './impression/impression.component';
+import { GestionReportingComponent } from './gestion-reporting/gestion-reporting.component';
 
 @NgModule({
     imports: [
@@ -95,7 +100,9 @@ import { YakalmaComponent } from './venteCredit/yakalma/yakalma.component';
         TranslateModule,
         PopoverModule.forRoot(),
         MatCheckboxModule,
-        
+        MatDatepickerModule,
+        MatNativeDateModule,
+        //MatDatepicker
 
       
         
@@ -110,7 +117,7 @@ import { YakalmaComponent } from './venteCredit/yakalma/yakalma.component';
     ],
     exports: [
         MatSortModule,],
-    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, PosteCashComponent, SenelecComponent, SdeComponent, WoyofalComponent, RapidoComponent, RiaComponent, WorldRemitComponent, MoneyExchangeComponent, TntComponent, CanalComponent, ZuuluComponent, KashKashComponent, PaiementMarchandComponent, AirtimeComponent, SeddoComponent, IziComponent, YakalmaComponent, ]
+    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, PosteCashComponent, SenelecComponent, SdeComponent, WoyofalComponent, RapidoComponent, RiaComponent, WorldRemitComponent, MoneyExchangeComponent, TntComponent, CanalComponent, ZuuluComponent, KashKashComponent, PaiementMarchandComponent, AirtimeComponent, SeddoComponent, IziComponent, YakalmaComponent, ImpressionComponent, GestionReportingComponent, ]
 
 })
 export class LayoutModule { }

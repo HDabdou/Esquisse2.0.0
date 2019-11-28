@@ -16,6 +16,7 @@ import { TarifsService } from '../service/tarifs.service';
 import { PosteCashComponent } from './mobileMoney/poste-cash/poste-cash.component';
 import { PosteCashService } from '../service/poste-cash.service';
 import { TransfertInternatinnalService } from '../service/transfert-internatinnal.service';
+import { UtilsService } from '../service/utils.service';
 
 @Component({
     selector: 'app-layout',
@@ -29,22 +30,40 @@ export class LayoutComponent implements OnInit {
     indexOp:number=0;
     quinzeMinutes = 900000;
     dataImpression:any;
+    autorisedUser:number = 0;
+    message:string;
+    solde:any;
      // om:OrangeMoneyComponent;
  
      @ViewChild('waitingmodal') public waitingmodal:ModalDirective;
 
    updateCaution(){
     console.log("updateCaution 1");
-   /* if ( this.autorisedUser == 1)
-      this._utilsService.checkCaution().subscribe(
+    console.log("autorisedUser "+this.autorisedUser);
+    if ( this.autorisedUser == 1){
+      this._utilsService.checkCaution().then(res =>{
+        console.log(res['_body'].split('"')[1]);
+        console.log(parseInt(res['_body'].split('"')[1]));
+        
+        this.solde =parseInt(res['_body'].split('"')[1]);
+        console.log(this.solde);
+        this.dataService.sendData(this.solde);
+        console.log(this.solde);
+        this.dataService.clearData();
+        console.log("Le solde vaut "+this.solde) ;
+    })
+    }
+    
+     /* this._utilsService.checkCaution().then(
         data => {
+          console.log(data) ;
           this.solde = data ;
+          this.dataService.sendData(this.solde)
+          this.dataService.clearData();
           console.log("Le solde vaut "+data) ;
         },
         error => alert(error),
-        () => {
-          console.log(3)
-        }
+       
       )*/
   }
    updateOpInLastedFifteen(operation:any,id:number){
@@ -1272,7 +1291,11 @@ retraitEmoney(objet:any){
    */
   payerCanalReab(objet){
     
-    let infosClient = {'operation':'CANAL Réabonnement', 'nomclient': objet.data.nomclient, 'prenom' : objet.data.prenom, 'tel': objet.data.tel, 'numAbo': objet.data.numAbo, 'numDec' : objet.data.numDec, 'numCarte' : objet.data.numCarte, 'formule': objet.data.formule, 'montant' : objet.data.montant, 'nbreMois' : objet.data.nbreMois, 'charme' : objet.data.charme, 'pvd' : objet.data.pvd, 'ecranII' : objet.data.deuxiemeEcran} ;
+    let infosClient = {'operation':'CANAL Réabonnement', 'nomclient': objet.data.nomclient,
+     'prenom' : objet.data.prenom, 'tel': objet.data.tel, 'numAbo': objet.data.numAbo,
+      'numDec' : objet.data.numDec, 'numCarte' : objet.data.numCarte,
+       'formule': objet.data.formule, 'montant' : objet.data.montant, 
+       'nbreMois' : objet.data.nbreMois, 'charme' : objet.data.charme, 'pvd' : objet.data.pvd, 'ecranII' : objet.data.deuxiemeEcran} ;
     
     //console.log(infosClient) ;
 
@@ -1284,19 +1307,41 @@ retraitEmoney(objet:any){
         objet.etats.etat=true;
         objet.etats.load='terminated';
         objet.etats.color='green';
+        objet.etats.errorCode="*";
+        
+        objet.dataI = {
+          apiservice:'canal',
+          service:'reabonnement',
+          infotransaction:{
+            client:{
+              transactionBBS: response.idtransactionbbs,
+              prenom:objet.data.prenom,
+              nom:objet.data.nomclient,
+              telephone:objet.data.tel,
+              carte:objet.data.numCarte,
+              chip:objet.data.numAbo,
+              typebouquet:objet.data.formule,
+              montant: objet.data.montant,
+              duree:objet.data.nbreMois
+            },
+
+          },
+        }
     
       }else{
           objet.etats.etat=true;
           objet.etats.load='terminated';
           objet.etats.color='red';
-          objet.etats.errorCode="*";
+          objet.etats.errorCode=response._body;
       }
     });
   }
 
   payerCanalRec(objet){
     
-    let infosClient = {'operation':'CANAL Recrutement', 'nomclient': objet.data.nomclient, 'prenom' : objet.data.prenom, 'tel': objet.data.tel, 'numAbo': objet.data.numAbo, 'numDec' : objet.data.numDec, 'numCarte' : objet.data.numCarte, 'formule': objet.data.formule, 'montant' : objet.data.montant, 'nbreMois' : objet.data.nbreMois, 'charme' : objet.data.charme, 'pvd' : objet.data.pvd, 'ecranII' : objet.data.deuxiemeEcran} ;
+    let infosClient = {'operation':'CANAL Recrutement', 'nomclient': objet.data.nomclient,
+     'prenom' : objet.data.prenom, 'tel': objet.data.tel,
+      'numAbo': objet.data.numAbo, 'numDec' : objet.data.numDec, 'numCarte' : objet.data.numCarte, 'formule': objet.data.formule, 'montant' : objet.data.montant, 'nbreMois' : objet.data.nbreMois, 'charme' : objet.data.charme, 'pvd' : objet.data.pvd, 'ecranII' : objet.data.deuxiemeEcran} ;
     
     //console.log(infosClient) ;
 
@@ -1308,11 +1353,30 @@ retraitEmoney(objet:any){
         objet.etats.etat=true;
         objet.etats.load='terminated';
         objet.etats.color='green';
+        objet.etats.errorCode="*";
+        objet.dataI = {
+          apiservice:'canal',
+          service:'recrutement',
+          infotransaction:{
+            client:{
+              transactionBBS: response.idtransactionbbs,
+              prenom:objet.data.prenom,
+              nom:objet.data.nomclient,
+              telephone:objet.data.tel,
+              carte:objet.data.numCarte,
+              chip:objet.data.numDec,
+              typebouquet:objet.data.formule,
+              montant: objet.data.montant,
+              duree:objet.data.nbreMois
+            },
+
+          },
+        }
       }else{
           objet.etats.etat=true;
           objet.etats.load='terminated';
           objet.etats.color='red';
-          objet.etats.errorCode='*';
+          objet.etats.errorCode=response._body;
       }
     });
   }
@@ -1860,12 +1924,12 @@ retraitEmoney(objet:any){
           
           console.log(this.process[index]);
 
-            this.process[index].etats.pourcentage = 5;
+            //this.process[index].etats.pourcentage = 5;
 
             objet.etats.etat=true;
             objet.etats.load='terminated';
             objet.etats.color='#36A9E0';
-            this.process[index].etats.pourcentage = 5;
+           // this.process[index].etats.pourcentage = 5;
             objet.dataI = {
             apiservice:'postecash',
             service:'rechargementespece',
@@ -1939,26 +2003,6 @@ retraitEmoney(objet:any){
    * ===========================================================
    */
   retraitInternationnal(objet:any){
-    //let infosClient = {'operation':'CANAL Réabonnement', 'nomclient': objet.data.nomclient, 'prenom' : objet.data.prenom, 'tel': objet.data.tel, 'numAbo': objet.data.numAbo, 'numDec' : objet.data.numDec, 'numCarte' : objet.data.numCarte, 'formule': objet.data.formule, 'montant' : objet.data.montant, 'nbreMois' : objet.data.nbreMois, 'charme' : objet.data.charme, 'pvd' : objet.data.pvd, 'ecranII' : objet.data.deuxiemeEcran} ;
-    
-    //console.log(infosClient) ;
-
-   // let infosToSend = JSON.stringify(infosClient) ;
-   /* this._transfertInternationnal.pa payer(infosToSend).then(response =>{
-      console.log(response._body);
-      if(response._body==1){
-        objet.etats.etat=true;
-        objet.etats.load='terminated';
-        objet.etats.color='green';
-    
-      }else{
-          objet.etats.etat=true;
-          objet.etats.load='terminated';
-          objet.etats.color='red';
-          objet.etats.errorCode="*";
-      }
-    });*/
-  //}
   this._transfertInternationnal.initSession().then(res =>{
     console.log(res);
     // console.log(JSON.parse(res['_body']));
@@ -1973,18 +2017,34 @@ retraitEmoney(objet:any){
               objet.etats.etat=true;
               objet.etats.load='terminated';
               objet.etats.color='green';
-          
+              objet.etats.errorCode="*";
+              objet.dataI = {
+                apiservice:'TransfertInternationnal',
+                service:'retrait',
+                infotransaction:{
+                  client:{
+                    transactionBBS: "1234525",
+                    prenom_emet:objet.data.prenom_emet,
+                    nom_emet:objet.data.nom_emet,
+                    prenom_benef:objet.data.prenom_benef,
+                    nom_benef:objet.data.nom_benef,
+                    code_transaction:objet.data.codeTransation,
+                    numero_transaction:objet.data.noTransaction,
+                    montant: objet.data.montant_payer,
+                  }
+                }
+              }  
             }else{
                 objet.etats.etat=true;
                 objet.etats.load='terminated';
                 objet.etats.color='red';
-                objet.etats.errorCode="*";
+                objet.etats.errorCode=JSON.parse(res['_body']).status;
             }
           }else{
             objet.etats.etat=true;
             objet.etats.load='terminated';
             objet.etats.color='red';
-            objet.etats.errorCode="*";
+            objet.etats.errorCode="-3";
           }
           
         }
@@ -2002,24 +2062,51 @@ retraitEmoney(objet:any){
         this._transfertInternationnal.send(JSON.stringify(objet.data.info),correspondant).then(
           res =>{
             console.log(objet.data,correspondant);
-            console.log(res);
+            //console.log(JSON.parse(res['_body']));
             if(res['_body'].trim() != ""){
-              if(JSON.parse(res['_body']).status==1){
+              if(JSON.parse(res['_body']).status=="0" && JSON.parse(res['_body']).codetransaction  != ""){
                 objet.etats.etat=true;
                 objet.etats.load='terminated';
                 objet.etats.color='green';
-            
+                objet.etats.errorCode="*";
+                objet.dataI = {
+                  apiservice:'TransfertInternationnal',
+                  service:'envoie',
+                  infotransaction:{
+                    client:{
+                      transactionBBS: "1234525",
+                      prenom_emet:objet.data.info.prenom_emet,
+                      nom_emet:objet.data.info.nom_emet,
+                      ville_emet:objet.data.info.ville_emet,
+                      pays_emet:objet.data.info.pays_emet,
+                      adresse_emet:objet.data.info.adresse_emet,
+                      prenom_benef:objet.data.info.prenom_benef,
+                      nom_benef:objet.data.info.nom_benef,
+                      ville_benef:objet.data.info.ville_benef,
+                      pays_benef:objet.data.info.pays_benef,
+                      adresse_benef: objet.data.info.adresse_benef,
+                      montant_emis: objet.data.info.montant_emis,
+                      devise_emission:objet.data.info.devise_emission,
+                      //"success":200,
+                      codetransaction:JSON.parse(res['_body']).codetransaction,
+                      //"status":"0",
+                      //"designationstatus":"TRANSFERT EN ATTENTE DE PAIEMENT"
+
+                    }
+                  }
+                }  
+                this.updateCaution();
               }else{
                   objet.etats.etat=true;
                   objet.etats.load='terminated';
                   objet.etats.color='red';
-                  objet.etats.errorCode="*";
+                  objet.etats.errorCode=JSON.parse(res['_body']).status;
               }
             }else{
               objet.etats.etat=true;
               objet.etats.load='terminated';
               objet.etats.color='red';
-              objet.etats.errorCode="*";
+              objet.etats.errorCode="-1";
             }
             
           }
@@ -2266,7 +2353,7 @@ retraitEmoney(objet:any){
   console.log("youpi");
     
   }
-    constructor(private _transfertInternationnal:TransfertInternatinnalService, private _postCashService:PosteCashService ,private _tarifsService:TarifsService, private _tntService:TntService ,private _facturierService:FactureService ,private _canalService:CanalService, private airtimeService:AirtimeService ,private _wizallService:WizallService ,private Emservice:EMoneyService ,private _tcService:FreeMoneyService,private dataService:SendDataService,private _omService:OrangeMoneyService,private modalService: BsModalService) {
+    constructor(private _utilsService:UtilsService,private router:Router,private _transfertInternationnal:TransfertInternatinnalService, private _postCashService:PosteCashService ,private _tarifsService:TarifsService, private _tntService:TntService ,private _facturierService:FactureService ,private _canalService:CanalService, private airtimeService:AirtimeService ,private _wizallService:WizallService ,private Emservice:EMoneyService ,private _tcService:FreeMoneyService,private dataService:SendDataService,private _omService:OrangeMoneyService,private modalService: BsModalService) {
       this.subscription = this.dataService.getData().subscribe(rep =>{
         this.data =rep;
         this.myData(this.data);  
@@ -2326,7 +2413,33 @@ retraitEmoney(objet:any){
      }
     ngOnInit() {
       
+      if (!sessionStorage.getItem('currentUser'))
+      this.router.navigate(['']);
+     // this.processus();
+     this._utilsService.isDepotCheckAuthorized().then(
+       rep => {
+         console.log(rep);
+         
+         let data = JSON.parse(rep["_body"])
+         if(data.estautorise==1) this.autorisedUser = data.estautorise ;
+         this.retrieveAlerteMessage() ;
+       },
+       error => alert(error),
+      
+     )
+     //this.updateCaution()
        // this.onLoggedout();
+    }
+    retrieveAlerteMessage(){
+      var periodicVerifier = setInterval(()=>{
+        this._utilsService.consulterLanceurDalerte().then(
+          data => {
+            this.message=data.message;
+          },
+          error => alert(error),
+         
+        )
+      },60000);
     }
     postDemanderAnnulationOM(objet:any,resp:string){
       let timerInterval  = setInterval(
@@ -2517,6 +2630,45 @@ retraitEmoney(objet:any){
           }
       
           }
+          if(item.data.operateur==11){
+          if(item.etats.errorCode=='-3' || item.etats.errorCode==-3){
+            return "Service Indisponible Veuillez Reessayer Plus Tard";
+          }
+          if(item.etats.errorCode=="224" || item.etats.errorCode==224){
+            return "Wrong currency code (Mauvais code de devise)";
+          }
+          if(item.etats.errorCode=="222" || item.etats.errorCode==222){
+            return "Correspondant not autorized to pay this transaction (Correspondant non autorisé à payer cette transaction)";
+          }
+          if(item.etats.errorCode=="224" || item.etats.errorCode==224){
+            return "Wrong currency code (Mauvais code de devise)";
+          }
+          if(item.etats.errorCode=="223" || item.etats.errorCode==223){
+            return "Transaction not autorized for this destination ( Transaction non autorisée pour cette destination)";
+          }
+          if(item.etats.errorCode=="225" || item.etats.errorCode==225){
+            return "Wrong destination country: DESTINATION COUNTRY MUST BE SN  (Mauvais pays de destination : LE PAYS DE DESTINATION DOIT ÊTRE SN = SENEGAL )";
+          }
+          if(item.etats.errorCode=="226" || item.etats.errorCode==226){
+            return "Session is expired ";
+          }
+          if(item.etats.errorCode=="228" || item.etats.errorCode==228){
+            return "User locked (Utilisateur verrouillé)";
+          }
+          if(item.etats.errorCode=="230" || item.etats.errorCode==230){
+            return "Bank account number invalid ( Numéro de compte bancaire invalide) ";
+          }
+          if(item.etats.errorCode=="231" || item.etats.errorCode==231){
+            return "Error on the setting of fees ( Erreur sur la fixation des frais) ";
+          }
+          if(item.etats.errorCode=="232" || item.etats.errorCode==232){
+            return "Error on the amount  (  Erreur sur le montant) ";
+          }
+          if(item.etats.errorCode=="1" || item.etats.errorCode==1){
+            return "Operation Reussie";
+          }
+      
+        }
       
       
         }
@@ -2530,8 +2682,8 @@ retraitEmoney(objet:any){
     
              if(etat.data.operateur!=2 && etat.data.operateur!=6 && etat.data.operateur!=3 && etat.data.operateur!=1 && etat.etats.color=='green'){
     
-               
-              // this.router.navigate(['accueil']);
+              sessionStorage.setItem('dataImpression', JSON.stringify(imprime));
+               this.router.navigate(['impression']);
                //setTimeout(()=>this.router.navigate(['accueil/impression']),100);
             }
     

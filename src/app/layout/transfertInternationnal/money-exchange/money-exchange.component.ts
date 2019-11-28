@@ -31,7 +31,12 @@ export class MoneyExchangeComponent implements OnInit {
   indicePaysReceiver:any;
   pays_emet:string;
   pays_benef:string;
+  frais:number ;
+  montantNet:number ;
   reinitialiser(){
+    this.etapeEnvoie = 1;
+    this.montantNet =0
+    this.frais = 0
     this.indicePaysSender = undefined;
     this.indicePaysReceiver = undefined;
     this.pays_emet = undefined;
@@ -120,7 +125,11 @@ export class MoneyExchangeComponent implements OnInit {
   @ViewChild('modalenvoie') public modalenvoie:ModalDirective;
 
   public showmodalenvoie(){
-    console.log(this.envoie);
+    //console.log(this.envoie);
+    this.frais = this.getFrais(parseInt(this.envoie.montant_emis));
+    this.montantNet = parseInt(this.envoie.montant_emis) + this.getFrais(parseInt(this.envoie.montant_emis));
+    console.log(this.montantNet);
+
     for(let i of this.listPays){
       if(i.alpha2 == this.envoie.pays_emet){
         this.indicePaysSender =i;
@@ -135,6 +144,9 @@ export class MoneyExchangeComponent implements OnInit {
 
     this.envoie.devise_emission = emetteur[0].currencies[0];
     this.envoie.devise_paiement = recepteur[0].currencies[0];
+    this.envoie.paysdestination = recepteur[0].alpha2;
+    console.log(this.envoie.paysdestination);
+    
     this.modalenvoie.show();
   }public hidemodalenvoie(){
     this.modalenvoie.hide();
@@ -158,6 +170,7 @@ export class MoneyExchangeComponent implements OnInit {
 
   public hidemodalretraitbonachat(){
     this.modalretraitbonachat.hide();
+    
   }
   recherche(){
     this.showmodalretraitbonachat();
@@ -190,8 +203,15 @@ export class MoneyExchangeComponent implements OnInit {
     });
   }
   retirer(){
-   
-    let object ={'nom':'Retrait Money-exchange','operateur':11,'operation':1,'nom_benef':this.data.nom_benef,'prenom_benef':this.data.prenom_benef,
+    let tp ;
+    if(this.type_piece == "Carte d'identité"){
+      tp = 'CI'
+    }
+    if(this.type_piece == "passport"){
+      tp = 'PT'
+    }
+
+    let object ={'nom':'Money-exchange retrait','operateur':11,'operation':1,'nom_benef':this.data.nom_benef,'prenom_benef':this.data.prenom_benef,
     'noTransaction':this.data.NumeroTransaction,'codeTransation':this.data.codeTransaction,
     'montant_payer':this.data.montant_paye,
     'typepiece':this.type_piece ,'numeropiece':this.num_card,'correspondant':this.correspondant};
@@ -208,6 +228,9 @@ export class MoneyExchangeComponent implements OnInit {
   }
   nombreFormate(montant){
     return Number( montant.split(".")[0] ).toLocaleString() ;
+  }
+  nombreFormate1(montant){
+    return Number(montant).toLocaleString() ;
   }
 
 
@@ -238,10 +261,12 @@ export class MoneyExchangeComponent implements OnInit {
      this.envoie.devise_paiement = recepteur[0].currencies[0];
      this.envoie.telephoneport_emet = emetteur[0].countryCallingCodes[0]+this.envoie.telephoneport_emet
      this.envoie.telephoneport_benef =recepteur[0].countryCallingCodes[0]+this.envoie.telephoneport_benef
-     this.envoie.telephone_benef =  this.envoie.telephoneport_benef
+     this.envoie.telephone_benef =  this.envoie.telephoneport_benef;
+     this.envoie.montant_paye = this.envoie.montant_emis;
+     //this.envoie.montant_emis =pa parseInt(this.envoie.montant_emis) + this.frais
      this.envoie.produit = "010";
-     console.log(this.envoie);
-     let object ={'nom':'Envoie Money-exchange','operateur':11,'operation':2,'info':this.envoie};
+     console.log(JSON.stringify(this.envoie));
+     let object ={'nom':'Money-exchange envoie','operateur':11,'operation':2,'info':this.envoie};
      console.log(JSON.stringify(object));
      
      this.dataService.sendData(object)
@@ -261,6 +286,52 @@ export class MoneyExchangeComponent implements OnInit {
    this.listPays = countries.all;
   //  console.log(countries);
 //    console.log(this.listPays);
+  }
+  
+  getFrais(montant){
+    let frais = 0 ;
+
+    if(montant>=1 && montant <=499)
+      frais =  25 ;
+
+    if(montant>=500 && montant <=1100)
+      frais =  60 ;
+
+    if(montant>=1101 && montant <=3000)
+      frais =  150 ;
+
+    if(montant>=3001 && montant <=5000)
+      frais =  200 ;
+
+    if(montant>=5001 && montant <=10000)
+      frais =  400 ;
+
+    if(montant>=10001 && montant <=15000)
+      frais =  600 ;
+    if(montant>=15001 && montant <=20000)
+      frais =  800 ;
+    if(montant>=20001 && montant <=35000)
+      frais =  1400 ;
+    if(montant>=35001 && montant <=60000)
+      frais =  2400 ;
+    if(montant>=60001 && montant <=75000)
+      frais =  2625 ;
+    if(montant>=75001 && montant <=100000)
+      frais =  3100 ;
+    if(montant>=100001 && montant <=150000)
+      frais =  4000 ;
+    if(montant>=150001 && montant <=200000)
+      frais =  6000 ;
+    if(montant>=200001 && montant <=300000)
+      frais =  7500 ;
+    if(montant>=300001 && montant <=400000)
+      frais =  10000 ;
+    if(montant>=400001 && montant <=750000)
+      frais =  14000 ;
+    if(montant>=750001 && montant <=1000000)
+      frais =  montant*0.018 ;
+
+    return frais ;
   }
 
 

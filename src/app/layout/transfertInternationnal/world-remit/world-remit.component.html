@@ -355,7 +355,14 @@
                       <label >Pays bénéficiaire : {{envoie.pays_benef}}</label>
                     </div>
                     <div class="form-group">
-                      <label >Montant Transaction : {{nombreFormate(envoie.montant_emis)}} {{envoie.devise_emission}}</label>
+                      <label >Frais : {{nombreFormate1(frais) }} {{envoie.devise_emission}}</label>
+                    </div>
+                    <div class="form-group">
+                      <label >Montant Transaction : {{nombreFormate1(envoie.montant_emis)}} {{envoie.devise_emission}}</label>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label >Montant net à payer : {{nombreFormate1(montantNet)}} {{envoie.devise_emission}}</label>
                     </div>
                 </form>
         
