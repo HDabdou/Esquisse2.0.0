@@ -24,7 +24,9 @@ import {
     MatSpinner,
     MatDatepicker,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatPaginator,
+    MatPaginatorModule
 } from '@angular/material';
 import { TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -36,7 +38,7 @@ import { Screen2Component } from './screen2/screen2.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormControl } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { CreateCompteComponent } from './create-compte/create-compte.component';
@@ -70,6 +72,7 @@ import { IziComponent } from './venteCredit/izi/izi.component';
 import { YakalmaComponent } from './venteCredit/yakalma/yakalma.component';
 import { ImpressionComponent } from './impression/impression.component';
 import { GestionReportingComponent } from './gestion-reporting/gestion-reporting.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
     imports: [
@@ -102,9 +105,11 @@ import { GestionReportingComponent } from './gestion-reporting/gestion-reporting
         MatCheckboxModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        FlexLayoutModule.withConfig({addFlexToParent: false}),
+        MatPaginatorModule,
+        
         //MatDatepicker
-
-      
+       
         
     ],
     providers: [
@@ -113,7 +118,8 @@ import { GestionReportingComponent } from './gestion-reporting/gestion-reporting
         AuthenticationServiceService,
         MatSnackBar,
         {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY, useValue: {duration: 2500}},
-        {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}
+        {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'},
+        
     ],
     exports: [
         MatSortModule,],
