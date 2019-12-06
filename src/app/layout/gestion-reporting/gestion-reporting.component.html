@@ -7,8 +7,8 @@
                   <a class="mat-raised-button myButton" (click)="loadOperation('historiqueOperation');reinitialiser()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Historique Opérations</a> 
              
                   <a class="mat-raised-button myButton" (click)="loadOperation('depense');reinitialiser();depenseop()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Dépenses</a> 
-                  <a class="mat-raised-button myButton" (click)="loadOperation('retrait');reinitialiser()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Recettes</a> 
-                  <a class="mat-raised-button myButton" (click)="loadOperation('retrait');reinitialiser()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Réclamations</a> 
+                  <a class="mat-raised-button myButton" (click)="loadOperation('recettes');reinitialiser();depenseop()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Recettes</a> 
+                  <a class="mat-raised-button myButton" (click)="loadOperation('reclamation');reinitialiser();depenseop()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Réclamations</a> 
                   <a class="mat-raised-button myButton" (click)="loadOperation('retrait');reinitialiser()"  style="margin-top: 1rem;margin-left: 1rem;"  mat-raised-button> Caisse  </a> 
              
           </div>
@@ -57,7 +57,7 @@
                         </div>
                     
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"> 
-                            <a class="mat-raised-button" [disabled]="!dateDebut && !dateFin"  style="background-color: #43a047;color: white;" (click)="historiqueintervalle()" mat-raised-button> <mat-icon>search</mat-icon></a> 
+                            <a class="mat-raised-button" [disabled]="dateDebut == undefined || dateFin == undefined || dateDebut > dateFin"  style="background-color: #43a047;color: white;" (click)="historiqueintervalle()" mat-raised-button> <mat-icon>search</mat-icon></a> 
                         </div>
               </div>
             </div>
@@ -68,7 +68,7 @@
             <div class="mb-20" flFlex flexLayout="row" flexLayout.lt-md="column">
                 <div fxFlex>
                         <div class="md-form "  fxFlex="40%"> 
-                            <input [ngModelOptions]="{standalone: true}" type="text"(keyup)="doFilter($event.target.value)" placeholder="Filter" id="form1" style="width: 100%;" [(ngModel)]="dateDebut"  class="form-control" aria-describedby="material-addon2"> 
+                            <input [ngModelOptions]="{standalone: true}" type="text"(keyup)="doFilter($event.target.value)" placeholder="Filter" id="form1" style="width: 100%;" [(ngModel)]="filter"  class="form-control" aria-describedby="material-addon2"> 
                         </div>
                     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
                     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort  style="width: 100%;margin-top: 1rem;overflow-x: scroll" >
@@ -98,62 +98,171 @@
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
+                    <div *ngIf="this.listeUser.length > 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:1rem;" >
+                        <button class=" btn btn-primary btn-block"  (click)="download()">Export to excel</button>
+                    </div>
                 </div>
             </div>
       </div>
           </div>
       </div>
   </form> 
-    <form *ngIf="operation == 'depense'" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;"  >
-    <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
-        <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
-        </div>
-        <div fxFlex style="text-align: center;"><h1>Enregistrer une dépense</h1></div>
+  <form *ngIf="operation == 'depense'" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;"  >
+  <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+      <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+      </div>
+      <div fxFlex style="text-align: center;"><h1>Enregistrer une dépense</h1> <mat-icon *ngIf="messagedepense" style="color: green;margin-left: 1rem;">check_circle_outline</mat-icon></div>
 
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 5px;">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div fxFlex style="text-align: center;">
-                        <mat-form-field class=" w-100 md-form"> 
-                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="libelle" class="w-100"  matInput placeholder="Libelle charge">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div fxFlex style="text-align: center;">
-                        <mat-form-field class=" w-100 md-form"> 
-                            <input [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="montant" class="w-100"  matInput placeholder="Montant de la dépense">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div fxFlexFill>
-                        <mat-form-field class=" w-100 md-form"> 
-                            <mat-label>Service concerné</mat-label>
-                            <mat-select  [(value)]="service">
-                                <mat-option *ngFor="let food of servicepoint" [value]="food.nom">
-                                {{food.nom}}
-                                </mat-option>
-                            </mat-select>                        
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+          <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                  <div fxFlex style="text-align: center;">
+                      <mat-form-field class=" w-100 md-form"> 
+                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="libelle" class="w-100"  matInput placeholder="Libelle charge">
+                      </mat-form-field>
+                  </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                  <div fxFlex style="text-align: center;">
+                      <mat-form-field class=" w-100 md-form"> 
+                          <input [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="montant" class="w-100"  matInput placeholder="Montant de la dépense">
+                      </mat-form-field>
+                  </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div fxFlexFill>
+                      <mat-form-field class=" w-100 md-form"> 
+                          <mat-label>Service concerné</mat-label>
+                          <mat-select  [(value)]="service">
+                              <mat-option *ngFor="let food of servicepoint" [value]="food.nom">
+                              {{food.nom}}
+                              </mat-option>
+                          </mat-select>                        
+                      </mat-form-field>
+                  </div>
+              </div>
+          </div>
+      </div>
 
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-            <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+          <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+              <div fxFlex style="text-align: center;">
+                  <button mat-raised-button color="primary" [disabled]="!libelle && !montant && !service"  style="background-color: #43a047;" class="w-45" (click)="showAddChildModal()">Valider</button>
+                  <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
+              </div>
+          </div>
+      </div>
+      
+  </div>
+  </form>
+  <form *ngIf="operation == 'recettes'" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;"  >
+  <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+      <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+      </div>
+      <div fxFlex style="text-align: center;"><h1>Enregistrer une Recette</h1> <mat-icon *ngIf="messagedepense" style="color: green;margin-left: 1rem;">check_circle_outline</mat-icon></div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+          <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div fxFlexFill>
+                    <mat-form-field class=" w-100 md-form"> 
+                        <mat-label>Désignation</mat-label>
+                        <mat-select  [(value)]="designation">
+                            <mat-option *ngFor="let food of servicepoint" [value]="food.nom">
+                            {{food.nom}}
+                            </mat-option>
+                        </mat-select>                        
+                    </mat-form-field>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                  <div fxFlex style="text-align: center;">
+                      <mat-form-field class=" w-100 md-form"> 
+                          <input [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="quantite" class="w-100"  matInput placeholder="Quantité">
+                      </mat-form-field>
+                  </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div fxFlexFill>
+                      <mat-form-field class=" w-100 md-form"> 
+                          <mat-label>Service </mat-label>
+                          <mat-select  [(value)]="service">
+                              <mat-option *ngFor="let food of servicepoint" [value]="food.nom">
+                              {{food.nom}}
+                              </mat-option>
+                          </mat-select>                        
+                      </mat-form-field>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+          <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+              <div fxFlex style="text-align: center;">
+                  <button mat-raised-button color="primary" [disabled]="!libelle && !montant && !service"  style="background-color: #43a047;" class="w-45" (click)="showAddChildModal()">Valider</button>
+                  <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
+              </div>
+          </div>
+      </div>
+      
+  </div>
+  </form> 
+  <form *ngIf="operation == 'reclamation'" class="login-form" fxFlex style="margin-top: 1rem;margin: 10px;background: white;"  >
+  <div class="row" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <span *ngIf="response == -1" class="btn btn-danger"><h3>Echec de création</h3></span>
+      <span *ngIf="response == 1" class="btn btn-danger"><h3>Création reussi </h3></span>
+      </div>
+      <div fxFlex style="text-align: center;"><h1>Réclamation</h1> <mat-icon *ngIf="messagedepense" style="color: green;margin-left: 1rem;">check_circle_outline</mat-icon></div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <div fxFlex style="text-align: center;">
-                    <button mat-raised-button color="primary" [disabled]="!libelle && !montant && !service"  style="background-color: #43a047;" class="w-45" (click)="validCharge()">Valider</button>
-                    <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
+                    <mat-form-field class=" w-100 md-form"> 
+                        <input [ngModelOptions]="{standalone: true}"  [(ngModel)]="sujet" class="w-100"  matInput placeholder="Motif reclamation">
+                    </mat-form-field>
                 </div>
             </div>
-        </div>
-        
-    </div>
-    </form> 
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div fxFlexFill>
+                    <mat-form-field class=" w-100 md-form"> 
+                        <mat-label>Service concerné</mat-label>
+                        <mat-select  [(value)]="service">
+                            <mat-option *ngFor="let food of servicepoint" [value]="food.nom">
+                            {{food.nom}}
+                            </mat-option>
+                        </mat-select>                        
+                    </mat-form-field>
+                </div>
+              </div>
+              
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div fxFlexFill>
+                      <mat-form-field class=" w-100 md-form"> 
+                            <textarea [ngModelOptions]="{standalone: true}"  [(ngModel)]="message" matInput placeholder="Description de votre réclamation"></textarea>                     
+                      </mat-form-field>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+          <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
+              <div fxFlex style="text-align: center;">
+                  <button mat-raised-button color="primary" [disabled]="!libelle && !montant && !service"  style="background-color: #43a047;" class="w-45" (click)="showAddChildModal()">Valider</button>
+                  <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
+              </div>
+          </div>
+      </div>
+      
+  </div>
+  </form> 
   </div>
 </div>
 
@@ -167,4 +276,77 @@
         </div>
     </div>  
     </div>
+</div>
+<div bsModal #addChildModal="bs-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-sm">
+       <div class="modal-content" >
+         <div class="modal-header">
+         
+           <h4 *ngIf="operation == 'depense'" class="modal-title pull-left">Enregistrer une dépense</h4>
+           <h4 *ngIf="operation == 'recettes'" class="modal-title pull-left">Enregistrer une Recette</h4>
+           <h4 *ngIf="operation == 'reclamation'" class="modal-title pull-left">Réclamation</h4>
+           <button type="button" class="close pull-right" aria-label="Close" (click)="hideAddChildModal()">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div *ngIf="operation == 'depense'">
+                <form class="form">
+                    <div class="form-group">
+                        <label >Libelle  : {{this.libelle}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >montant : {{this.montant}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Service : {{this.service}}</label>
+                    </div>
+                </form>
+
+            </div>
+            <div *ngIf="operation == 'recettes'">
+                <form class="form">
+                    <div class="form-group">
+                        <label >Service : {{this.service}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Designation : {{this.designation}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Quantité : {{this.quantite}}</label>
+                    </div>
+                </form>
+
+            </div>
+            <div *ngIf="operation == 'reclamation'">
+                <form class="form">
+                    <div class="form-group">
+                        <label >Motif réclamation : {{this.sujet}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Service concerné : {{this.service}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label >Message : {{this.message}}</label>
+                    </div>
+                   
+                </form>
+
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <input *ngIf="operation == 'depense'" type="button" value="valider"  (click)="validCharge()" class="btn btn-success" />
+            <input *ngIf="operation == 'recettes'" type="button" value="valider"  (click)="validvente()" class="btn btn-success" />
+            <input *ngIf="operation == 'reclamation'" type="button" value="valider"  (click)="validreclamation()" class="btn btn-success" />
+            <input type="button" value="fermer" (click)="hideAddChildModal()" class="btn btn-danger" />
+        </div>
+     </div>
+   </div>
+
+
+
+
 </div>

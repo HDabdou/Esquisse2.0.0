@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import {MatTableDataSource,} from '@angular/material/table';
 import { MasterServiceService } from 'src/app/service/master-service.service';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef, ModalDirective } from 'ngx-bootstrap/modal';
 import { FormControl } from '@angular/forms';
 import { GestionReportingService } from 'src/app/service/gestion-reporting.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -21,6 +21,11 @@ export class GestionReportingComponent implements OnInit {
   service:string;
   libelle:string;
   montant:number;
+  filter:string;
+  designation:string;
+  quantite:number;
+  sujet:string ;
+  message:string ;
   loadOperation(op){
     this.operation=op;
     this.typeEnvoie = "";
@@ -36,8 +41,10 @@ export class GestionReportingComponent implements OnInit {
             //this.gestionreporting = data;
             console.log(data);
               this.listeUser = JSON.parse(data['_body']);
-              if(this.listeUser.length != 0){
-                console.log(this.listeUser);
+              console.log(this.listeUser);
+              console.log(this.listeUser.length);
+
+              if(this.listeUser.length > 0){
               console.log(this.getDate(this.listeUser[0].dateoperation));
               this.getDate(this.listeUser[0].dateoperation);
               this.dataSource = new MatTableDataSource(this.listeUser);
@@ -65,6 +72,7 @@ export class GestionReportingComponent implements OnInit {
           console.log(JSON.parse(data['_body']));
           
           this.servicepoint = JSON.parse(data['_body']);
+
         },
         error => console.log(error),
        
@@ -75,20 +83,32 @@ export class GestionReportingComponent implements OnInit {
     this.service = undefined;
     this.libelle = undefined;
     this.montant = undefined;
-
+    this.messagedepense = false;
+    this.designation =undefined;
+    this.quantite = 0;
+    this.dateDebut = undefined;
+    this.dateFin = undefined;
+    this.sujet = undefined ;
+    this.message = undefined ;
     //this.dateByDay = undefined
   }
+  messagedepense:boolean = false;
   validCharge(){
     this.loading = true ;
+    this.hideAddChildModal()
     this._gestionreportingService.ajoutdepense({libelle:this.libelle, service:this.service, montant:this.montant})
       .then(
         data => {
          console.log(data);
+         if(JSON.parse(data['_body']).response == 'ok'){
+           this.messagedepense = true
+         }
          this.loading = false ;
         },
         error => console.log(error),
         
       )
+
   }
   listeUser:any = []; 
     displayedColumns = ['Date', 'Service', 'Traitement', 'Montant','Client'];
@@ -106,7 +126,7 @@ export class GestionReportingComponent implements OnInit {
     openModal(template: TemplateRef<any>) {
         this.modalRef = this.modalService.show(template,{class: 'modal-lg'});
     }
-    suivi(id_user){
+   /* suivi(id_user){
         this.id_userSave = id_user;
         this.listeDetail =[];
         this.nombreDetail = 0;
@@ -120,20 +140,80 @@ export class GestionReportingComponent implements OnInit {
             
         });
 
+    }*/
+    ConvertToCSV(objArray) {
+      var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+        var str = '';
+      var row = "";
+
+      for (var index in objArray[0]) {
+        //console.log(index.toLowerCase);
+
+          //Now convert each value to string and comma-separated
+          row += index.toUpperCase() + ';';
+      }
+      row = row.slice(0, -1);
+      //append Label row with line break
+      str += row + '\r\n';
+
+      for (var i = 0; i < array.length; i++) {
+          var line = '';
+          for (var index in array[i]) {
+              if (line != '') line += ';'
+
+              line += array[i][index];
+          }
+          str += line + '\r\n';
+          
+      }
+      return str;
+  }
+  download(){
+    let line = {date:"",service:"",traitement:"",montant:""}
+    let liste = []
+    for(let i of this.listeUser){
+      //console.log({date:this.getDate(i.dateoperation),service:i.operateur,traitement:i.traitement,montant:i.montant,client:this.trimer(i.infoclient)});
+      liste.push({date:this.getDate(i.dateoperation),service:i.operateur,traitement:i.traitement,montant:i.montant,client:this.trimer(i.infoclient)});
     }
-    rechercher(){
-        this.listeDetail =[];
-        this.nombreDetail = 0;
-          this._masterService.listOperationByPoint(this.dateDebut,this.dateFin,this.id_userSave).then(res =>{
-            this.listeDetail = res['operations'];
-            this.nombreDetail = this.listeDetail.length;
-            console.log(res['operations']);            
-        });
-    }
+    //console.log(this.ConvertToCSV(liste));
+    //console.log(this.ConvertToCSV(liste));
+    var csvData = this.ConvertToCSV(liste);
+    var a = document.createElement("a");
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    var blob = new Blob([csvData], { type: 'text/csv' });
+    var url= window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = 'report_'+((new Date()).toJSON()).split("T",2)[0]+'.csv';/* your file name*/
+    a.click();
+    console.log(csvData);
+    
+    return 'success';
+    
+  }
+  rechercher(){
+      this.listeDetail =[];
+      this.nombreDetail = 0;
+        this._masterService.listOperationByPoint(this.dateDebut,this.dateFin,this.id_userSave).then(res =>{
+          this.listeDetail = res['operations'];
+          this.nombreDetail = this.listeDetail.length;
+          console.log(res['operations']);            
+      });
+  }
 
    
+
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild('addChildModal') public addChildModal:ModalDirective;
+    public showAddChildModal():void {
+      this.addChildModal.show();
+     }
+      
+      public hideAddChildModal():void {
+      this.addChildModal.hide();
+      }
+
     doFilter = (value: string) => {
         this.dataSource.filter = value.trim().toLocaleLowerCase();
     }
@@ -160,6 +240,53 @@ export class GestionReportingComponent implements OnInit {
      compare(a: number | string, b: number | string, isAsc: boolean) {
       return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
     }
+
+    validvente(){
+      this.loading = true ;
+      if(this.service.toLowerCase()=='assurance'.toLowerCase()){
+        let tempdesignation=this.designation;
+       // this.designation=JSON.stringify({desig:tempdesignation, nom:this.noma, prenom:this.prenoma, telephone:this.telephonea, datedebut:this.datedebut.toString(), datefin:this.datefin.toString()})
+        //console.log("Obj designé "+this.designation);
+      }
+  
+      console.log({servicevente:this.service, designation:this.designation, quantite:this.quantite})
+      this._gestionreportingService.vente({servicevente:this.service, designation:this.designation, quantite:this.quantite})
+        .then(
+          data => {
+            console.log("------ vente -----------")
+            console.log(data);
+           /* this.designation = "" ;
+            this.servicevente = "" ;
+            this.quantite=0;
+            this.datedebut="";
+            this.datefin="";
+            this.noma="";
+            this.telephonea="";
+            this.prenoma="";*/
+            this.loading = false;
+            this.reinitialiser();
+            this.hideAddChildModal();
+          },
+          error => console.log(error),
+         
+        )
+  
+    }
+    validreclamation(){
+      console.log("-------------------------------------------")
+      this.loading = true ;
+      this._gestionreportingService.reclamation({sujet:this.sujet, nomservice:this.service, message:this.message})
+        .then(
+          data => {
+           this.hideAddChildModal();
+           this.reinitialiser(); 
+           this.loading =false;
+          },
+          error =>  {
+            this.loading = false ;
+          }
+        )
+    }
     historiquejour(){
       this.loading = true ;
       this.dateDebut = undefined;
@@ -170,8 +297,10 @@ export class GestionReportingComponent implements OnInit {
             //this.gestionreporting = data;
               console.log(data);
               this.listeUser = JSON.parse(data['_body']);
-              if(this.listeUser.length != 0){
-                console.log(this.listeUser);
+              console.log(this.listeUser);
+              console.log(this.listeUser.length);
+
+              if(this.listeUser.length > 0){
               console.log(this.getDate(this.listeUser[0].dateoperation));
               this.getDate(this.listeUser[0].dateoperation);
               this.dataSource = new MatTableDataSource(this.listeUser);
@@ -201,8 +330,10 @@ export class GestionReportingComponent implements OnInit {
           data => {
             console.log(data);
               this.listeUser = JSON.parse(data['_body']);
-              if(this.listeUser.length != 0){
-                console.log(this.listeUser);
+              console.log(this.listeUser);
+              console.log(this.listeUser.length);
+
+             if(this.listeUser.length > 0){
               console.log(this.getDate(this.listeUser[0].dateoperation));
               this.getDate(this.listeUser[0].dateoperation);
               this.dataSource = new MatTableDataSource(this.listeUser);

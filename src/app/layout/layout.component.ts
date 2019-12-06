@@ -1905,6 +1905,45 @@ retraitEmoney(objet:any){
       });
 
   }
+  vendreDecodeur(objet:any){
+
+    this._tntService.vendreDecodeur(objet.data.token, objet.data.prenom,objet.data.nomclient,objet.data.tel, objet.data.adresse, objet.data.region, objet.data.cni,objet.data.chip,objet.data.carte, objet.data.duree, objet.data.typedebouquet, objet.data.montant).then( response =>
+      {
+        
+        if(response=="ok"){
+
+           objet.dataI = {
+            apiservice:'tnt',
+            service:'ventedecodeur',
+            infotransaction:{
+                client:{
+                transactionBBS: 'Id BBS',
+                prenom:objet.data.prenom,
+                nom:objet.data.nomclient,
+                telephone:objet.data.tel,
+                chip:objet.data.chip,
+                carte:objet.data.carte,
+                montant:objet.data.montant,
+                typedebouquet:objet.data.typedebouquet,
+              },
+
+            },
+          } ;
+
+          objet.etats.etat=true;
+          objet.etats.load='terminated';
+          objet.etats.color='green';
+          this.updateCaution();
+        }else{
+           objet.etats.etat=true;
+           objet.etats.load='terminated';
+           objet.etats.color='red';
+           objet.etats.errorCode='0';
+        }
+
+      });
+  }
+
   /*==================================================================================
   *********************************************POSTE CASH============================
   =====================================================================================*/
@@ -2211,7 +2250,7 @@ retraitEmoney(objet:any){
                 break;
                 }
           case 2:{
-                this.retirertc(sesion);
+                this.vendreDecodeur(sesion);
                 break;
           }
           case 5:{

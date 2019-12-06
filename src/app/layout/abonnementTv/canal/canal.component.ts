@@ -38,8 +38,9 @@ export class CanalComponent implements OnInit {
   adresse:string = "";
   mail:string = "";
   tel:string = "";
-  
+  errorCheach:boolean = false;
   reinitialiser(){
+    this.errorCheach = false;
     this.deuxiemeEcran ="";
     this.pvr ="";
     this.charme = ""; 
@@ -112,7 +113,7 @@ export class CanalComponent implements OnInit {
   }
   rechercher(){
     this.chearch = false;
-
+    this.errorCheach = false
     this._canal.recherche(this.reachAbonne.toString()).then(res =>{
       let numFile = res['_body'].trim();
       console.log(res['_body']);
@@ -122,7 +123,7 @@ export class CanalComponent implements OnInit {
 
       let result=res['_body'].trim();
 
-      if(result.indexOf("-1")!=0 && result != ""){
+      if(result.indexOf("-1")!=0 && result.trim() != ""){
         clearInterval(periodicVerifier) ;
         console.log("Resultat de la rechercher : "); 
         console.log(result);
@@ -135,8 +136,11 @@ export class CanalComponent implements OnInit {
         this.matAb = result.split('[')[11];
         this.tntloading = false;
        // this.loading=false;
- 
+        this.errorCheach = false;
        this.chearch = true;
+      }else{
+        //this.tntloading = false;
+        //this.errorCheach = true;
       }
 
     }), 2000);

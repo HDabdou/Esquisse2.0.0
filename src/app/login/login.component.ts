@@ -29,8 +29,8 @@ export class LoginComponent implements OnInit {
         
         this._authService.authentificationPhaseTwo(this.data).then(res =>{
            
-            //console.log(res.reponse==true);
-            if(res.reponse==true){
+            console.log(res);
+            if(res.accessLevel==3){
                // this.loading = false;
                 if (JSON.parse(sessionStorage.getItem('currentUser')).firstuse==1){
                     this.router.navigate(['/soppipwdbifi']);
@@ -41,7 +41,11 @@ export class LoginComponent implements OnInit {
                 }
             }else{
                 this.loading = false;
-                alert("sms code un incorrecte !!!")
+                this.phases = false;
+                this.data.login = undefined;
+                this.data.pwd = undefined;
+                this.data.tokentemporaire = undefined;
+                alert("sms code un incorrecte ou le compte n\'est pas un compte caisse !!!")
             }
             
         })

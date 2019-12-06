@@ -24,7 +24,27 @@ export class TntComponent implements OnInit {
   loading:boolean =false;
   montantNet:number = 0 ;
   nombreMois :number = 0 ;
+
+  prenomNewClient : string ;
+  nomNewClient: string ;
+  adresseNewClient: string ;
+  regionNewClient: string ;
+  cniNewClient: string ;
+  nchipNewClient: number ;
+  ncarteNewClient: number ;
+  nbmNewClient: number;
+  tbouquetNewClient : string = 'Sans Abonnement';
   reinitialiser(){
+    this.prenomNewClient =undefined ;
+    this.nomNewClient=undefined ;
+    this.telNewClient=undefined ;
+    this.adresseNewClient=undefined ;
+    this.regionNewClient=undefined ;
+    this.cniNewClient=undefined ;
+    this.nchipNewClient=undefined ;
+    this.ncarteNewClient=undefined ;
+    this.nbmNewClient=undefined;
+    this.tbouquetNewClient=undefined ;
     this.chearch = false;
     this.verifierNumInput =null;
     this.noma =null;
@@ -47,8 +67,8 @@ export class TntComponent implements OnInit {
   }
   type =[
     {name:"Sans abonnement"},
-    {name:"1 mois"},
-    {name:"3 mois"},
+    {name:"+1 mois"},
+    {name:"+3 mois"},
   ]
   typeBouquet =[
     {name:"Maanaa"},
@@ -107,6 +127,30 @@ export class TntComponent implements OnInit {
    let object ={'token':this.token,'nom':'Tnt abonnement','operateur':4,'operation':1,'typedebouquet':typedebouquet,'tel':this.telNewClient,
    'chip':this.chip,'carte':this.carte,
    'prenom':this.prenoma,'nomclient':this.noma,'duree':this.nombreMois,'cni':''};
+    this.dataService.sendData(object)
+     this.dataService.clearData();
+     this.reinitialiser();
+   }
+   vendreDecodeur(){
+    this.modalabonnement.hide();
+    var typedebouquet : number ;
+    var prix:number ;
+    if(this.tbouquetNewClient == "Sans Abonnement"){
+      typedebouquet=0;
+      prix = 15000 ;
+    }
+    if(this.tbouquetNewClient == "+ 1 Mois"){
+      typedebouquet=1;
+      prix = 19500 ;
+    }
+    if(this.tbouquetNewClient == "+ 3 Mois"){
+      typedebouquet=3;
+      prix = 28000 ;
+    }
+    // sessionStorage.setItem('curentProcess',JSON.stringify({'nom':'Orange money depot','operateur':2,'operation':1,'montant':this.num,'num':this.mtt}));
+   let object ={'token':this.token,'nom':'Tnt vente decodeur','operateur':4,'operation':2,
+   'prenom':this.prenomNewClient,'tel':this.telNewClient,adresse:this.adresseNewClient, region:this.regionNewClient, cni:this.cniNewClient,'chip':this.nchipNewClient,
+   'carte':this.ncarteNewClient,'nomclient':this.nomNewClient,'typedebouquet':typedebouquet,'montant':prix};
     this.dataService.sendData(object)
      this.dataService.clearData();
      this.reinitialiser();

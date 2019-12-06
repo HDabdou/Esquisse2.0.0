@@ -137,14 +137,14 @@
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                       <div fxFlexFill>
                           <mat-form-field class=" w-100 md-form"> 
-                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Prénom">
+                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenomNewClient"  matInput placeholder="Prénom">
                           </mat-form-field>
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                       <div fxFlexFill>
                           <mat-form-field class=" w-100 md-form"> 
-                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="nom">
+                              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nomNewClient"  matInput placeholder="nom">
                           </mat-form-field>
                       </div>
                     </div>
@@ -154,42 +154,42 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                   <mat-form-field class=" w-100 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Téléphone">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="telNewClient"  matInput placeholder="Téléphone">
                   </mat-form-field>
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div fxFlexFill>
                   <mat-form-field class=" w-100 md-form"> 
-                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="région">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="regionNewClient"  matInput placeholder="région">
                   </mat-form-field>
               </div>
             </div>
              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div fxFlexFill>
                     <mat-form-field class=" w-100 md-form"> 
-                        <input [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="codeCreation"  matInput placeholder="Adresse">
+                        <input [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="adresseNewClient"  matInput placeholder="Adresse">
                     </mat-form-field>
                 </div>
               </div>
               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                   <div fxFlexFill>
                       <mat-form-field class=" w-100 md-form"> 
-                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Numéro CNI">
+                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="cniNewClient"  matInput placeholder="Numéro CNI">
                       </mat-form-field>
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                   <div fxFlexFill>
                       <mat-form-field class=" w-100 md-form"> 
-                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nom"  matInput placeholder="Numéro du Chip">
+                          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="nchipNewClient"  matInput placeholder="Numéro du Chip">
                       </mat-form-field>
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div fxFlexFill>
                         <mat-form-field class=" w-100 md-form"> 
-                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="prenom"  matInput placeholder="Numéro Carte">
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="ncarteNewClient"  matInput placeholder="Numéro Carte">
                         </mat-form-field>
                     </div>
                   </div>
@@ -197,7 +197,7 @@
                     <div fxFlexFill>
                       <mat-form-field class=" w-100 md-form"> 
                         <mat-label>Type</mat-label>
-                        <mat-select>
+                        <mat-select [(value)]="tbouquetNewClient">
                           <mat-option *ngFor="let food of type" [value]="food.name">
                             {{food.name}}
                           </mat-option>
@@ -210,8 +210,8 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                   <div  fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 1rem;">
                       <div fxFlex style="text-align: center;">
-                          <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="creerpoint()">Valider</button>
-                          <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="creerpoint()">Annuler</button>
+                          <button mat-raised-button color="primary"  style="background-color: #43a047;" class="w-45" (click)="showmodalabonnement()">Valider</button>
+                          <button mat-raised-button color="primary" style="background-color: #a04343;margin-left: 1rem;"  class="w-45" (click)="reinitialiser()">Annuler</button>
                       </div>
                   </div>
               </div>
@@ -226,15 +226,16 @@
     <div class="modal-dialog modal-sm">
        <div class="modal-content" >
          <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Confirmation Détails Abonnement</h4>
-                <button type="button" class="close pull-right" aria-label="Close" (click)="modalabonnement.hide();">
+            <h4 *ngIf="operation == 'abonnement'" class="modal-title" id="myModalLabel">Confirmation Détails Abonnement</h4>
+            <h4 *ngIf="operation == 'ventedecodeur'" class="modal-title" id="myModalLabel">Confirmation vente Décodeur</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalabonnement.hide();">
                     <span aria-hidden="true">&times;</span>
                 </button>
         </div>
         <div class="modal-body">
 
         <div>
-          <form class="form">
+          <form class="form" *ngIf="operation == 'abonnement'">
             <div class="form-group">
               <label >Nom client : {{ this.noma}}</label>
             </div>
@@ -260,10 +261,39 @@
           </form>
 
         </div>
+        <div>
+            <form class="form" *ngIf="operation == 'ventedecodeur'">
+              <div class="form-group">
+                <label >Nom client : {{ this.nomNewClient}}</label>
+              </div>
+              <div class="form-group">
+                <label >Prènom client : {{this.prenomNewClient}} </label>
+              </div>
+              <div class="form-group">
+                <label >Telephone client : {{this.telNewClient}}</label>
+              </div>
+              <div class="form-group">
+                <label > Adresse client : {{this.adresseNewClient}}</label>
+              </div>
+              <div class="form-group">
+                <label >Numero chip : {{this.nchipNewClient}}</label>
+              </div>
+              <div class="form-group">
+                <label >Numero carte : {{this.ncarteNewClient}}</label>
+              </div>
+ 
+              <div class="form-group">
+                <label > Type bouquet : {{this.tbouquetNewClient}}</label>
+              </div>
+ 
+            </form>
+ 
+          </div>
         </div>
         <div class="modal-footer">
-         <input style="border-radius: 2rem 0rem 2rem 2rem;"  type="button" value="valider"  (click)="abonnement()" class="btn btn-success" />
-         <input style="border-radius: 2rem 0rem 2rem 2rem;"  type="button" value="fermer" (click)="modalabonnement.hide();" class="btn btn-danger" />
+            <input *ngIf="operation == 'abonnement'" style="border-radius: 2rem 0rem 2rem 2rem;"  type="button" value="valider"  (click)="abonnement()" class="btn btn-success" />
+            <input *ngIf="operation == 'ventedecodeur'" style="border-radius: 2rem 0rem 2rem 2rem;"  type="button" value="valider"  (click)="vendreDecodeur()" class="btn btn-success" />
+            <input style="border-radius: 2rem 0rem 2rem 2rem;"  type="button" value="fermer" (click)="modalabonnement.hide();" class="btn btn-danger" />
         </div>
      </div>
      </div>
