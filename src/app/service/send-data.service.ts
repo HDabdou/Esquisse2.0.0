@@ -20,4 +20,26 @@ export class SendDataService {
   getData():Observable<any>{
     return this.subject.asObservable();
   }
+  sendDataSolde(data:any){
+    this.subject.next(data);
+  }
+
+  clearDataSolde(){
+    this.subject.next();
+  }
+
+  getDataSolde():Observable<any>{
+    return this.subject.asObservable();
+  }
+  sendDataBanking(data:any){
+    this.subject.next(data);
+  }
+
+  clearDataBanking(){
+    this.subject.next();
+  }
+
+  getDataBanking():Observable<any>{
+    return this.subject.asObservable();
+  }
 }

@@ -54,4 +54,13 @@ public send(data,correspondant): Promise<any>  {
   return  this.http.post(link,params,{headers:this.headers}).toPromise().then( res =>{console.log(res);return res} ).catch(error => {return 'bad' });
  
 }
+public banques(data): Promise<any>  {
+  
+  let requestParam = {token:this.token,pays:data} ;
+  //console.log(requestParam)
+  let params="params="+JSON.stringify(requestParam);
+  let link=this.link+"/transfertInternationnal/banques";
+  return  this.http.post(link,params,{headers:this.headers}).toPromise().then( res =>{console.log(res);return res} ).catch(error => {console.log(error);return 'bad' });
+ 
+}
 }

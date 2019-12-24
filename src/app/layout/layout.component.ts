@@ -47,9 +47,9 @@ export class LayoutComponent implements OnInit {
         
         this.solde =parseInt(res['_body'].split('"')[1]);
         console.log(this.solde);
-        this.dataService.sendData(this.solde);
+        this.dataService.sendDataSolde(this.solde);
         console.log(this.solde);
-        this.dataService.clearData();
+        this.dataService.clearDataSolde();
         console.log("Le solde vaut "+this.solde) ;
     })
     }
@@ -2418,7 +2418,7 @@ retraitEmoney(objet:any){
              this.process.push(sesion);
                  switch(operation){
                    case 1:{
-                            console.log(this.process);
+                           console.log(this.process);
                             
                           //this.deposer(sesion);
                           break;

@@ -1,16 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { StylesCompileDependency } from '@angular/compiler';
 import { TransfertInternatinnalService } from 'src/app/service/transfert-internatinnal.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { SendDataService } from 'src/app/service/send-data.service';
-
+import { Subscription } from 'rxjs';
 @Component({
-  selector: 'app-ria',
-  templateUrl: './ria.component.html',
-  styleUrls: ['./ria.component.scss']
+  selector: 'app-banking',
+  templateUrl: './banking.component.html',
+  styleUrls: ['./banking.component.scss']
 })
-export class RiaComponent implements OnInit {
+export class BankingComponent implements OnInit {
 
+  subscription : Subscription;
   codeRetrait:string;
   etapeEnvoie:number=1;
   operation:string;
@@ -213,7 +213,7 @@ export class RiaComponent implements OnInit {
       tp = 'PT'
     }
 
-    let object ={'nom':'Ria retrait','operateur':11,'operation':1,'nom_benef':this.data.nom_benef,'prenom_benef':this.data.prenom_benef,
+    let object ={'nom':'Money-exchange retrait','operateur':11,'operation':1,'nom_benef':this.data.nom_benef,'prenom_benef':this.data.prenom_benef,
     'noTransaction':this.data.NumeroTransaction,'codeTransation':this.data.codeTransaction,
     'montant_payer':this.data.montant_paye,
     'typepiece':this.type_piece ,'numeropiece':this.num_card,'correspondant':this.correspondant};
@@ -265,12 +265,10 @@ export class RiaComponent implements OnInit {
      this.envoie.telephoneport_benef =recepteur[0].countryCallingCodes[0]+this.envoie.telephoneport_benef
      this.envoie.telephone_benef =  this.envoie.telephoneport_benef;
      this.envoie.montant_paye = this.envoie.montant_emis;
-     this.envoie.compteacrediter = "SN144-12345-123456789012-12";
-     this.envoie.banqueacrediter = "BRM";
      //this.envoie.montant_emis =pa parseInt(this.envoie.montant_emis) + this.frais
      this.envoie.produit = "010";
      console.log(JSON.stringify(this.envoie));
-     let object ={'nom':'Ria envoie','operateur':11,'operation':2,'info':this.envoie};
+     let object ={'nom':'Money-exchange envoie','operateur':11,'operation':2,'info':this.envoie};
      console.log(JSON.stringify(object));
      
      this.dataService.sendData(object)
@@ -280,30 +278,78 @@ export class RiaComponent implements OnInit {
  
   }
 
-
-  constructor(private _transfertIService:TransfertInternatinnalService,private dataService:SendDataService) { }
+  currentCountry(object){
+    console.log(object);
+    this._transfertIService.banques(object).then(res =>{
+      console.log(JSON.parse(res["_body"])); 
+    })
+  }
+  currentCountry1:string;
+  constructor(private _transfertIService:TransfertInternatinnalService,private dataService:SendDataService) { 
+    this.subscription = this.dataService.getDataBanking().subscribe(rep =>{
+      console.log('banking sedData');
+      console.log(rep);
+      
+      this.currentCountry1 =rep;
+      this.currentCountry(this.data);  
+    });
+  }
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+    this.subscription.unsubscribe();
+  }
   listPays :any =[];
   
   ngOnInit() {
-  // var require:any
-   var countries = require('country-data').countries;
-   this.listPays = countries.all;
-  //  console.log(countries);
-//    console.log(this.listPays);
-  }
+    
+}
   
   getFrais(montant){
     let frais = 0 ;
 
-    if(montant>=1 && montant <=1000000)
-      frais =  1000 ;
+    if(montant>=1 && montant <=499)
+      frais =  25 ;
 
-    if(montant>=1000001 && montant <=2000000)
-      frais =  2000 ;
+    if(montant>=500 && montant <=1100)
+      frais =  60 ;
 
-    if(montant>=2000001 && montant <=3000000)
-      frais =  3000 ;
+    if(montant>=1101 && montant <=3000)
+      frais =  150 ;
+
+    if(montant>=3001 && montant <=5000)
+      frais =  200 ;
+
+    if(montant>=5001 && montant <=10000)
+      frais =  400 ;
+
+    if(montant>=10001 && montant <=15000)
+      frais =  600 ;
+    if(montant>=15001 && montant <=20000)
+      frais =  800 ;
+    if(montant>=20001 && montant <=35000)
+      frais =  1400 ;
+    if(montant>=35001 && montant <=60000)
+      frais =  2400 ;
+    if(montant>=60001 && montant <=75000)
+      frais =  2625 ;
+    if(montant>=75001 && montant <=100000)
+      frais =  3100 ;
+    if(montant>=100001 && montant <=150000)
+      frais =  4000 ;
+    if(montant>=150001 && montant <=200000)
+      frais =  6000 ;
+    if(montant>=200001 && montant <=300000)
+      frais =  7500 ;
+    if(montant>=300001 && montant <=400000)
+      frais =  10000 ;
+    if(montant>=400001 && montant <=750000)
+      frais =  14000 ;
+    if(montant>=750001 && montant <=1000000)
+      frais =  montant*0.018 ;
+
     return frais ;
   }
+
+
 
 }

@@ -73,6 +73,7 @@ import { YakalmaComponent } from './venteCredit/yakalma/yakalma.component';
 import { ImpressionComponent } from './impression/impression.component';
 import { GestionReportingComponent } from './gestion-reporting/gestion-reporting.component';
 import { BrowserModule } from '@angular/platform-browser';
+import { BankingComponent } from './banking/banking.component';
 
 @NgModule({
     imports: [
@@ -123,7 +124,7 @@ import { BrowserModule } from '@angular/platform-browser';
     ],
     exports: [
         MatSortModule,],
-    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, PosteCashComponent, SenelecComponent, SdeComponent, WoyofalComponent, RapidoComponent, RiaComponent, WorldRemitComponent, MoneyExchangeComponent, TntComponent, CanalComponent, ZuuluComponent, KashKashComponent, PaiementMarchandComponent, AirtimeComponent, SeddoComponent, IziComponent, YakalmaComponent, ImpressionComponent, GestionReportingComponent, ]
+    declarations: [Screen2Component, LayoutComponent, NavComponent, TopnavComponent, SidebarComponent, CreateCompteComponent, VirementBancaireComponent, AssuranceComponent, OrangeMoneyComponent, TigocashComponent, EMoneyComponent, WizallComponent, PosteCashComponent, SenelecComponent, SdeComponent, WoyofalComponent, RapidoComponent, RiaComponent, WorldRemitComponent, MoneyExchangeComponent, TntComponent, CanalComponent, ZuuluComponent, KashKashComponent, PaiementMarchandComponent, AirtimeComponent, SeddoComponent, IziComponent, YakalmaComponent, ImpressionComponent, GestionReportingComponent, BankingComponent, ]
 
 })
 export class LayoutModule { }

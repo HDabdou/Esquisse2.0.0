@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
     solde:any;
     data:any;
     constructor(private _masterService:MasterServiceService,private dataService:SendDataService,private _utilsService:UtilsService) {
-        this.subscription = this.dataService.getData().subscribe(rep =>{
+        this.subscription = this.dataService.getDataSolde().subscribe(rep =>{
             this.data =rep;
             console.log(rep);
             
@@ -24,7 +24,12 @@ export class SidebarComponent implements OnInit {
         //console.log("fi la ko beugué");
     }
     updateCaution(soldeN){
-        this.solde = soldeN;
+        if(isNaN(soldeN)){
+            console.log("this is not a number");
+            
+        }else{
+            this.solde = soldeN;
+        }
     } 
     getSolde(){
         this._utilsService.checkCaution().then(res =>{
