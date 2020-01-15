@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
                     this.router.navigate(['/soppipwdbifi']);
                  } else {
                     this.loading = false;
-                localStorage.setItem('isLoggedin', 'true');
+                //localStorage.setItem('isLoggedin', 'true');
                 this.router.navigate(['/dashboard']);
                 }
             }else{

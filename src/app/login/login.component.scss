@@ -19,9 +19,9 @@
             background: #fff;
             width: 500px;
             box-shadow: 0 0 10px #ddd;
-            input:-webkit-autofill {
-                -webkit-box-shadow: 0 0 0 30px white inset;
-            }
+           // input:-webkit-autofill {
+                //-webkit-box-shadow: 0 0 0 30px white inset;
+            //}
         }
     }
 
@@ -53,3 +53,11 @@
 .ball-pulse > div {
     background-color: #337ab7 !important ;
  }
+ @media (max-width: 1024px) {
+
+    .logMobile{
+        width: 350px !important;
+      
+    }
+
+  }
