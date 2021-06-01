@@ -283,8 +283,8 @@ export class MoneyExchangeComponent implements OnInit {
   listPays :any =[];
   
   ngOnInit() {
-    //var require:any
-   var countries = require('country-data').countries;
+    var require:any
+  var countries = require('country-data').countries;
    this.listPays = countries.all;
   //  console.log(countries);o
 //    console.log(this.listPays);

@@ -284,8 +284,8 @@ export class WorldRemitComponent implements OnInit {
   
   ngOnInit() {
     //var require:any
-   var countries = require('country-data').countries;
-   this.listPays = countries.all;
+    var countries = require('country-data').countries;
+    this.listPays = countries.all;
   //  console.log(countries);
 //    console.log(this.listPays);
   }

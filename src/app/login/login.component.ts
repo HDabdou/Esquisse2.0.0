@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
     }
     onLoginPhaseTwo(){
         this.loading = true;
+        
         this.data.tokentemporaire = this.smsCode+"#"+sessionStorage.getItem('headToken');
         //console.log(this.data.tokentemporaire);
         
@@ -36,8 +37,8 @@ export class LoginComponent implements OnInit {
                     this.router.navigate(['/soppipwdbifi']);
                  } else {
                     this.loading = false;
-                //localStorage.setItem('isLoggedin', 'true');
-                this.router.navigate(['/dashboard']);
+                    localStorage.setItem('isLoggedin', 'true');
+                    this.router.navigate(['/dashboard']);
                 }
             }else{
                 this.loading = false;
